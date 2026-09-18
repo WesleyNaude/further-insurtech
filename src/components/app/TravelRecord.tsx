@@ -37,6 +37,16 @@ const STAGES = [
   { at: 15_000, name: 'Car-light' },
 ] as const
 
+/** Relative luminance of a CSS hex colour, for picking a blend mode. */
+function luminance(hex: string): number {
+  const m = hex.replace('#', '').match(/../g)
+  if (!m || m.length < 3) return 0
+  const [r, g, b] = m.map((h) => parseInt(h, 16) / 255).map((v) =>
+    v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4),
+  )
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b
+}
+
 function stageFor(km: number) {
   let i = 0
   while (i + 1 < STAGES.length && km >= STAGES[i + 1].at) i++
@@ -61,6 +71,7 @@ export function TravelRecord({
 }) {
   const ref = React.useRef<HTMLCanvasElement>(null)
   const reduced = useReducedMotion()
+  const [themeTick, setThemeTick] = React.useState(0)
 
   const journeys = React.useMemo(
     () =>
@@ -82,9 +93,16 @@ export function TravelRecord({
     let raf = 0
     let t0: number | null = null
 
-    const accent = getComputedStyle(document.documentElement)
-      .getPropertyValue('--color-accent')
-      .trim() || '#0E6B4A'
+    const styles = getComputedStyle(document.documentElement)
+    const accent = styles.getPropertyValue('--color-accent').trim() || '#0E6B4A'
+
+    // Additive blending only accumulates on a dark surface: on paper, adding
+    // green to near-white washes the figure out. Multiply accumulates correctly
+    // there but drags the colour to ink and loses the accent, so light mode uses
+    // ordinary compositing, where repeated strokes still build up through alpha.
+    const surface = styles.getPropertyValue('--color-sunken').trim() || '#F2F2EF'
+    const dark = luminance(surface) < 0.5
+    const blend: GlobalCompositeOperation = dark ? 'lighter' : 'source-over'
 
     function draw(elapsed: number) {
       const dpr = Math.min(2, window.devicePixelRatio || 1)
@@ -117,14 +135,15 @@ export function TravelRecord({
       // A slow breath, so the figure feels alive without ever demanding attention.
       const breath = reduced ? 0 : Math.sin(elapsed / 2600) * 0.0035
 
-      ctx!.globalCompositeOperation = 'lighter'
+      ctx!.globalCompositeOperation = blend
       ctx!.strokeStyle = accent
       ctx!.lineCap = 'round'
       ctx!.lineJoin = 'round'
 
       for (const j of journeys) {
-        ctx!.globalAlpha = j.verification === 'verified' ? 0.13 : 0.06
-        ctx!.lineWidth = j.verification === 'verified' ? 1.5 : 1
+        const strong = j.verification === 'verified'
+        ctx!.globalAlpha = dark ? (strong ? 0.13 : 0.06) : strong ? 0.16 : 0.08
+        ctx!.lineWidth = strong ? 1.5 : 1
         ctx!.beginPath()
         j.path.forEach(([lng, lat], i) => {
           const s = scale * (1 + breath)
@@ -150,11 +169,16 @@ export function TravelRecord({
     const ro = new ResizeObserver(() => draw(0))
     ro.observe(canvas)
 
+    // The blend mode depends on the theme, so re-run the effect when it changes.
+    const mo = new MutationObserver(() => setThemeTick((n) => n + 1))
+    mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
+
     return () => {
       cancelAnimationFrame(raf)
       ro.disconnect()
+      mo.disconnect()
     }
-  }, [journeys, reduced])
+  }, [journeys, reduced, themeTick])
 
   const km = Math.round(journeys.reduce((a, j) => a + j.metres, 0) / 1000)
   const stage = stageFor(km)
