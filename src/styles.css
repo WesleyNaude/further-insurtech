@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------
+   Further design tokens
+   Quiet monochrome, one accent. Strict 8pt spacing grid.
+   Type scale is a restrained 6 steps; nothing between them.
+   --------------------------------------------------------------- */
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Surface: warm white paper, near-black ink. Never pure #000/#fff. */
+  --color-paper: #FAFAF8;
+  --color-surface: #FFFFFF;
+  --color-sunken: #F2F2EF;
+  --color-ink: #16181C;
+  --color-ink-muted: #63666E;
+  --color-ink-faint: #9A9CA3;
+  --color-line: #E5E5E1;
+  --color-line-strong: #D6D6D1;
+
+  /* One accent. Reserved exclusively for earned value. */
+  --color-accent: #0E6B4A;
+  --color-accent-soft: #E8F2ED;
+  --color-accent-ink: #0A4E36;
+
+  /* Semantic, used sparingly */
+  --color-warn: #A8601A;
+  --color-warn-soft: #FBF1E6;
+  --color-car: #B0453C;
+  --color-car-soft: #FBECEA;
+
+  /* 8pt grid. Tailwind's default 4px unit x2 where it matters. */
+  --spacing: 4px;
+
+  --radius-card: 16px;
+  --radius-sheet: 24px;
+  --radius-pill: 999px;
+
+  --shadow-card: 0 1px 2px rgba(22, 24, 28, 0.04), 0 1px 1px rgba(22, 24, 28, 0.03);
+  --shadow-lift: 0 4px 16px rgba(22, 24, 28, 0.08), 0 1px 2px rgba(22, 24, 28, 0.04);
+  --shadow-fab: 0 6px 20px rgba(22, 24, 28, 0.16);
+
+  --ease-out-soft: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@layer base {
+  * { -webkit-tap-highlight-color: transparent; }
+
+  html {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "cv05" 1, "ss03" 1;
+  }
+
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    overscroll-behavior-y: none;
+  }
+
+  /* Tabular figures everywhere a number can change. Stops layout jitter. */
+  .tnum { font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer utilities {
+  /* The single horizontal gutter. Every screen obeys it. */
+  .gutter { padding-inline: 20px; }
+
+  .safe-top { padding-top: env(safe-area-inset-top); }
+  .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+
+  .hairline { box-shadow: inset 0 -1px 0 var(--color-line); }
+  .hairline-t { box-shadow: inset 0 1px 0 var(--color-line); }
+
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { scrollbar-width: none; }
+}
+
