@@ -17,6 +17,7 @@ interface State {
   paidOutCents: number
   onboarded: boolean
 
+  setPolicy: (p: Partial<Policy>) => void
   addTrip: (t: Trip) => void
   reclassify: (tripId: string, mode: Trip['mode']) => void
   commit: (c: Omit<Commitment, 'id' | 'createdAt' | 'status'>) => void
@@ -37,6 +38,8 @@ export const useStore = create<State>()(
   persist(
     (set) => ({
       ...fresh(),
+
+      setPolicy: (p) => set((s) => ({ policy: { ...s.policy, ...p } })),
 
       addTrip: (t) => set((s) => ({ trips: [t, ...s.trips] })),
 
@@ -77,6 +80,12 @@ export const useStore = create<State>()(
 
       reset: () => set(fresh()),
     }),
-    { name: 'further.v1', version: 1 },
+    {
+      name: 'further.v1',
+      // Bumped whenever the seeded shape or copy changes, so a returning demo
+      // does not sit on stale data. Persisted state is discarded on mismatch.
+      version: 2,
+      migrate: () => fresh() as never,
+    },
   ),
 )

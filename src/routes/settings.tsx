@@ -2,6 +2,7 @@ import * as React from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { ChevronRight, ShieldCheck, Car, RotateCcw, MapPin, Eye, Sun, Moon, SunMoon, FileBadge, Wallet2 } from 'lucide-react'
 import { useTheme, type Theme } from '@/lib/theme'
+import { PolicyEditor } from '@/components/app/PolicyEditor'
 import { cx } from '@/lib/cx'
 import { toast } from 'sonner'
 import { TopBar, Screen } from '@/components/app/AppShell'
@@ -15,6 +16,7 @@ export const Route = createFileRoute('/settings')({ component: SettingsScreen })
 function SettingsScreen() {
   const policy = useStore((s) => s.policy)
   const reset = useStore((s) => s.reset)
+  const [editing, setEditing] = React.useState(false)
 
   return (
     <Screen>
@@ -48,6 +50,9 @@ function SettingsScreen() {
                 year: 'numeric',
               })}
             />
+            <Button className="mt-3 w-full" onClick={() => setEditing(true)}>
+              Change these figures
+            </Button>
           </Card>
         </div>
       </Section>
@@ -160,6 +165,8 @@ function SettingsScreen() {
           </Button>
         </div>
       </Section>
+
+      <PolicyEditor open={editing} onOpenChange={setEditing} />
 
       <p className="gutter mt-8 text-[12px] leading-[1.5] text-ink-faint">
         Further is a demonstration. Figures are modelled, not quoted, and no insurer has endorsed
