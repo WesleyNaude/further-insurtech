@@ -8,7 +8,6 @@ import { Card, Section, Pill, Divider } from '@/components/ui/primitives'
 import { DerivationSheet } from '@/components/app/DerivationSheet'
 import { TripRow } from '@/components/app/TripRow'
 import { WeekStrip } from '@/components/app/WeekStrip'
-import { LiveTrip } from '@/components/app/LiveTrip'
 import { InstallHint } from '@/components/app/DeviceFrame'
 import { useStatement } from '@/lib/useStatement'
 import { useStore } from '@/lib/store'
@@ -118,11 +117,6 @@ function Today() {
           unit="R/km"
           label="Per km"
         />
-      </div>
-
-      {/* ------------------------------------------------------- live trip */}
-      <div className="gutter mt-6">
-        <LiveTrip ratePerKmCents={statement.centsPerVerifiedKm} />
       </div>
 
       {/* ------------------------------------------------------ commitment */}

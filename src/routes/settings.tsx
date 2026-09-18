@@ -1,6 +1,8 @@
 import * as React from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { ChevronRight, ShieldCheck, Car, RotateCcw, MapPin, Eye } from 'lucide-react'
+import { ChevronRight, ShieldCheck, Car, RotateCcw, MapPin, Eye, Sun, Moon, SunMoon } from 'lucide-react'
+import { useTheme, type Theme } from '@/lib/theme'
+import { cx } from '@/lib/cx'
 import { toast } from 'sonner'
 import { TopBar, Screen } from '@/components/app/AppShell'
 import { Card, Section, Divider, Button } from '@/components/ui/primitives'
@@ -64,6 +66,12 @@ function SettingsScreen() {
               <ChevronRight size={18} strokeWidth={2} className="text-ink-faint" />
             </Card>
           </Link>
+        </div>
+      </Section>
+
+      <Section title="Appearance">
+        <div className="gutter">
+          <ThemePicker />
         </div>
       </Section>
 
@@ -134,6 +142,35 @@ function SettingsScreen() {
         this calculation.
       </p>
     </Screen>
+  )
+}
+
+function ThemePicker() {
+  const [theme, setTheme] = useTheme()
+  const options: { value: Theme; label: string; icon: typeof Sun }[] = [
+    { value: 'light', label: 'Light', icon: Sun },
+    { value: 'dark', label: 'Dark', icon: Moon },
+    { value: 'system', label: 'System', icon: SunMoon },
+  ]
+
+  return (
+    <div className="grid grid-cols-3 gap-2" role="radiogroup" aria-label="Appearance">
+      {options.map(({ value, label, icon: Icon }) => (
+        <button
+          key={value}
+          role="radio"
+          aria-checked={theme === value}
+          onClick={() => setTheme(value)}
+          className={cx(
+            'flex h-[52px] flex-col items-center justify-center gap-1 rounded-[--radius-card] ring-1 transition-colors',
+            theme === value ? 'bg-ink text-paper ring-ink' : 'bg-surface text-ink-muted ring-line',
+          )}
+        >
+          <Icon size={17} strokeWidth={1.85} />
+          <span className="text-[12px] font-medium">{label}</span>
+        </button>
+      ))}
+    </div>
   )
 }
 

@@ -9,6 +9,9 @@ import { useStatement } from '@/lib/useStatement'
 import { useStore } from '@/lib/store'
 import { formatRand } from '@/lib/domain/money'
 import { toast } from 'sonner'
+import { ShareCard } from '@/components/app/ShareCard'
+import { Empty } from '@/components/app/Empty'
+import { Coins } from 'lucide-react'
 
 export const Route = createFileRoute('/wallet')({ component: WalletScreen })
 
@@ -115,10 +118,21 @@ function WalletScreen() {
             </React.Fragment>
           ))}
           {earners.length === 0 && (
-            <p className="px-5 py-10 text-center text-[14px] text-ink-faint">
-              Nothing earned yet this month.
-            </p>
+            <Empty
+              icon={Coins}
+              title="Nothing earned yet"
+              body="Every verified trip you take instead of driving adds to this month's reduction."
+            />
           )}
+        </div>
+      </Section>
+
+      <Section title="Share">
+        <div className="gutter">
+          <ShareCard statement={statement} insurer={policy.insurer} />
+          <p className="mt-2 text-[12px] leading-[1.5] text-ink-faint">
+            Creates an image of this month&rsquo;s figures, with the disclaimer printed on it.
+          </p>
         </div>
       </Section>
 

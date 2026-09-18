@@ -3,6 +3,8 @@ import { createFileRoute, Outlet, useRouterState } from '@tanstack/react-router'
 import { TopBar, Screen } from '@/components/app/AppShell'
 import { TripRow } from '@/components/app/TripRow'
 import { Divider } from '@/components/ui/primitives'
+import { Empty } from '@/components/app/Empty'
+import { Route as RouteIcon } from 'lucide-react'
 import { useStatement } from '@/lib/useStatement'
 import { DISPLACING_MODES } from '@/lib/domain/engine'
 import { cx } from '@/lib/cx'
@@ -90,7 +92,17 @@ function TripsList() {
           </section>
         ))}
         {groups.length === 0 && (
-          <p className="gutter py-16 text-center text-[14px] text-ink-faint">No trips to show.</p>
+          <Empty
+            icon={RouteIcon}
+            title={filter === 'drove' ? 'No car trips' : 'Nothing here yet'}
+            body={
+              filter === 'counted'
+                ? 'Trips on a train, bus or taxi appear here once they clear the evidence bar.'
+                : filter === 'drove'
+                  ? 'You have not driven at all in this period. That is the whole idea.'
+                  : 'Track a trip from the button below and it will show up here.'
+            }
+          />
         )}
       </div>
     </Screen>
