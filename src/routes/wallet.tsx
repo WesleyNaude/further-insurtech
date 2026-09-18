@@ -11,13 +11,19 @@ import { formatRand } from '@/lib/domain/money'
 import { toast } from 'sonner'
 import { ShareCard } from '@/components/app/ShareCard'
 import { Empty } from '@/components/app/Empty'
+import { MonthHistory, monthlyStatements } from '@/components/app/MonthHistory'
 import { Coins } from 'lucide-react'
 
 export const Route = createFileRoute('/wallet')({ component: WalletScreen })
 
 function WalletScreen() {
-  const { statement, policy, monthTrips } = useStatement()
-  const paidOut = useStore((s) => s.paidOutCents)
+  const { statement, policy, monthTrips, allTrips } = useStatement()
+  // Derived, not stored: a lifetime total that disagrees with the months above
+  // it is worse than no total at all.
+  const lifetime = React.useMemo(
+    () => monthlyStatements(allTrips, policy, 24).reduce((a, r) => a + r.cents, 0),
+    [allTrips, policy],
+  )
   const [sheet, setSheet] = React.useState(false)
 
   const earners = monthTrips.filter((t) => t.creditedCents > 0)
@@ -127,6 +133,12 @@ function WalletScreen() {
         </div>
       </Section>
 
+      <Section title="Month by month">
+        <div className="gutter">
+          <MonthHistory trips={allTrips} policy={policy} />
+        </div>
+      </Section>
+
       <Section title="Share">
         <div className="gutter">
           <ShareCard statement={statement} insurer={policy.insurer} />
@@ -140,7 +152,7 @@ function WalletScreen() {
         <div className="gutter">
           <Card className="flex items-center justify-between">
             <span className="text-[14px] text-ink-muted">Total taken back</span>
-            <span className="tnum text-[17px] font-semibold">{formatRand(paidOut)}</span>
+            <span className="tnum text-[17px] font-semibold">{formatRand(lifetime)}</span>
           </Card>
         </div>
       </Section>

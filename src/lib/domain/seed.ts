@@ -46,8 +46,10 @@ function jitter(path: [number, number][], rnd: () => number): [number, number][]
 export function seedTrips(now = new Date()): Trip[] {
   const rnd = mulberry(20260918)
   const trips: Trip[] = []
-  // 38 days of history so the month view and the trend charts have shape.
-  for (let dayOffset = 37; dayOffset >= 0; dayOffset--) {
+  // Five months of history, so month-on-month statements mean something and
+  // the trend has a visible arc rather than a single slope.
+  const DAYS = 150
+  for (let dayOffset = DAYS - 1; dayOffset >= 0; dayOffset--) {
     const day = new Date(now)
     day.setDate(day.getDate() - dayOffset)
     const dow = day.getDay()
@@ -55,8 +57,8 @@ export function seedTrips(now = new Date()): Trip[] {
     const weekend = dow === 6
 
     // Behaviour improves over the history: more displacing trips recently.
-    const recency = 1 - dayOffset / 37
-    const switchChance = weekend ? 0.25 : 0.42 + recency * 0.4
+    const recency = 1 - dayOffset / (DAYS - 1)
+    const switchChance = weekend ? 0.2 + recency * 0.15 : 0.3 + recency * 0.5
 
     const legs = weekend ? 1 : 2
     for (let leg = 0; leg < legs; leg++) {
