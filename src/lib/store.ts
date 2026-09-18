@@ -13,8 +13,6 @@ interface State {
   policy: Policy
   trips: Trip[]
   commitments: Commitment[]
-  /** Cents already paid out, as opposed to accrued this month. */
-  paidOutCents: number
   onboarded: boolean
 
   setPolicy: (p: Partial<Policy>) => void
@@ -31,7 +29,6 @@ const fresh = () => ({
   policy: POLICY,
   trips: seedTrips(),
   commitments: seedCommitments(),
-  paidOutCents: 128_400,
   onboarded: false,
 })
 
@@ -83,13 +80,13 @@ export const useStore = create<State>()(
 
       // A real day one: no history, no commitments, onboarding from the top.
       resetEmpty: () =>
-        set({ ...fresh(), trips: [], commitments: [], paidOutCents: 0, onboarded: false }),
+        set({ ...fresh(), trips: [], commitments: [], onboarded: false }),
     }),
     {
       name: 'further.v1',
       // Bumped whenever the seeded shape or copy changes, so a returning demo
       // does not sit on stale data. Persisted state is discarded on mismatch.
-      version: 2,
+      version: 3,
       migrate: () => fresh() as never,
     },
   ),
