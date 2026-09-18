@@ -49,6 +49,7 @@ export function WeekStrip({ trips }: { trips: Trip[] }) {
                 d.state === 'displaced' && 'bg-accent',
                 d.state === 'drove' && 'bg-car-soft ring-1 ring-inset ring-car/25',
                 d.state === 'none' && 'bg-sunken',
+                today && 'ring-2 ring-ink ring-offset-2 ring-offset-paper',
               )}
             />
             <span

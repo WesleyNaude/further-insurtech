@@ -3,6 +3,7 @@ import { Link, useRouterState } from '@tanstack/react-router'
 import { Home, Route as RouteIcon, Wallet, BarChart3, Settings, Plus } from 'lucide-react'
 import { motion } from 'motion/react'
 import { cx } from '@/lib/cx'
+import { tap } from '@/lib/haptics'
 
 const TABS = [
   { to: '/', label: 'Today', icon: Home },
@@ -94,6 +95,7 @@ export function BottomNav() {
                 to={to}
                 aria-label={label}
                 aria-current={active ? 'page' : undefined}
+                onClick={() => !active && tap()}
                 className="group relative flex h-full flex-col items-center justify-center gap-1"
               >
                 <span className={cx('transition-colors duration-150', active ? 'text-ink' : 'text-ink-faint')}>
@@ -127,7 +129,10 @@ export function BottomNav() {
 export function Fab({ onClick }: { onClick: () => void }) {
   return (
     <motion.button
-      onClick={onClick}
+      onClick={() => {
+        tap()
+        onClick()
+      }}
       whileTap={{ scale: 0.92 }}
       transition={{ type: 'spring', stiffness: 600, damping: 30 }}
       aria-label="Log a trip"

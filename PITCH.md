@@ -115,6 +115,41 @@ That means:
 
 ---
 
+## What the original session already knew
+
+Re-reading the team's own discussion, three things were right and were being
+talked past.
+
+**"South Africans don't care about carbon at all. But they do care about cost
+saving. They are absolute fiends for cost saving."** This is the whole pivot,
+said out loud before the research confirmed it. The app now leads with rand on
+every screen and treats kilograms as a footnote.
+
+**Loss aversion.** The point was made three times and never built: people respond
+roughly twice as strongly to reclaiming their own money as to accumulating
+points. It is why Checkers frames Xtra Savings as money back rather than a
+discount. Further now says "back in your pocket" and "you pay R1,890 a month, so
+far you have taken R511 of it back", not "you have earned 511 points".
+
+**Verification was correctly identified as the weakest point.** *"That's our
+biggest weak point, someone would be like, cool, good idea, but how? How are you
+sure someone's not going to game the system?"* Every existing behaviour-reward
+scheme, Discovery's included, ultimately rests on an attestation the member
+ticks. The app answers this directly: corridor match, speed profile, stop dwell
+and fare tap, with a three-level verification state where a self-reported trip
+can never reach "verified", and a car off a published alignment earns nothing
+because at road speed a bus and a car are indistinguishable.
+
+### The one idea I cut too fast
+
+Golden Arrow buses are overcrowded at peak and close to empty off-peak. That is a
+real operator yield problem, and it means off-peak demand shifting has a payer
+who is not the insurer: an operator with a bus running either way and empty seats
+on it. I dismissed the booking idea because we cannot set fares or hold
+inventory, and that remains true. But selling *verified demand shifted into
+off-peak windows* to an operator is a second revenue line that needs no ticketing
+licence and no inventory risk. The Plan screen is the front end of it.
+
 ## The honest risks
 
 **An insurer builds it themselves.** Discovery demonstrably can. The defence is

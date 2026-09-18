@@ -2,6 +2,7 @@ import * as React from 'react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { ChevronLeft, TrendingDown, Check } from 'lucide-react'
 import { toast } from 'sonner'
+import { confirm as buzzConfirm } from '@/lib/haptics'
 import { TopBar } from '@/components/app/AppShell'
 import { Card, Button, Pill, Divider } from '@/components/ui/primitives'
 import { CORRIDORS, corridorById } from '@/lib/domain/corridors'
@@ -55,6 +56,7 @@ function PlanScreen() {
     when.setDate(when.getDate() + 1)
     when.setHours(h, m, 0, 0)
     commit({ corridorId, mode, departAt: when.toISOString() })
+    buzzConfirm()
     toast.success('Committed', { description: 'We will look for this trip tomorrow.' })
     navigate({ to: '/' })
   }
