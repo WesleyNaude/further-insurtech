@@ -150,6 +150,78 @@ inventory, and that remains true. But selling *verified demand shifted into
 off-peak windows* to an operator is a second revenue line that needs no ticketing
 licence and no inventory risk. The Plan screen is the front end of it.
 
+## Would anyone buy it, and would anyone fund it
+
+Two different questions, and they have different answers.
+
+### Would people use it
+
+The strongest evidence is that they already do. Discovery Vitality Drive has
+paid out **R1 billion** in fuel cash back, which means South Africans at scale
+will install a tracking app, tolerate it running in the background, and change
+behaviour for money. That question is settled; we do not have to prove it.
+
+The reward here is also not a gimmick. R500 a month off an R1,890 premium is
+about 27%. That is groceries, not a badge.
+
+But the honest refinement matters more than either point.
+
+**Our first cohort is not people we must persuade to change.** It is people
+already travelling this way who are simply not being paid for it. A Cape Town
+household with one car, taking the train or a taxi to work four days a week, is
+already a low-exposure risk and is already being charged as though it commutes
+daily. For them Further requires no behaviour change at all, only measurement.
+That is a far easier sell, a far cheaper acquisition, and it means the product
+generates value before it changes a single journey. Behaviour change is the
+second-order benefit, not the precondition.
+
+The real adoption risks are battery drain, install-then-forget, and the fact
+that South African public transport has genuine safety and reliability problems
+that no reward fixes. We should not pretend otherwise.
+
+### Would a business pay
+
+This is where the model gets cleaner than "share the saving".
+
+South African motor insurers spend heavily on acquisition: OUTsurance, King
+Price and Budget are among the country's largest broadcast advertisers. What
+they buy with that spend is an unqualified lead and a self-declared mileage
+figure.
+
+Further can hand them a lead that arrives with **evidence attached**: a verified
+exposure profile, months of it, that prices better than book. Two revenue lines
+follow, neither of which requires us to touch the member's money:
+
+1. A per-member verification fee for continuous exposure measurement.
+2. A qualified-acquisition fee, which is worth a multiple of a click because the
+   risk is pre-measured.
+
+And there is a third, entirely separate payer noted above: an operator with
+empty off-peak seats, buying verified demand shifted into those windows.
+
+### Would an investor fund it
+
+The capital is already in this exact market, with this exact mandate.
+
+In January 2025 **Naked raised R700 million (about $38 million)**, the largest
+insurtech round in Africa, from Yellowwoods, the **IFC**, Germany's **DEG** and
+**BlueOrchard**, explicitly to improve accessibility for underserved populations
+in South Africa. Three of those four are development finance or impact
+investors. The 65% uninsured figure is not a nice-to-have social angle for that
+capital; it is the mandate.
+
+Further is a better venture shape than an insurer. No balance sheet, no
+underwriting licence, no claims reserve. It is asset-light infrastructure that
+sells into insurers rather than competing with them, which means higher gross
+margin and much faster expansion into other markets with the same problem.
+
+The question an investor will actually ask is: **why doesn't Naked or Discovery
+just build this?** The answer has to be portability, and it has to be true. A
+credential that works across insurers is worth more to a consumer than one that
+locks them in, and no incumbent will ship the product that lets its customers
+shop. If we do not get to multi-insurer quickly, we are a feature, and that is
+the honest bear case.
+
 ## The honest risks
 
 **An insurer builds it themselves.** Discovery demonstrably can. The defence is
