@@ -6,7 +6,7 @@ import './styles.css'
 import { applyTheme, type Theme } from './lib/theme'
 
 // Applied before first paint so the app never flashes the wrong scheme.
-applyTheme((localStorage.getItem('further.theme') as Theme) || 'system')
+applyTheme((localStorage.getItem('further.theme') as Theme) || 'dark')
 
 const router = createRouter({ routeTree, defaultPreload: 'intent', scrollRestoration: true })
 

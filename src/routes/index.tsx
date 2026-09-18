@@ -47,7 +47,7 @@ function Today() {
       <div className="gutter pb-2 pt-4">
         <button onClick={() => setSheet(true)} className="block w-full text-left">
           <p className="text-[13px] font-medium uppercase tracking-[0.08em] text-ink-faint">
-            Off your {monthName} premium
+            Back in your pocket, {monthName}
           </p>
 
           <div className="mt-2 flex items-end gap-2">
@@ -66,11 +66,12 @@ function Today() {
           </div>
 
           <p className="mt-2 text-[14px] leading-[1.5] text-ink-muted">
-            {formatRand(policy.basePremiumCents)} becomes{' '}
+            You pay {formatRand(policy.basePremiumCents)} a month. So far this month you have
+            taken{' '}
             <span className="font-medium text-ink">
-              {formatRand(policy.basePremiumCents - statement.reductionCents)}
+              {formatRand(statement.reductionCents)}
             </span>{' '}
-            on your next debit order.
+            of it back.
           </p>
         </button>
 
@@ -115,7 +116,7 @@ function Today() {
               : '0.00'
           }
           unit="R/km"
-          label="Per km"
+          label="Back per km"
         />
       </div>
 

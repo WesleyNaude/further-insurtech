@@ -30,7 +30,7 @@ function WalletScreen() {
 
       <div className="gutter pt-4">
         <p className="text-[13px] font-medium uppercase tracking-[0.08em] text-ink-faint">
-          Accrued this month
+          Taken back this month
         </p>
         <p className="tnum mt-2 flex items-baseline text-[52px] font-semibold leading-[0.95] tracking-[-0.035em]">
           <span className="mr-0.5 text-[30px] font-medium tracking-[-0.02em] text-ink-muted">R</span>
@@ -56,7 +56,7 @@ function WalletScreen() {
               <ArrowDownToLine size={18} strokeWidth={1.75} />
             </span>
             <div className="min-w-0 flex-1">
-              <p className="text-[15px] font-medium">Off your premium</p>
+              <p className="text-[15px] font-medium">Straight off your premium</p>
               <p className="mt-0.5 text-[13px] leading-[1.5] text-ink-muted">
                 Applied automatically on{' '}
                 {nextDebit.toLocaleDateString('en-ZA', { day: 'numeric', month: 'long' })}. Your
@@ -93,7 +93,7 @@ function WalletScreen() {
         </div>
       </Section>
 
-      <Section title="Earned this month">
+      <Section title="Where it came back from">
         <div className="bg-surface ring-1 ring-line">
           {earners.slice(0, 8).map((t, i) => (
             <React.Fragment key={t.id}>
@@ -139,7 +139,7 @@ function WalletScreen() {
       <Section title="Since you joined">
         <div className="gutter">
           <Card className="flex items-center justify-between">
-            <span className="text-[14px] text-ink-muted">Total reductions applied</span>
+            <span className="text-[14px] text-ink-muted">Total taken back</span>
             <span className="tnum text-[17px] font-semibold">{formatRand(paidOut)}</span>
           </Card>
         </div>

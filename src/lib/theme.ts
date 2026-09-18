@@ -23,7 +23,7 @@ export function applyTheme(t: Theme) {
 
 export function useTheme() {
   const [theme, setTheme] = React.useState<Theme>(
-    () => (localStorage.getItem(KEY) as Theme) || 'system',
+    () => (localStorage.getItem(KEY) as Theme) || 'dark',
   )
 
   React.useEffect(() => {
