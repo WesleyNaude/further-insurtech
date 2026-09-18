@@ -8,6 +8,9 @@ npm install
 npm run dev     # http://localhost:5173
 ```
 
+Other scripts: `npm run check` (types, tests, build) and, with the dev server
+running, `npm run shots` to recapture the app screenshots used in the pitch deck.
+
 No backend, no keys, no sign-in. All data is seeded locally and persists in the
 browser. Settings → Reset demo data puts it back.
 

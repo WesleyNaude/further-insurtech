@@ -8,7 +8,9 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "shots": "node scripts/screenshots.mjs",
+    "check": "tsc --noEmit && vitest run && vite build"
   },
   "keywords": [],
   "author": "",
@@ -40,6 +42,7 @@
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.1",
     "jsdom": "^30.1.0",
+    "puppeteer-core": "^25.11.0",
     "sharp": "^0.35.4",
     "tailwindcss": "^4.3.3",
     "typescript": "^7.0.2",
