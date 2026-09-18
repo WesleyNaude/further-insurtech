@@ -171,6 +171,28 @@ legitimacy in that sector than we will ever have. Partner, do not compete.
 
 ---
 
+---
+
+## 11. What in the demo is invented
+
+If you demo the app, know which numbers on screen are sourced and which are
+illustrative. Being caught claiming a made-up figure is real damages a pitch far
+more than admitting it up front.
+
+| On screen | Status |
+|---|---|
+| The member, the vehicle, "Cornerstone Insure" | **Invented.** No real insurer is involved or has seen this |
+| R1,890 monthly premium, 22,000 km rating | **Illustrative**, inside the real R800–R1,400 market band for a small hatch but not a quote |
+| Trips, corridors travelled, five months of history | **Generated**, deterministically seeded so the demo is identical each run |
+| Corridor alignments and names | **Real** Cape Town routes, simplified geometry |
+| Off-peak and peak fares | **Shaped on** published operator fares, including the genuine off-peak discount. Treat as indicative; we do not set fares and did not audit these |
+| R2.85/km driving cost | **Conservative**, running cost only. See section 6 |
+| Carbon factors per passenger-km | **Standard** SA grid and fleet factors |
+| The reduction, the ceiling, the per-km rate | **Derived**, by one engine, from whatever policy and trips are in front of it. Move the sliders in Settings and watch every screen re-derive |
+
+The last row is the one to demonstrate. The figures are not typed in anywhere;
+they are computed, and you can push on them live.
+
 ## What I would verify before pitching
 
 1. **The overlap in section 5.** How many car-owning households regularly use

@@ -99,6 +99,16 @@ Routes are computed and drawn as SVG rather than rendered on a tiled basemap. A
 street map answers "where is this", which the member already knows. The figure
 answers "does my path match the published alignment", which is the actual claim.
 
+## What is invented
+
+The member, the vehicle and "Cornerstone Insure" are fictional, and no real
+insurer has seen this. The premium and rated mileage are illustrative but sit
+inside the real market band. Trips are deterministically generated. The corridors
+are real Cape Town routes with simplified geometry, and the fares are shaped on
+published operator prices rather than audited. Everything financial is *derived*
+from those inputs by `engine.ts`, so changing the policy in Settings re-derives
+the whole app. EVIDENCE.md has the full breakdown.
+
 ## Not claimed
 
 Nothing in this app offsets, neutralises or cancels emissions, and nothing here
