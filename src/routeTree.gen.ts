@@ -14,6 +14,7 @@ import { Route as ImpactRouteImport } from './routes/impact'
 import { Route as InsurerRouteImport } from './routes/insurer'
 import { Route as PlanRouteImport } from './routes/plan'
 import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as TrackRouteImport } from './routes/track'
 import { Route as TripsRouteImport } from './routes/trips'
 import { Route as WalletRouteImport } from './routes/wallet'
 import { Route as WelcomeRouteImport } from './routes/welcome'
@@ -44,6 +45,11 @@ const SettingsRoute = SettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TrackRoute = TrackRouteImport.update({
+  id: '/track',
+  path: '/track',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TripsRoute = TripsRouteImport.update({
   id: '/trips',
   path: '/trips',
@@ -71,6 +77,7 @@ export interface FileRoutesByFullPath {
   '/insurer': typeof InsurerRoute
   '/plan': typeof PlanRoute
   '/settings': typeof SettingsRoute
+  '/track': typeof TrackRoute
   '/trips': typeof TripsRouteWithChildren
   '/wallet': typeof WalletRoute
   '/welcome': typeof WelcomeRoute
@@ -82,6 +89,7 @@ export interface FileRoutesByTo {
   '/insurer': typeof InsurerRoute
   '/plan': typeof PlanRoute
   '/settings': typeof SettingsRoute
+  '/track': typeof TrackRoute
   '/trips': typeof TripsRouteWithChildren
   '/wallet': typeof WalletRoute
   '/welcome': typeof WelcomeRoute
@@ -94,6 +102,7 @@ export interface FileRoutesById {
   '/insurer': typeof InsurerRoute
   '/plan': typeof PlanRoute
   '/settings': typeof SettingsRoute
+  '/track': typeof TrackRoute
   '/trips': typeof TripsRouteWithChildren
   '/wallet': typeof WalletRoute
   '/welcome': typeof WelcomeRoute
@@ -107,6 +116,7 @@ export interface FileRouteTypes {
     | '/insurer'
     | '/plan'
     | '/settings'
+    | '/track'
     | '/trips'
     | '/wallet'
     | '/welcome'
@@ -118,6 +128,7 @@ export interface FileRouteTypes {
     | '/insurer'
     | '/plan'
     | '/settings'
+    | '/track'
     | '/trips'
     | '/wallet'
     | '/welcome'
@@ -129,6 +140,7 @@ export interface FileRouteTypes {
     | '/insurer'
     | '/plan'
     | '/settings'
+    | '/track'
     | '/trips'
     | '/wallet'
     | '/welcome'
@@ -141,6 +153,7 @@ export interface RootRouteChildren {
   InsurerRoute: typeof InsurerRoute
   PlanRoute: typeof PlanRoute
   SettingsRoute: typeof SettingsRoute
+  TrackRoute: typeof TrackRoute
   TripsRoute: typeof TripsRouteWithChildren
   WalletRoute: typeof WalletRoute
   WelcomeRoute: typeof WelcomeRoute
@@ -181,6 +194,13 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/track': {
+      id: '/track'
+      path: '/track'
+      fullPath: '/track'
+      preLoaderRoute: typeof TrackRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/trips': {
@@ -230,6 +250,7 @@ const rootRouteChildren: RootRouteChildren = {
   InsurerRoute: InsurerRoute,
   PlanRoute: PlanRoute,
   SettingsRoute: SettingsRoute,
+  TrackRoute: TrackRoute,
   TripsRoute: TripsRouteWithChildren,
   WalletRoute: WalletRoute,
   WelcomeRoute: WelcomeRoute,

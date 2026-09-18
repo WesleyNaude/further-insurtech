@@ -1,58 +1,115 @@
 import * as React from 'react'
+import { Share, Plus } from 'lucide-react'
 import { cx } from '@/lib/cx'
 
 /**
- * Presentation shell.
+ * Further is a mobile web app, so the phone is the only design target.
  *
- * On a phone this is invisible: the app fills the screen. On a wide screen it
- * becomes a framed device beside a short statement of what the product is,
- * because a 448px column stranded on a 1440px page reads as an unfinished
- * website rather than an app.
+ * On a desktop browser the app is presented in a device-sized frame rather
+ * than stretched: a 400px column stretched to 1440px is not a wider app, it is
+ * a broken one. The only desktop-specific content is a short note on how to
+ * install it, because installed is how it is meant to be used.
  */
 export function DeviceFrame({ children }: { children: React.ReactNode }) {
+  const [standalone, setStandalone] = React.useState(false)
+
+  React.useEffect(() => {
+    const mql = window.matchMedia('(display-mode: standalone)')
+    const sync = () =>
+      setStandalone(
+        mql.matches || (window.navigator as { standalone?: boolean }).standalone === true,
+      )
+    sync()
+    mql.addEventListener('change', sync)
+    return () => mql.removeEventListener('change', sync)
+  }, [])
+
   return (
-    <div className="min-h-dvh lg:grid lg:min-h-dvh lg:grid-cols-[1fr_auto] lg:items-center lg:gap-16 lg:bg-sunken lg:px-12 lg:py-10 xl:px-20">
-      {/* Desktop-only rail. Hidden entirely on mobile, costing nothing there. */}
-      <aside className="hidden lg:block lg:max-w-[46ch] lg:justify-self-end">
-        <p className="text-[13px] font-medium uppercase tracking-[0.14em] text-ink-faint">Further</p>
-        <h1 className="mt-5 text-[44px] font-semibold leading-[1.05] tracking-[-0.03em] text-ink">
-          The kilometres you don&rsquo;t drive are worth money.
-        </h1>
-        <p className="mt-5 text-[17px] leading-[1.5] text-ink-muted">
-          Your car insurance was priced on an assumed annual mileage. Drive under it and your
-          expected claims cost falls. Further proves the gap, and hands most of it back.
-        </p>
-
-        <dl className="mt-10 grid grid-cols-3 gap-6">
-          {[
-            ['30%', 'maximum monthly reduction'],
-            ['6', 'numbers shared with your insurer'],
-            ['0', 'routes that leave your phone'],
-          ].map(([v, k]) => (
-            <div key={k}>
-              <dt className="tnum text-[26px] font-semibold leading-none tracking-[-0.02em] text-ink">
-                {v}
-              </dt>
-              <dd className="mt-2 text-[13px] leading-[1.4] text-ink-muted">{k}</dd>
-            </div>
-          ))}
-        </dl>
-
-        <p className="mt-10 max-w-[42ch] text-[13px] leading-[1.5] text-ink-faint">
-          A demonstration build. Figures are modelled, not quoted. Nothing here offsets emissions
-          or constitutes a carbon credit.
-        </p>
-      </aside>
-
+    <div
+      className={cx(
+        'min-h-dvh',
+        // Framed presentation only where there is room for it.
+        'lg:grid lg:min-h-dvh lg:place-items-center lg:bg-sunken lg:p-8',
+      )}
+    >
       <div
         className={cx(
           'relative flex h-dvh w-full flex-col overflow-hidden bg-paper',
-          // Device on wide screens
-          'lg:h-[min(880px,calc(100dvh-80px))] lg:w-[400px] lg:shrink-0 lg:rounded-[44px] lg:shadow-[0_32px_80px_-16px_rgba(22,24,28,0.28)] lg:ring-1 lg:ring-line-strong',
+          'lg:h-[min(880px,calc(100dvh-64px))] lg:w-[400px] lg:rounded-[44px]',
+          'lg:shadow-[0_32px_80px_-16px_rgba(22,24,28,0.3)] lg:ring-1 lg:ring-line-strong',
         )}
       >
         {children}
       </div>
+
+      {!standalone && <InstallHint />}
     </div>
   )
+}
+
+/** Quiet, dismissible, and never in the way of the app itself. */
+function InstallHint() {
+  const [dismissed, setDismissed] = React.useState(
+    () => localStorage.getItem('further.installHint') === 'dismissed',
+  )
+  const [prompt, setPrompt] = React.useState<BeforeInstallPromptEvent | null>(null)
+
+  React.useEffect(() => {
+    const onPrompt = (e: Event) => {
+      e.preventDefault()
+      setPrompt(e as BeforeInstallPromptEvent)
+    }
+    window.addEventListener('beforeinstallprompt', onPrompt)
+    return () => window.removeEventListener('beforeinstallprompt', onPrompt)
+  }, [])
+
+  if (dismissed) return null
+
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
+
+  function close() {
+    localStorage.setItem('further.installHint', 'dismissed')
+    setDismissed(true)
+  }
+
+  return (
+    <div className="gutter fixed inset-x-0 bottom-0 z-[60] pb-4 lg:static lg:mt-6 lg:pb-0">
+      <div className="mx-auto flex max-w-md items-center gap-3 rounded-[--radius-card] bg-ink px-4 py-3 text-paper shadow-[--shadow-lift] lg:max-w-[400px]">
+        <span className="min-w-0 flex-1 text-[13px] leading-[1.4]">
+          {prompt ? (
+            'Install Further for a full-screen app with no browser bars.'
+          ) : isIOS ? (
+            <>
+              Add to Home Screen from <Share size={13} className="inline align-[-2px]" /> for
+              full screen.
+            </>
+          ) : (
+            <>
+              Install from your browser menu (<Plus size={13} className="inline align-[-2px] " />{' '}
+              Add to Home Screen) for full screen.
+            </>
+          )}
+        </span>
+        {prompt ? (
+          <button
+            onClick={async () => {
+              await prompt.prompt()
+              close()
+            }}
+            className="shrink-0 rounded-[--radius-pill] bg-paper px-3 py-1.5 text-[13px] font-medium text-ink"
+          >
+            Install
+          </button>
+        ) : (
+          <button onClick={close} className="shrink-0 text-[13px] font-medium text-paper/70">
+            Got it
+          </button>
+        )}
+      </div>
+    </div>
+  )
+}
+
+interface BeforeInstallPromptEvent extends Event {
+  prompt: () => Promise<void>
 }

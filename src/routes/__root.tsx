@@ -4,17 +4,19 @@ import { Toaster } from 'sonner'
 import { BottomNav, Fab } from '@/components/app/AppShell'
 import { DeviceFrame } from '@/components/app/DeviceFrame'
 import { LogTripSheet } from '@/components/app/LogTripSheet'
+import { StartTripSheet } from '@/components/app/StartTripSheet'
 import { useStore } from '@/lib/store'
 
 export const Route = createRootRoute({ component: Shell })
 
 /** Routes that own the whole frame and carry their own way back. */
-const CHROMELESS = ['/welcome', '/insurer', '/plan']
+const CHROMELESS = ['/welcome', '/insurer', '/plan', '/track']
 
 function Shell() {
   const pathname = useRouterState({ select: (s) => s.location.pathname })
   const navigate = useNavigate()
   const onboarded = useStore((s) => s.onboarded)
+  const [adding, setAdding] = React.useState(false)
   const [logging, setLogging] = React.useState(false)
   const scroller = React.useRef<HTMLDivElement>(null)
 
@@ -38,7 +40,9 @@ function Shell() {
       </div>
 
       {!chromeless && <BottomNav />}
-      {showFab && <Fab onClick={() => setLogging(true)} />}
+      {showFab && <Fab onClick={() => setAdding(true)} />}
+
+      <StartTripSheet open={adding} onOpenChange={setAdding} onManual={() => setLogging(true)} />
 
       <LogTripSheet
         open={logging}
