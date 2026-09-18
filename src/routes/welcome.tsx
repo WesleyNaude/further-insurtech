@@ -47,8 +47,8 @@ function Welcome() {
   }
 
   return (
-    <main className="mx-auto flex h-full w-full max-w-md flex-col">
-      <div className="relative h-[38dvh] shrink-0 bg-sunken">
+    <main className="mx-auto flex w-full max-w-md flex-1 flex-col">
+      <div className="relative h-[clamp(200px,32dvh,300px)] shrink-0 bg-sunken">
         <RouteFigure
           path={corridor.path}
           corridor={corridor.path}
@@ -58,12 +58,12 @@ function Welcome() {
         <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-paper to-transparent" />
       </div>
 
-      <div className="gutter flex flex-1 flex-col pt-2">
+      <div className="gutter flex flex-1 flex-col pt-2 pb-6">
         <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-ink-faint">
           Further
         </p>
 
-        <div className="mt-8 flex-1">
+        <div className="mt-7 flex-1">
           <AnimatePresence mode="wait">
             <motion.div
               key={step}
@@ -93,7 +93,7 @@ function Welcome() {
           </AnimatePresence>
         </div>
 
-        <div className="safe-bottom pb-8">
+        <div className="safe-bottom mt-8 shrink-0">
           <div className="mb-5 flex gap-1.5">
             {STEPS.map((_, i) => (
               <span

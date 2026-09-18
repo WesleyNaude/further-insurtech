@@ -64,6 +64,7 @@ function Shell() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.14, ease: 'linear' }}
+            className="flex min-h-full flex-col"
           >
             <Outlet />
           </motion.div>
