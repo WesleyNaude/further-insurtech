@@ -51,14 +51,15 @@ function Today() {
           </p>
 
           <div className="mt-2 flex items-end gap-2">
-            <span className="tnum text-[56px] font-semibold leading-[1] tracking-[-0.03em] text-ink">
+            <span className="tnum flex items-baseline text-[60px] font-semibold leading-[0.95] tracking-[-0.035em] text-ink">
+              <span className="mr-0.5 text-[34px] font-medium tracking-[-0.02em] text-ink-muted">R</span>
               <NumberFlow
-                value={statement.reductionCents / 100}
-                format={{ style: 'currency', currency: 'ZAR', maximumFractionDigits: 0 }}
+                value={Math.round(statement.reductionCents / 100)}
+                format={{ maximumFractionDigits: 0 }}
                 locales="en-ZA"
               />
             </span>
-            <span className="mb-2 inline-flex items-center gap-1 text-[13px] text-ink-faint">
+            <span className="mb-2.5 inline-flex items-center gap-1 text-[13px] text-ink-faint">
               <Info size={13} strokeWidth={2} />
               How
             </span>
@@ -96,11 +97,11 @@ function Today() {
       </div>
 
       {/* ----------------------------------------------------------- stats */}
-      <div className="gutter mt-6 grid grid-cols-3 gap-3">
+      <div className="gutter mt-6 grid auto-rows-fr grid-cols-3 gap-3">
         <Stat
           value={Math.round(statement.avoidedKm).toLocaleString('en-ZA')}
           unit="km"
-          label="Under your rating"
+          label="Under rating"
         />
         <Stat
           value={Math.round(statement.displacedKm).toLocaleString('en-ZA')}
@@ -114,7 +115,7 @@ function Today() {
               : '0.00'
           }
           unit="R/km"
-          label="Worth to you"
+          label="Per km"
         />
       </div>
 
@@ -185,7 +186,7 @@ function Today() {
 
 function Stat({ value, unit, label }: { value: string; unit: string; label: string }) {
   return (
-    <div className="rounded-[--radius-card] bg-surface px-3 py-3 ring-1 ring-line">
+    <div className="flex h-full flex-col justify-between rounded-[--radius-card] bg-surface px-3 py-3 ring-1 ring-line">
       <p className="tnum text-[22px] font-semibold leading-none tracking-[-0.02em] text-ink">
         {value}
         <span className="ml-0.5 text-[12px] font-medium text-ink-faint">{unit}</span>

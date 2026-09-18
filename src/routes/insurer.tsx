@@ -39,7 +39,7 @@ function InsurerView() {
   ]
 
   return (
-    <main className="mx-auto min-h-dvh max-w-md pb-[96px]">
+    <main className="mx-auto w-full max-w-md pb-10">
       <TopBar
         title="What your insurer sees"
         leading={

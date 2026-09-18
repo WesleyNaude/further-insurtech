@@ -2,35 +2,42 @@ import * as React from 'react'
 import { Outlet, createRootRoute, useRouterState, useNavigate } from '@tanstack/react-router'
 import { Toaster } from 'sonner'
 import { BottomNav, Fab } from '@/components/app/AppShell'
+import { DeviceFrame } from '@/components/app/DeviceFrame'
 import { LogTripSheet } from '@/components/app/LogTripSheet'
 import { useStore } from '@/lib/store'
 
 export const Route = createRootRoute({ component: Shell })
 
-/** Routes that own the full screen and hide the chrome. */
-const FULL_BLEED = ['/trips/', '/welcome', '/insurer', '/plan']
+/** Routes that own the whole frame and carry their own way back. */
+const CHROMELESS = ['/welcome', '/insurer', '/plan']
 
 function Shell() {
   const pathname = useRouterState({ select: (s) => s.location.pathname })
   const navigate = useNavigate()
-  const [logging, setLogging] = React.useState(false)
-
   const onboarded = useStore((s) => s.onboarded)
+  const [logging, setLogging] = React.useState(false)
+  const scroller = React.useRef<HTMLDivElement>(null)
 
   React.useEffect(() => {
     if (!onboarded && pathname !== '/welcome') navigate({ to: '/welcome' })
   }, [onboarded, pathname, navigate])
 
-  const isDetail =
-    pathname === '/welcome' ||
-    (FULL_BLEED.some((p) => pathname.startsWith(p)) && pathname !== '/trips')
+  // Each screen starts at the top, the way a native push does.
+  React.useEffect(() => {
+    scroller.current?.scrollTo({ top: 0 })
+  }, [pathname])
+
+  const isTripDetail = pathname.startsWith('/trips/')
+  const chromeless = CHROMELESS.includes(pathname) || isTripDetail
   const showFab = pathname === '/' || pathname === '/trips'
 
-
   return (
-    <>
-      <Outlet />
-      {!isDetail && <BottomNav />}
+    <DeviceFrame>
+      <div ref={scroller} className="no-scrollbar relative flex-1 overflow-y-auto overscroll-contain">
+        <Outlet />
+      </div>
+
+      {!chromeless && <BottomNav />}
       {showFab && <Fab onClick={() => setLogging(true)} />}
 
       <LogTripSheet
@@ -52,6 +59,6 @@ function Shell() {
           },
         }}
       />
-    </>
+    </DeviceFrame>
   )
 }

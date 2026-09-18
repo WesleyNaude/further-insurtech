@@ -19,7 +19,7 @@ function ImpactScreen() {
   const weekly = React.useMemo(() => {
     const buckets = new Map<string, { driven: number; displaced: number }>()
     const now = new Date()
-    for (let w = 7; w >= 0; w--) {
+    for (let w = 5; w >= 0; w--) {
       const d = new Date(now)
       d.setDate(d.getDate() - w * 7)
       buckets.set(weekKey(d), { driven: 0, displaced: 0 })
@@ -32,11 +32,13 @@ function ImpactScreen() {
       if (t.mode === 'car') b.driven += km
       else if (DISPLACING_MODES.includes(t.mode)) b.displaced += km
     }
-    return [...buckets.entries()].map(([key, v]) => ({
-      week: key.slice(5),
-      driven: Math.round(v.driven),
-      displaced: Math.round(v.displaced),
-    }))
+    return [...buckets.entries()]
+      .map(([key, v]) => ({
+        week: new Date(key).toLocaleDateString('en-ZA', { day: 'numeric', month: 'short' }),
+        driven: Math.round(v.driven),
+        displaced: Math.round(v.displaced),
+      }))
+      .filter((d, i, arr) => d.driven + d.displaced > 0 || i > arr.findIndex((x) => x.driven + x.displaced > 0))
   }, [allTrips])
 
   const byMode = React.useMemo(() => {
@@ -63,7 +65,7 @@ function ImpactScreen() {
         </p>
       </div>
 
-      <Section title="Kilometres, last 8 weeks">
+      <Section title="Kilometres a week">
         <div className="gutter">
           <Card className="pb-2 pl-0 pr-2">
             <div className="h-[200px] w-full">

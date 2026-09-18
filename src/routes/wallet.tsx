@@ -29,11 +29,12 @@ function WalletScreen() {
         <p className="text-[13px] font-medium uppercase tracking-[0.08em] text-ink-faint">
           Accrued this month
         </p>
-        <p className="tnum mt-2 text-[48px] font-semibold leading-none tracking-[-0.03em]">
+        <p className="tnum mt-2 flex items-baseline text-[52px] font-semibold leading-[0.95] tracking-[-0.035em]">
+          <span className="mr-0.5 text-[30px] font-medium tracking-[-0.02em] text-ink-muted">R</span>
           <NumberFlow
             value={statement.reductionCents / 100}
-            format={{ style: 'currency', currency: 'ZAR', minimumFractionDigits: 2 }}
-            locales="en-ZA"
+            format={{ minimumFractionDigits: 2, maximumFractionDigits: 2 }}
+            locales="en-GB"
           />
         </p>
         <button

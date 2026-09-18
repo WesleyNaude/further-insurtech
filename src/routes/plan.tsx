@@ -60,7 +60,7 @@ function PlanScreen() {
   }
 
   return (
-    <main className="mx-auto min-h-dvh max-w-md pb-[96px]">
+    <main className="mx-auto w-full max-w-md pb-10">
       <TopBar
         title="Plan a trip"
         leading={

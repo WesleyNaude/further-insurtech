@@ -47,7 +47,7 @@ function Welcome() {
   }
 
   return (
-    <main className="mx-auto flex min-h-dvh max-w-md flex-col">
+    <main className="mx-auto flex h-full w-full max-w-md flex-col">
       <div className="relative h-[38dvh] shrink-0 bg-sunken">
         <RouteFigure
           path={corridor.path}

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Link, useRouterState } from '@tanstack/react-router'
 import { Home, Route as RouteIcon, Wallet, BarChart3, Settings, Plus } from 'lucide-react'
-import { motion, AnimatePresence } from 'motion/react'
+import { motion } from 'motion/react'
 import { cx } from '@/lib/cx'
 
 const TABS = [
@@ -13,56 +13,67 @@ const TABS = [
 ] as const
 
 /**
- * Translucent bars, X-style: the content scrolls under a blurred, saturated
- * layer with a single hairline. Accent is reserved for the FAB and for unread
- * state, never for chrome.
+ * Translucent bars, X-style: content scrolls under a blurred, saturated layer
+ * with a single hairline. Accent is reserved for the one primary action.
+ *
+ * Nothing here is position:fixed. Fixed elements anchor to the viewport, which
+ * breaks the moment the app is presented inside a frame on desktop. The shell
+ * owns its own scroll container and the bars sit outside it.
  */
+
+/** Detects whether the content beneath the bar has scrolled, without needing a
+ *  reference to whichever element is doing the scrolling. */
+function useScrolledPast() {
+  const sentinel = React.useRef<HTMLDivElement>(null)
+  const [past, setPast] = React.useState(false)
+
+  React.useEffect(() => {
+    const el = sentinel.current
+    if (!el) return
+    const io = new IntersectionObserver(([e]) => setPast(!e.isIntersecting), { threshold: 1 })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+
+  return { sentinel, past }
+}
+
 export function TopBar({
   title,
   subtitle,
   leading,
   trailing,
-  large = false,
 }: {
   title: string
   subtitle?: string
   leading?: React.ReactNode
   trailing?: React.ReactNode
-  large?: boolean
 }) {
-  const [scrolled, setScrolled] = React.useState(false)
-  React.useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 4)
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  const { sentinel, past } = useScrolledPast()
 
   return (
-    <header
-      className={cx(
-        'safe-top sticky top-0 z-40 transition-shadow duration-200',
-        'bg-paper/72 backdrop-blur-xl backdrop-saturate-150',
-        scrolled && 'hairline',
-      )}
-      style={{ WebkitBackdropFilter: 'blur(24px) saturate(150%)' }}
-    >
-      <div className="gutter flex h-14 items-center gap-3">
-        {leading}
-        <div className="min-w-0 flex-1">
-          <h1
-            className={cx(
-              'truncate font-semibold tracking-[-0.01em] text-ink',
-              large ? 'text-[17px]' : 'text-[17px]',
-            )}
-          >
-            {title}
-          </h1>
-          {subtitle && <p className="truncate text-[12px] text-ink-faint">{subtitle}</p>}
+    <>
+      <div ref={sentinel} className="h-px w-full" aria-hidden />
+      <header
+        className={cx(
+          'safe-top sticky top-0 z-40 -mt-px transition-shadow duration-200',
+          'bg-paper/72 backdrop-blur-xl backdrop-saturate-150',
+          past && 'hairline',
+        )}
+        style={{ WebkitBackdropFilter: 'blur(24px) saturate(150%)' }}
+      >
+        <div className="gutter flex h-14 items-center gap-3">
+          {leading}
+          <div className="min-w-0 flex-1">
+            <h1 className="truncate text-[17px] font-semibold tracking-[-0.012em] text-ink">
+              {title}
+            </h1>
+            {subtitle && <p className="truncate text-[12px] text-ink-faint">{subtitle}</p>}
+          </div>
+          {trailing}
         </div>
-        {trailing}
-      </div>
-    </header>
+      </header>
+    </>
   )
 }
 
@@ -71,7 +82,7 @@ export function BottomNav() {
 
   return (
     <nav
-      className="safe-bottom fixed inset-x-0 bottom-0 z-40 bg-paper/78 backdrop-blur-xl backdrop-saturate-150 hairline-t"
+      className="safe-bottom relative z-40 shrink-0 bg-paper/78 backdrop-blur-xl backdrop-saturate-150 hairline-t"
       style={{ WebkitBackdropFilter: 'blur(24px) saturate(150%)' }}
     >
       <ul className="mx-auto flex h-[56px] max-w-md items-stretch">
@@ -85,12 +96,7 @@ export function BottomNav() {
                 aria-current={active ? 'page' : undefined}
                 className="group relative flex h-full flex-col items-center justify-center gap-1"
               >
-                <span
-                  className={cx(
-                    'transition-colors duration-150',
-                    active ? 'text-ink' : 'text-ink-faint',
-                  )}
-                >
+                <span className={cx('transition-colors duration-150', active ? 'text-ink' : 'text-ink-faint')}>
                   <Icon size={22} strokeWidth={active ? 2.1 : 1.7} />
                 </span>
                 <span
@@ -117,7 +123,7 @@ export function BottomNav() {
   )
 }
 
-/** The one accent-coloured element on screen. */
+/** The one accent-coloured control in the product. */
 export function Fab({ onClick }: { onClick: () => void }) {
   return (
     <motion.button
@@ -125,16 +131,14 @@ export function Fab({ onClick }: { onClick: () => void }) {
       whileTap={{ scale: 0.92 }}
       transition={{ type: 'spring', stiffness: 600, damping: 30 }}
       aria-label="Log a trip"
-      className="safe-bottom fixed bottom-[72px] right-5 z-50 grid h-14 w-14 place-items-center rounded-full bg-accent text-white shadow-[--shadow-fab]"
+      className="absolute bottom-[72px] right-5 z-50 grid h-14 w-14 place-items-center rounded-full bg-accent text-white shadow-[--shadow-fab]"
     >
       <Plus size={24} strokeWidth={2.2} />
     </motion.button>
   )
 }
 
-/** Standard page scaffold: blurred bar, gutter content, room for the nav. */
+/** Page scaffold used by every screen inside the shell's scroll container. */
 export function Screen({ children }: { children: React.ReactNode }) {
-  return <main className="mx-auto min-h-dvh max-w-md pb-[96px]">{children}</main>
+  return <main className="mx-auto w-full max-w-md pb-10">{children}</main>
 }
-
-export { AnimatePresence }

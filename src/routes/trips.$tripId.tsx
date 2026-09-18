@@ -26,7 +26,7 @@ function TripDetail() {
   const trip = allTrips.find((t) => t.id === tripId)
   if (!trip) {
     return (
-      <div className="grid min-h-dvh place-items-center gutter">
+      <div className="grid h-full place-items-center gutter">
         <div className="text-center">
           <p className="text-[15px] text-ink-muted">That trip no longer exists.</p>
           <Button className="mt-4" onClick={() => navigate({ to: '/trips' })}>
@@ -45,7 +45,7 @@ function TripDetail() {
   const co2Delta = counted ? (km * (CO2_G_PER_KM.car - CO2_G_PER_KM[trip.mode])) / 1000 : 0
 
   return (
-    <main className="min-h-dvh bg-paper pb-16">
+    <main className="w-full bg-paper pb-16">
       {/* map header, full bleed */}
       <div className="relative">
         <RouteFigure
