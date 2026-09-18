@@ -156,3 +156,28 @@ describe('credential', () => {
     expect(await digest(a)).not.toBe(await digest(b))
   })
 })
+
+describe('reductionFor', () => {
+  it('matches what buildStatement produces for the same inputs', async () => {
+    const { reductionFor } = await import('./engine')
+    const s = buildStatement([trip({ mode: 'car', metres: 400_000 })], policy)
+    expect(reductionFor(s.avoidedKm, s.ratedKm)).toBeCloseTo(s.premiumReduction, 6)
+  })
+
+  it('never goes backwards as avoided kilometres rise', async () => {
+    const { reductionFor } = await import('./engine')
+    let last = -1
+    for (let km = 0; km <= 2000; km += 50) {
+      const r = reductionFor(km, 1000)
+      expect(r).toBeGreaterThanOrEqual(last)
+      last = r
+    }
+  })
+
+  it('is bounded by the ceiling and by zero', async () => {
+    const { reductionFor } = await import('./engine')
+    expect(reductionFor(-500, 1000)).toBe(0)
+    expect(reductionFor(99_999, 1000)).toBe(MAX_REDUCTION)
+    expect(reductionFor(100, 0)).toBe(0)
+  })
+})

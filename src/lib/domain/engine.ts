@@ -153,6 +153,17 @@ export function buildStatement(trips: Trip[], policy: Policy, monthFraction = 1)
   }
 }
 
+/**
+ * Premium reduction for a given number of avoided kilometres against a given
+ * rated exposure. Extracted so callers cannot accidentally recompute the rated
+ * figure without the month proration, which silently produces nonsense.
+ */
+export function reductionFor(avoidedKm: number, ratedKm: number): number {
+  if (ratedKm <= 0) return 0
+  const exposure = Math.min(1, Math.max(0, avoidedKm) / ratedKm)
+  return Math.min(MAX_REDUCTION, exposure * MILEAGE_VARIABLE_SHARE * MEMBER_SHARE)
+}
+
 /** Streak of consecutive days with at least one displacing trip. */
 export function currentStreak(trips: Trip[], now = new Date()): number {
   const days = new Set(

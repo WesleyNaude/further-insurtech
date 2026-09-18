@@ -8,6 +8,7 @@ import { Card, Section, Pill, Divider } from '@/components/ui/primitives'
 import { DerivationSheet } from '@/components/app/DerivationSheet'
 import { TripRow } from '@/components/app/TripRow'
 import { WeekStrip } from '@/components/app/WeekStrip'
+import { NextStep } from '@/components/app/NextStep'
 import { InstallHint } from '@/components/app/DeviceFrame'
 import { useStatement } from '@/lib/useStatement'
 import { useStore } from '@/lib/store'
@@ -120,6 +121,11 @@ function Today() {
         />
       </div>
 
+      {/* ------------------------------------------------------- next step */}
+      <div className="gutter mt-6">
+        <NextStep statement={statement} policy={policy} daysLeft={daysLeftInMonth()} />
+      </div>
+
       {/* ------------------------------------------------------ commitment */}
       {openCommitment && (
         <Section title="Planned">
@@ -182,6 +188,12 @@ function Today() {
       <DerivationSheet open={sheet} onOpenChange={setSheet} statement={statement} />
     </Screen>
   )
+}
+
+/** Days remaining in the current month, today included. */
+function daysLeftInMonth(now = new Date()) {
+  const end = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate()
+  return end - now.getDate() + 1
 }
 
 function Stat({ value, unit, label }: { value: string; unit: string; label: string }) {
