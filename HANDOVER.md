@@ -92,7 +92,7 @@ Three things in that discussion were right and were being talked past.
 | **Track** (`+` button) | Real on-device recording: Geolocation, Wake Lock, Vibration, live corridor matching |
 | **Plan** | Operator's own off-peak fare against what driving costs, and a pre-commitment |
 | **Wallet** | How you take the money, and a shareable statement image |
-| **Impact** | Kilometres first. Carbon present, labelled, and priced nowhere |
+| **Impact** | Kilometres first, carbon labelled and priced nowhere, and your record: every verified journey drawn where it actually happened, layered so repeated routes burn brighter. Tap Replay to watch it build |
 | **Record** | The portable credential with a SHA-256 integrity digest |
 | **Insurer** | The exact six-number payload, beside the far longer list of what is withheld |
 | **Cover** | What cover could cost on measured travel. An indication, never a quotation |
@@ -102,6 +102,46 @@ trip": it feeds synthetic fixes through the *same* corridor matcher and
 classifier, and always saves as probable, never verified.
 
 ---
+
+## On animation and creative technology
+
+You asked me to push this, so here is where I spent it and why each piece earns
+its place rather than decorating.
+
+- **The journey scrubber** on a trip. The evidence list *asserts* a trip was
+  verified; this lets you *check* it. Drag along the speed profile and you see
+  the speed the phone measured at that moment, how far the path sat from the
+  published alignment, and a marker moving along the route, against the same
+  220 m tolerance the verifier applies. It is the one place where the
+  interaction is the argument: a fabricated trip cannot survive being looked at
+  this closely.
+- **Your record**, a generative canvas figure made of your own corridors,
+  accumulating over months. This is the progression mechanic you were reaching
+  for with the mascot, built out of the evidence instead of next to it.
+- **The ceiling ring**, because a ring reads as a share of a fixed whole, which
+  is what a capped reduction is. It fires one small celebration a month and
+  never again.
+- **Depth-aware transitions.** Switching tabs cross-fades; opening a detail
+  rises, the way a push does.
+- **The condensed header.** Scroll past the headline figure and it slides into
+  the bar, so the number the screen is about is never off screen.
+- **Haptics** on real state changes only, gated on a genuine gesture so the
+  console stays clean.
+
+Everything respects `prefers-reduced-motion`, which Motion's JS animations do
+*not* get from the CSS rule and had to be wired explicitly.
+
+### On the mascot, honestly
+
+I did not build one, and I would push back on it. This app's whole asset is
+credibility with two sceptical audiences: a member deciding whether to trust a
+money figure, and an insurer deciding whether to trust an evidence chain. A
+growing creature signals *game*, and games are things you beat. Your own session
+named verification as the biggest weak point; a character sitting beside the
+evidence chain quietly undermines the one thing you cannot afford to have
+doubted. Duolingo gets an owl because nobody audits your Spanish. Vitality has
+no mascot either, it has tiers and cash back. If you still want one after
+reading that, it is a contained addition and I will build it.
 
 ## Decisions I made without you
 
@@ -147,10 +187,11 @@ state, so the first-run experience is demonstrable rather than theoretical.
 
 ## Numbers
 
-44 tests pass. TypeScript clean, with unused-symbol checking on. Initial bundle
+49 tests pass. TypeScript clean, with unused-symbol checking on. Initial bundle
 403 kB (127 kB gzipped), routes code-split. Eleven unused dependencies removed.
-Every text and accent pairing passes WCAG AA in both themes, and every control
-has a 44px hit area.
+Every text and accent pairing passes WCAG AA in both themes, every control has a
+44px hit area, and the trips list renders progressively: 932 DOM nodes instead of
+5,329, which matters on the mid-range Android this product is actually for.
 
 **One thing I could not verify myself.** The service worker registers in a real
 browser but not in the preview pane I was working in, which sandboxes it. The
