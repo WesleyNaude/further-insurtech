@@ -67,6 +67,7 @@ function Track() {
       metres: Math.round(reading.metres),
       corridorId: reading.corridor?.id ?? 'adhoc',
       path: reading.points,
+      samples: reading.samples,
       verification: verification as Trip['verification'],
       evidence: [
         {

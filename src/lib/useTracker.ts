@@ -2,7 +2,7 @@ import * as React from 'react'
 import { haversine, pathLength, distanceToPath, classifyFromSpeeds } from './geo'
 import { CORRIDORS } from './domain/corridors'
 import { tap as tapBuzz, confirm as confirmBuzz } from './haptics'
-import type { Corridor } from './domain/types'
+import type { Corridor, Sample } from './domain/types'
 
 export type TrackerState = 'idle' | 'locating' | 'tracking' | 'denied' | 'unsupported'
 export type TrackerSource = 'device' | 'simulated'
@@ -11,6 +11,8 @@ export interface TrackerReading {
   points: [number, number][]
   metres: number
   speedsMs: number[]
+  /** Per-point measurements, aligned to `points`, for the journey scrubber. */
+  samples: Sample[]
   accuracy: number | null
   startedAt: number | null
   /** Best-matching published corridor, if the path stays inside the tolerance. */
@@ -22,6 +24,7 @@ const EMPTY: TrackerReading = {
   points: [],
   metres: 0,
   speedsMs: [],
+  samples: [],
   accuracy: null,
   startedAt: null,
   corridor: null,
@@ -123,10 +126,22 @@ export function useTracker() {
 
         if (corridor && !r.corridor) buzz([10, 40, 10])
 
+        // Deviation is measured against whichever alignment currently matches,
+        // so the scrubber shows the same geometry the verifier used.
+        const against = corridor ?? r.corridor
+        const samples: Sample[] = [
+          ...r.samples,
+          {
+            speedKmh: Math.round(Math.max(0, (speed ?? 0) * 3.6) * 10) / 10,
+            deviationM: against ? Math.round(distanceToPath(pt, against.path)) : 0,
+          },
+        ]
+
         return {
           ...r,
           points,
           speedsMs,
+          samples,
           metres: pathLength(points),
           accuracy: accuracy ?? r.accuracy,
           corridor,

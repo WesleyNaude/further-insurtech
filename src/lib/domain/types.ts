@@ -10,6 +10,13 @@ export interface Evidence {
   passed: boolean
 }
 
+export interface Sample {
+  /** Speed at this point, km/h. */
+  speedKmh: number
+  /** Distance from the published alignment at this point, metres. */
+  deviationM: number
+}
+
 export interface Trip {
   id: string
   startedAt: string
@@ -25,6 +32,11 @@ export interface Trip {
   evidence: Evidence[]
   /** Cents credited for this trip. Zero for car trips. */
   creditedCents: number
+  /**
+   * Per-point measurements, aligned to `path`. Optional because a trip logged by
+   * hand has no samples: it was never measured, and we do not invent them.
+   */
+  samples?: Sample[]
   /** True when this trip fulfilled a pre-commitment made on the Plan screen. */
   fromCommitment?: boolean
 }

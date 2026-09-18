@@ -66,6 +66,17 @@ constant in it is surfaced in the UI (Settings → The constants we apply).
 Money is integer cents throughout. Any figure in the app that represents money
 opens the full derivation chain.
 
+## Scrub the journey
+
+The trip screen does not just assert that a trip was verified, it lets you check.
+Drag along the speed profile and you see the speed the phone measured at that
+moment, how far the path sat from the published alignment, and a marker moving
+along the route. A point-by-point band underneath shows the deviation against the
+220 m tolerance the verifier actually applies.
+
+It is the one place where the interaction is the argument. A fabricated trip
+cannot survive being looked at this closely.
+
 ## The evidence threshold
 
 Nothing is paid until **seven distinct days** have been measured. Without that

@@ -69,6 +69,7 @@ export function RouteFigure({
   animate = true,
   showBand = true,
   compact = false,
+  markerAt = null,
 }: {
   path: Pt[]
   corridor?: Pt[]
@@ -77,6 +78,8 @@ export function RouteFigure({
   animate?: boolean
   showBand?: boolean
   compact?: boolean
+  /** 0 to 1 along the trip, or null. Drives the scrubber's position marker. */
+  markerAt?: number | null
 }) {
   const reduced = useReducedMotion()
   const animated = animate && !reduced
@@ -192,6 +195,29 @@ export function RouteFigure({
               style={{ transformOrigin: `${x}px ${y}px` }}
             />
           ))}
+
+        {/* the scrubber's position, interpolated between the two nearest points */}
+        {markerAt !== null && tripPts.length > 1 && (() => {
+          const t = Math.min(1, Math.max(0, markerAt)) * (tripPts.length - 1)
+          const a = tripPts[Math.floor(t)]
+          const b = tripPts[Math.min(tripPts.length - 1, Math.ceil(t))]
+          const f = t - Math.floor(t)
+          const mx = a[0] + (b[0] - a[0]) * f
+          const my = a[1] + (b[1] - a[1]) * f
+          return (
+            <g>
+              <circle cx={mx} cy={my} r={13} fill={stroke} opacity={0.16} />
+              <circle
+                cx={mx}
+                cy={my}
+                r={5.5}
+                fill={stroke}
+                stroke="var(--color-surface)"
+                strokeWidth={2.5}
+              />
+            </g>
+          )
+        })()}
 
         {/* endpoints */}
         {[tripPts[0], tripPts[tripPts.length - 1]].map(([x, y], i) => (

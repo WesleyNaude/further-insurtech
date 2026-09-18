@@ -1,4 +1,5 @@
-import type { Trip, Policy, Mode, Evidence, Commitment } from './types'
+import type { Trip, Policy, Mode, Evidence, Commitment, Sample } from './types'
+import { distanceToPath } from '../geo'
 import { CORRIDORS, corridorById } from './corridors'
 
 /** Deterministic PRNG so the demo is identical on every load. */
@@ -37,6 +38,36 @@ const evidenceFor = (mode: Mode, corridorName: string, verified: boolean): Evide
     base.push({ kind: 'fare-tap', label: 'Fare tap', detail: verified ? 'Matched a card tap within 90 seconds of boarding' : 'No tap found, corridor evidence only', passed: verified })
   }
   return base
+}
+
+/**
+ * Plausible per-point measurements for a seeded trip.
+ *
+ * Speeds follow the mode's real profile: a train holds a high cruise between
+ * short station stops, a taxi is stop-start, a car sits in traffic. Deviation is
+ * measured honestly against the published alignment, from the jittered path we
+ * actually generated, so the scrubber shows real geometry rather than a curve
+ * someone drew.
+ */
+function samplesFor(
+  mode: Mode,
+  path: [number, number][],
+  alignment: [number, number][],
+  rnd: () => number,
+): Sample[] {
+  const cruise =
+    mode === 'train' ? 72 : mode === 'bus' ? 44 : mode === 'taxi' ? 48 : mode === 'car' ? 56 : mode === 'cycle' ? 17 : 4.5
+  const stopEvery = mode === 'train' ? 3 : mode === 'bus' || mode === 'taxi' ? 2 : 0
+
+  return path.map((p, i) => {
+    const atStop = stopEvery > 0 && i > 0 && i % stopEvery === 0
+    const traffic = mode === 'car' ? 0.45 + rnd() * 0.75 : 0.85 + rnd() * 0.3
+    const speedKmh = i === 0 || i === path.length - 1 ? 0 : atStop ? cruise * 0.15 : cruise * traffic
+    return {
+      speedKmh: Math.round(speedKmh * 10) / 10,
+      deviationM: Math.round(distanceToPath(p, alignment)),
+    }
+  })
 }
 
 function jitter(path: [number, number][], rnd: () => number): [number, number][] {
@@ -91,6 +122,7 @@ export function seedTrips(now = new Date()): Trip[] {
         path,
         verification: verification as Trip['verification'],
         evidence: evidenceFor(mode, corridor.name, verification === 'verified'),
+        samples: samplesFor(mode, path, corridor.path, rnd),
         creditedCents: 0, // assigned by the engine at read time, never stored stale
       })
     }

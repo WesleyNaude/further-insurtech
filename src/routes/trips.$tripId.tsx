@@ -4,6 +4,7 @@ import { ChevronLeft, Check, X, PencilLine } from 'lucide-react'
 import { motion } from 'motion/react'
 import { toast } from 'sonner'
 import { RouteFigure } from '@/components/app/RouteFigure'
+import { JourneyScrubber } from '@/components/app/JourneyScrubber'
 import { VerificationMark } from '@/components/app/TripRow'
 import { ModeIcon, MODE_LABEL } from '@/components/app/icons'
 import { Button, Divider, Pill } from '@/components/ui/primitives'
@@ -23,6 +24,7 @@ function TripDetail() {
   const { allTrips, monthTrips, statement } = useStatement()
   const reclassify = useStore((s) => s.reclassify)
   const [editing, setEditing] = React.useState(false)
+  const [markerAt, setMarkerAt] = React.useState<number | null>(null)
 
   const trip = allTrips.find((t) => t.id === tripId)
   if (!trip) {
@@ -54,6 +56,7 @@ function TripDetail() {
           corridor={corridor?.path}
           className="h-[42dvh] w-full bg-sunken"
           tone={trip.mode === 'car' ? 'car' : 'accent'}
+          markerAt={markerAt}
         />
 
         <div className="pointer-events-none absolute inset-x-0 bottom-8 flex justify-between px-5">
@@ -114,6 +117,17 @@ function TripDetail() {
               muted
             />
           </dl>
+
+          {/* the interactive part: check the claim rather than take it on trust */}
+          {trip.samples && trip.samples.length > 3 && (
+            <div className="mt-8">
+              <JourneyScrubber
+                samples={trip.samples}
+                tone={trip.mode === 'car' ? 'car' : 'accent'}
+                onChange={setMarkerAt}
+              />
+            </div>
+          )}
 
           {/* verification */}
           <div className="mt-8 flex items-center justify-between">

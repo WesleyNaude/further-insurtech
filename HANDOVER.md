@@ -88,7 +88,7 @@ Three things in that discussion were right and were being talked past.
 |---|---|
 | **Today** | Money taken back, ring to the 30% ceiling, week strip, the one next action worth taking |
 | **Trips** | Every trip, filterable, with its verification state visible |
-| **Trip detail** | The corridor drawn against the published alignment, plus the full evidence chain |
+| **Trip detail** | The corridor against the published alignment, the full evidence chain, and a scrubber: drag the journey to see measured speed and deviation at any point, with a marker tracking the route |
 | **Track** (`+` button) | Real on-device recording: Geolocation, Wake Lock, Vibration, live corridor matching |
 | **Plan** | Operator's own off-peak fare against what driving costs, and a pre-commitment |
 | **Wallet** | How you take the money, and a shareable statement image |
