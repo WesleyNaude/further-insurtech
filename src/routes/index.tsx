@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import NumberFlow from '@number-flow/react'
-import { motion } from 'motion/react'
 import { ChevronRight, Info, Flame, CalendarCheck2 } from 'lucide-react'
 import { TopBar, Screen } from '@/components/app/AppShell'
 import { Card, Section, Pill, Divider } from '@/components/ui/primitives'

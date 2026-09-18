@@ -1,4 +1,3 @@
-import * as React from 'react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { motion } from 'motion/react'
 import NumberFlow from '@number-flow/react'

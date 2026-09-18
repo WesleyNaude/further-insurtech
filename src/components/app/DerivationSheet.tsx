@@ -1,4 +1,3 @@
-import * as React from 'react'
 import { Drawer } from 'vaul'
 import { X } from 'lucide-react'
 import type { Statement } from '@/lib/domain/engine'
