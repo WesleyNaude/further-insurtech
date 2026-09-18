@@ -2,16 +2,33 @@ import * as React from 'react'
 import { Outlet, createRootRoute, useRouterState, useNavigate } from '@tanstack/react-router'
 import { Toaster } from 'sonner'
 import { motion, AnimatePresence } from 'motion/react'
-import { BottomNav, Fab } from '@/components/app/AppShell'
+import { BottomNav, Fab, OfflineBar } from '@/components/app/AppShell'
 import { DeviceFrame } from '@/components/app/DeviceFrame'
 import { LogTripSheet } from '@/components/app/LogTripSheet'
 import { StartTripSheet } from '@/components/app/StartTripSheet'
 import { useStore } from '@/lib/store'
 
-export const Route = createRootRoute({ component: Shell })
+export const Route = createRootRoute({ component: Shell, notFoundComponent: NotFound })
 
 /** Routes that own the whole frame and carry their own way back. */
-const CHROMELESS = ['/welcome', '/insurer', '/plan', '/track', '/record']
+const CHROMELESS = ['/welcome', '/insurer', '/plan', '/track', '/record', '/cover']
+
+function NotFound() {
+  const navigate = useNavigate()
+  return (
+    <div className="grid h-full place-items-center px-5 text-center">
+      <div>
+        <p className="text-[15px] text-ink-muted">That screen does not exist.</p>
+        <button
+          onClick={() => navigate({ to: '/' })}
+          className="mt-4 inline-flex h-11 items-center rounded-[--radius-pill] bg-sunken px-4 text-[15px] font-medium text-ink"
+        >
+          Back to today
+        </button>
+      </div>
+    </div>
+  )
+}
 
 function Shell() {
   const pathname = useRouterState({ select: (s) => s.location.pathname })
@@ -36,6 +53,7 @@ function Shell() {
 
   return (
     <DeviceFrame>
+      <OfflineBar />
       <div ref={scroller} className="no-scrollbar relative flex-1 overflow-y-auto overscroll-contain">
         {/* A short cross-fade only. Anything more slides the blurred bars and
             reads as lag rather than polish. */}

@@ -55,6 +55,11 @@ function TripDetail() {
           tone={trip.mode === 'car' ? 'car' : 'accent'}
         />
 
+        <div className="pointer-events-none absolute inset-x-0 bottom-8 flex justify-between px-5">
+          <Endpoint label={trip.fromName} />
+          <Endpoint label={trip.toName} />
+        </div>
+
         <button
           onClick={() => navigate({ to: '/trips' })}
           aria-label="Back"
@@ -193,6 +198,14 @@ function TripDetail() {
         </div>
       </div>
     </main>
+  )
+}
+
+function Endpoint({ label }: { label: string }) {
+  return (
+    <span className="rounded-[--radius-pill] bg-paper/85 px-2.5 py-1 text-[11px] font-medium text-ink backdrop-blur-md">
+      {label}
+    </span>
   )
 }
 

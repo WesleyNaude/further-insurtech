@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CoverRouteImport } from './routes/cover'
 import { Route as ImpactRouteImport } from './routes/impact'
 import { Route as InsurerRouteImport } from './routes/insurer'
 import { Route as PlanRouteImport } from './routes/plan'
@@ -24,6 +25,11 @@ import { Route as TripsTripIdRouteImport } from './routes/trips.$tripId'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoverRoute = CoverRouteImport.update({
+  id: '/cover',
+  path: '/cover',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ImpactRoute = ImpactRouteImport.update({
@@ -79,6 +85,7 @@ const TripsTripIdRoute = TripsTripIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/cover': typeof CoverRoute
   '/impact': typeof ImpactRoute
   '/insurer': typeof InsurerRoute
   '/plan': typeof PlanRoute
@@ -92,6 +99,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/cover': typeof CoverRoute
   '/impact': typeof ImpactRoute
   '/insurer': typeof InsurerRoute
   '/plan': typeof PlanRoute
@@ -106,6 +114,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/cover': typeof CoverRoute
   '/impact': typeof ImpactRoute
   '/insurer': typeof InsurerRoute
   '/plan': typeof PlanRoute
@@ -121,6 +130,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/cover'
     | '/impact'
     | '/insurer'
     | '/plan'
@@ -134,6 +144,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/cover'
     | '/impact'
     | '/insurer'
     | '/plan'
@@ -147,6 +158,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/cover'
     | '/impact'
     | '/insurer'
     | '/plan'
@@ -161,6 +173,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CoverRoute: typeof CoverRoute
   ImpactRoute: typeof ImpactRoute
   InsurerRoute: typeof InsurerRoute
   PlanRoute: typeof PlanRoute
@@ -179,6 +192,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cover': {
+      id: '/cover'
+      path: '/cover'
+      fullPath: '/cover'
+      preLoaderRoute: typeof CoverRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/impact': {
@@ -266,6 +286,7 @@ const TripsRouteWithChildren = TripsRoute._addFileChildren(TripsRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CoverRoute: CoverRoute,
   ImpactRoute: ImpactRoute,
   InsurerRoute: InsurerRoute,
   PlanRoute: PlanRoute,

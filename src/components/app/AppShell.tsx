@@ -138,6 +138,31 @@ export function Fab({ onClick }: { onClick: () => void }) {
   )
 }
 
+/** The app works offline by design, so the only honest message is that figures
+ *  are current as of the last sync, not that something is broken. */
+export function OfflineBar() {
+  const [offline, setOffline] = React.useState(() => !navigator.onLine)
+
+  React.useEffect(() => {
+    const on = () => setOffline(false)
+    const off = () => setOffline(true)
+    window.addEventListener('online', on)
+    window.addEventListener('offline', off)
+    return () => {
+      window.removeEventListener('online', on)
+      window.removeEventListener('offline', off)
+    }
+  }, [])
+
+  if (!offline) return null
+
+  return (
+    <div className="shrink-0 bg-ink px-5 py-2 text-center text-[12px] font-medium text-paper">
+      Offline. Trips are still recorded on this device.
+    </div>
+  )
+}
+
 /** Page scaffold used by every screen inside the shell's scroll container. */
 export function Screen({ children }: { children: React.ReactNode }) {
   return <main className="mx-auto w-full max-w-md pb-10">{children}</main>
