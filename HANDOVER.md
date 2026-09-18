@@ -65,6 +65,28 @@ Three defensible pieces, in order of strength:
 
 ---
 
+## The second thing you need to know
+
+Late in the night I found the fact that most changes the pitch.
+
+**Allstate's subsidiary Arity built driving behaviour data on 45 million+ people
+and sold it to insurers. LexisNexis runs a Telematics Exchange doing the same.**
+So the market is not hypothetical: carriers buy third-party exposure data at
+enormous scale, and you should lead with that rather than arguing it.
+
+**And on 13 January 2025 the Texas Attorney General sued Allstate and Arity**, in
+the first state action ever brought under a comprehensive privacy law. The
+complaint says Arity paid app developers to embed a tracking SDK, choosing apps
+that already used location so the collection would not be obvious. The state
+wants up to $10,000 per violation and the data destroyed.
+
+That is the whole pitch in two paragraphs. The market is proven; the way it is
+currently supplied is being dismantled in court because nobody consented. Further
+is the same business with the consent inverted: the member opts in, is paid, sees
+the exact payload, and owns the record.
+
+Say "sued", not "found liable". The case had not concluded when I wrote this.
+
 ## What I mined from your transcript
 
 Three things in that discussion were right and were being talked past.

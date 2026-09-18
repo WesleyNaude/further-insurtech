@@ -173,6 +173,38 @@ legitimacy in that sector than we will ever have. Partner, do not compete.
 
 ---
 
+## 10b. "Selling driving data to insurers is already a business, and it is in trouble"
+
+This is the most important section in this document. Read it before section 4.
+
+| Claim | Figure | Source |
+|---|---|---|
+| Allstate's subsidiary **Arity** built what it called the world's largest driving behaviour database | **45 million+** consumers, trillions of miles | Texas AG, Jan 2025 |
+| **LexisNexis Telematics Exchange / Telematics OnDemand** sells normalised driving behaviour to carriers for quoting and underwriting | Live product, draws from automakers, mobile apps and third parties | LexisNexis Risk Solutions |
+| Texas AG sued Allstate and Arity | **13 January 2025**, the first state AG action under a comprehensive state privacy law | Texas Office of the Attorney General |
+| How the data was gathered | Arity **paid app developers** to embed an SDK, reportedly targeting apps that already used location (Life360, Fuel Rewards, Routely) so that collection would not be obvious | Texas AG complaint |
+| Remedies sought | Up to **$10,000 per violation** and **destruction** of the data | Same |
+
+**What this proves, in both directions.**
+
+It proves the market. A major insurer built an entire subsidiary to collect
+driving behaviour and sell it to carriers, at a scale of tens of millions of
+people. Nobody has to be convinced that insurers buy this.
+
+And it proves the opening. That supply chain was built on collection people did
+not know about, and it is now being unwound in court under a privacy statute.
+The asset was the data; the liability is how it was obtained.
+
+Further is the same product with the consent inverted: the member opts in, is
+paid, can read the exact payload, and owns the record. That is not a nice
+feature bolted on. After January 2025 it is the only version of this business
+that is financeable.
+
+**Caveat.** The Texas case had not concluded as of this writing. Say "sued", not
+"found liable", and do not describe the outcome.
+
+---
+
 ## 11. What in the demo is invented
 
 If you demo the app, know which numbers on screen are sourced and which are

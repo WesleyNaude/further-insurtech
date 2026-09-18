@@ -72,6 +72,30 @@ that has not started.
 
 ---
 
+## The market already exists, and its supply chain is a liability
+
+Before the three things that are ours, the thing that proves there is a business
+here at all.
+
+Allstate's subsidiary **Arity** assembled driving behaviour on **more than 45
+million people** and sold it to insurers. **LexisNexis** runs a Telematics
+Exchange doing the same for quoting and underwriting. Nobody needs convincing
+that carriers buy third-party exposure data. They buy it at enormous scale.
+
+Then, on **13 January 2025**, the Texas Attorney General sued Allstate and Arity
+in the first state action ever brought under a comprehensive privacy statute. The
+complaint alleges Arity paid app developers to embed a tracking SDK, targeting
+apps that already used location so that the collection would not be obvious. The
+state is seeking up to $10,000 per violation and the destruction of the data.
+
+So the market is proven and the incumbent way of supplying it is being taken
+apart in court. The asset was the data; the liability was how it was obtained.
+
+**Further is that same business with the consent inverted.** The member opts in,
+is paid for it, can read the exact payload on a screen in the app, and owns the
+record. That is not a feature we added to be nice. After January 2025 it is the
+only version of this business anyone should want to fund.
+
 ## The three things that are actually ours
 
 **1. We underwrite the person's travel, not the customer's car.**
