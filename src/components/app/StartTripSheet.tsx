@@ -74,7 +74,7 @@ export function StartTripSheet({
                   className={cx(
                     'grid h-10 w-10 shrink-0 place-items-center rounded-full',
                     tone === 'accent'
-                      ? 'bg-accent text-white'
+                      ? 'bg-accent text-on-accent'
                       : 'bg-sunken text-ink-muted',
                   )}
                 >

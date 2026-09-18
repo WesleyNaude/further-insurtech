@@ -136,7 +136,7 @@ export function Fab({ onClick }: { onClick: () => void }) {
       whileTap={{ scale: 0.92 }}
       transition={{ type: 'spring', stiffness: 600, damping: 30 }}
       aria-label="Log a trip"
-      className="absolute bottom-[72px] right-5 z-50 grid h-14 w-14 place-items-center rounded-full bg-accent text-white shadow-[--shadow-fab]"
+      className="absolute bottom-[72px] right-5 z-50 grid h-14 w-14 place-items-center rounded-full bg-accent text-on-accent shadow-[--shadow-fab]"
     >
       <Plus size={24} strokeWidth={2.2} />
     </motion.button>

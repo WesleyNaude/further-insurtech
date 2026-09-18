@@ -64,7 +64,7 @@ function Card({ title, body }: { title: string; body: string }) {
       to="/plan"
       className="flex items-start gap-3 rounded-[--radius-card] bg-accent-soft p-4 transition-opacity active:opacity-80"
     >
-      <span className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-full bg-accent text-white">
+      <span className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-full bg-accent text-on-accent">
         <Target size={17} strokeWidth={2} />
       </span>
       <span className="min-w-0 flex-1">
