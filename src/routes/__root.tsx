@@ -8,7 +8,7 @@ import {
 } from '@tanstack/react-router'
 import { Toaster } from 'sonner'
 import { motion, AnimatePresence } from 'motion/react'
-import { BottomNav, Fab, OfflineBar } from '@/components/app/AppShell'
+import { BottomNav, Fab, OfflineBar, HeroScopeProvider } from '@/components/app/AppShell'
 import { DeviceFrame } from '@/components/app/DeviceFrame'
 import { LogTripSheet } from '@/components/app/LogTripSheet'
 import { StartTripSheet } from '@/components/app/StartTripSheet'
@@ -102,7 +102,9 @@ function Shell() {
             transition={{ duration: 0.14, ease: 'linear' }}
             className="flex min-h-full flex-col"
           >
-            <Outlet />
+            <HeroScopeProvider>
+              <Outlet />
+            </HeroScopeProvider>
           </motion.div>
         </AnimatePresence>
       </div>

@@ -2,7 +2,7 @@ import * as React from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import NumberFlow from '@number-flow/react'
 import { ChevronRight, Info, Flame, CalendarCheck2 } from 'lucide-react'
-import { TopBar, Screen } from '@/components/app/AppShell'
+import { TopBar, Screen, HeroEnd } from '@/components/app/AppShell'
 import { Card, Section, Pill, Divider } from '@/components/ui/primitives'
 import { DerivationSheet } from '@/components/app/DerivationSheet'
 import { TripRow } from '@/components/app/TripRow'
@@ -32,6 +32,16 @@ function Today() {
     <Screen>
       <TopBar
         title="Further"
+        condensed={
+          statement.hasEnoughEvidence ? (
+            <p className="tnum flex items-baseline gap-2">
+              <span className="text-[17px] font-semibold tracking-[-0.01em] text-ink">
+                {formatRand(statement.reductionCents)}
+              </span>
+              <span className="text-[12px] text-ink-faint">back this month</span>
+            </p>
+          ) : undefined
+        }
         trailing={
           streak > 0 ? (
             <Pill tone="accent">
@@ -89,6 +99,8 @@ function Today() {
         </div>
 
       </div>
+
+      <HeroEnd />
 
       {/* ------------------------------------------------------- week strip */}
       <div className="gutter mt-7">

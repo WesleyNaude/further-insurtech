@@ -2,7 +2,7 @@ import * as React from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import NumberFlow from '@number-flow/react'
 import { Info, ArrowDownToLine, Fuel } from 'lucide-react'
-import { TopBar, Screen } from '@/components/app/AppShell'
+import { TopBar, Screen, HeroEnd } from '@/components/app/AppShell'
 import { Card, Section, Button, Divider } from '@/components/ui/primitives'
 import { DerivationSheet } from '@/components/app/DerivationSheet'
 import { useStatement } from '@/lib/useStatement'
@@ -31,7 +31,17 @@ function WalletScreen() {
 
   return (
     <Screen>
-      <TopBar title="Wallet" />
+      <TopBar
+        title="Wallet"
+        condensed={
+          <p className="tnum flex items-baseline gap-2">
+            <span className="text-[17px] font-semibold tracking-[-0.01em] text-ink">
+              {formatRand(statement.reductionCents)}
+            </span>
+            <span className="text-[12px] text-ink-faint">taken back</span>
+          </p>
+        }
+      />
 
       <div className="gutter pt-4">
         <p className="text-[13px] font-medium uppercase tracking-[0.08em] text-ink-faint">
@@ -53,6 +63,8 @@ function WalletScreen() {
           How this is worked out
         </button>
       </div>
+
+      <HeroEnd />
 
       <Section title="How you take it">
         <div className="gutter space-y-3">

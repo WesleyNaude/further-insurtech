@@ -22,6 +22,43 @@ const TABS = [
  * owns its own scroll container and the bars sit outside it.
  */
 
+/**
+ * Tracks whether a page's headline figure has scrolled away.
+ *
+ * A page marks the end of its hero with <HeroEnd />; the bar then swaps its
+ * title for a condensed version of that figure, so the number the screen is
+ * about is never off screen. Pages without a hero simply never set it.
+ */
+const HeroScope = React.createContext<{
+  past: boolean
+  set: (v: boolean) => void
+}>({ past: false, set: () => {} })
+
+export function HeroScopeProvider({ children }: { children: React.ReactNode }) {
+  const [past, setPast] = React.useState(false)
+  const value = React.useMemo(() => ({ past, set: setPast }), [past])
+  return <HeroScope.Provider value={value}>{children}</HeroScope.Provider>
+}
+
+/** Placed directly after a page's hero. */
+export function HeroEnd() {
+  const { set } = React.useContext(HeroScope)
+  const ref = React.useRef<HTMLDivElement>(null)
+
+  React.useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const io = new IntersectionObserver(([e]) => set(!e.isIntersecting), { threshold: 0 })
+    io.observe(el)
+    return () => {
+      io.disconnect()
+      set(false)
+    }
+  }, [set])
+
+  return <div ref={ref} className="h-px w-full" aria-hidden />
+}
+
 /** Detects whether the content beneath the bar has scrolled, without needing a
  *  reference to whichever element is doing the scrolling. */
 function useScrolledPast() {
@@ -44,13 +81,19 @@ export function TopBar({
   subtitle,
   leading,
   trailing,
+  condensed,
 }: {
   title: string
   subtitle?: string
   leading?: React.ReactNode
   trailing?: React.ReactNode
+  /** Swaps in once the page's headline figure has scrolled away, so the number
+   *  the screen is about is never off screen. */
+  condensed?: React.ReactNode
 }) {
   const { sentinel, past } = useScrolledPast()
+  const hero = React.useContext(HeroScope)
+  const showCondensed = Boolean(condensed) && hero.past
 
   return (
     <>
@@ -65,11 +108,28 @@ export function TopBar({
       >
         <div className="gutter flex h-14 items-center gap-3">
           {leading}
-          <div className="min-w-0 flex-1">
-            <h1 className="truncate text-[17px] font-semibold tracking-[-0.012em] text-ink">
-              {title}
-            </h1>
-            {subtitle && <p className="truncate text-[12px] text-ink-faint">{subtitle}</p>}
+          <div className="relative min-w-0 flex-1">
+            <motion.div
+              animate={{ opacity: showCondensed ? 0 : 1, y: showCondensed ? -6 : 0 }}
+              transition={{ duration: 0.18, ease: [0.32, 0.72, 0, 1] }}
+            >
+              <h1 className="truncate text-[17px] font-semibold tracking-[-0.012em] text-ink">
+                {title}
+              </h1>
+              {subtitle && <p className="truncate text-[12px] text-ink-faint">{subtitle}</p>}
+            </motion.div>
+
+            {condensed && (
+              <motion.div
+                aria-hidden={!showCondensed}
+                initial={false}
+                animate={{ opacity: showCondensed ? 1 : 0, y: showCondensed ? 0 : 6 }}
+                transition={{ duration: 0.18, ease: [0.32, 0.72, 0, 1] }}
+                className="pointer-events-none absolute inset-0 flex items-center"
+              >
+                {condensed}
+              </motion.div>
+            )}
           </div>
           {trailing}
         </div>
