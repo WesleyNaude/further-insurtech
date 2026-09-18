@@ -104,7 +104,7 @@ function Track() {
   const denied = state === 'denied' || state === 'unsupported'
 
   return (
-    <main className="flex h-full w-full flex-col bg-paper">
+    <main className="flex w-full flex-1 flex-col bg-paper">
       <div className="gutter safe-top flex h-14 shrink-0 items-center justify-between">
         <span className="inline-flex items-center gap-2 text-[15px] font-semibold tracking-[-0.01em]">
           {state === 'tracking' ? (
@@ -167,12 +167,12 @@ function Track() {
               <RouteFigure
                 path={reading.points}
                 corridor={reading.corridor?.path}
-                className="h-full w-full bg-sunken"
+                className="absolute inset-0 bg-sunken"
                 animate={false}
                 tone={counts ? 'accent' : 'muted'}
               />
             ) : (
-              <div className="grid h-full place-items-center bg-sunken">
+              <div className="absolute inset-0 grid place-items-center bg-sunken">
                 <div className="text-center">
                   <motion.span
                     animate={{ scale: [1, 1.12, 1], opacity: [0.5, 1, 0.5] }}

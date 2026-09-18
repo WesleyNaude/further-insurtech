@@ -27,7 +27,7 @@ function TripDetail() {
   const trip = allTrips.find((t) => t.id === tripId)
   if (!trip) {
     return (
-      <div className="grid h-full place-items-center gutter">
+      <div className="grid flex-1 place-items-center gutter">
         <div className="text-center">
           <p className="text-[15px] text-ink-muted">That trip no longer exists.</p>
           <Button className="mt-4" onClick={() => navigate({ to: '/trips' })}>

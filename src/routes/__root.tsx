@@ -27,7 +27,7 @@ const CHROMELESS = ['/welcome', '/insurer', '/plan', '/track', '/record', '/cove
  *  data. Everything lives in local storage, so recovery is a reload. */
 function AppError({ error }: ErrorComponentProps) {
   return (
-    <div className="grid h-full place-items-center px-6 text-center">
+    <div className="grid flex-1 place-items-center px-6 text-center">
       <div className="max-w-[34ch]">
         <h1 className="text-[20px] font-semibold tracking-[-0.02em] text-ink">
           Something broke
@@ -52,7 +52,7 @@ function AppError({ error }: ErrorComponentProps) {
 function NotFound() {
   const navigate = useNavigate()
   return (
-    <div className="grid h-full place-items-center px-5 text-center">
+    <div className="grid flex-1 place-items-center px-5 text-center">
       <div>
         <p className="text-[15px] text-ink-muted">That screen does not exist.</p>
         <button
