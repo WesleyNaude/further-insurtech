@@ -151,6 +151,8 @@ export function Row({
 }
 
 /* -------------------------------------------------------------- Divider */
+/** A block element already fills its parent, so no width is set here: adding
+ *  w-full alongside an inset margin overflows by exactly the inset. */
 export const Divider = ({ className }: { className?: string }) => (
-  <div className={cx('h-px w-full bg-line', className)} />
+  <div className={cx('h-px bg-line', className)} />
 )

@@ -14,7 +14,7 @@ function mulberry(seed: number) {
 
 export const POLICY: Policy = {
   insurer: 'Cornerstone Insure',
-  product: 'Comprehensive, Vitality-linked',
+  product: 'Comprehensive, behaviour-linked',
   basePremiumCents: 189_000, // R1,890 a month
   ratedAnnualKm: 22_000,
   vehicle: '2019 VW Polo 1.0 TSI',

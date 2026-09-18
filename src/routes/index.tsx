@@ -9,11 +9,11 @@ import { DerivationSheet } from '@/components/app/DerivationSheet'
 import { TripRow } from '@/components/app/TripRow'
 import { WeekStrip } from '@/components/app/WeekStrip'
 import { NextStep } from '@/components/app/NextStep'
+import { CeilingRing } from '@/components/app/CeilingRing'
 import { InstallHint } from '@/components/app/DeviceFrame'
 import { useStatement } from '@/lib/useStatement'
 import { useStore } from '@/lib/store'
 import { formatRand } from '@/lib/domain/money'
-import { MAX_REDUCTION } from '@/lib/domain/engine'
 import { corridorById } from '@/lib/domain/corridors'
 import { MODE_LABEL } from '@/components/app/icons'
 
@@ -26,7 +26,6 @@ function Today() {
 
   const openCommitment = commitments.find((c) => c.status === 'open')
   const recent = monthTrips.slice(0, 4)
-  const progress = Math.min(1, statement.premiumReduction / MAX_REDUCTION)
 
   const monthName = new Date().toLocaleDateString('en-ZA', { month: 'long' })
 
@@ -46,9 +45,10 @@ function Today() {
 
       {/* ------------------------------------------------------------ hero */}
       <div className="gutter pb-2 pt-4">
-        <button onClick={() => setSheet(true)} className="block w-full text-left">
+        <div className="flex items-start justify-between gap-4">
+        <button onClick={() => setSheet(true)} className="min-w-0 flex-1 text-left">
           <p className="text-[13px] font-medium uppercase tracking-[0.08em] text-ink-faint">
-            Back in your pocket, {monthName}
+            Back in your pocket
           </p>
 
           <div className="mt-2 flex items-end gap-2">
@@ -67,8 +67,8 @@ function Today() {
           </div>
 
           <p className="mt-2 text-[14px] leading-[1.5] text-ink-muted">
-            You pay {formatRand(policy.basePremiumCents)} a month. So far this month you have
-            taken{' '}
+            You pay {formatRand(policy.basePremiumCents)} a month. So far in {monthName} you
+            have taken{' '}
             <span className="font-medium text-ink">
               {formatRand(statement.reductionCents)}
             </span>{' '}
@@ -76,21 +76,9 @@ function Today() {
           </p>
         </button>
 
-        {/* progress to the ceiling */}
-        <div className="mt-5">
-          <div className="h-1.5 w-full overflow-hidden rounded-full bg-sunken">
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: `${progress * 100}%` }}
-              transition={{ duration: 0.9, ease: [0.32, 0.72, 0, 1] }}
-              className="h-full rounded-full bg-accent"
-            />
-          </div>
-          <div className="mt-2 flex items-center justify-between text-[12px] text-ink-faint">
-            <span className="tnum">{Math.round(statement.premiumReduction * 100)}% reduction</span>
-            <span className="tnum">{Math.round(MAX_REDUCTION * 100)}% ceiling</span>
-          </div>
+          <CeilingRing reduction={statement.premiumReduction} size={116} stroke={8} />
         </div>
+
       </div>
 
       {/* ------------------------------------------------------- week strip */}
