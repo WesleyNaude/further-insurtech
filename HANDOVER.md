@@ -15,9 +15,11 @@ Four things, in the order worth going through:
 1. **PITCH.md** — the case, the competitors, and the honest risks. Read this first.
 2. **EVIDENCE.md** — every external figure, its source, and where it is soft.
    Organised by the question an investor is likely to ask.
-3. **The deck** — 15 slides, separate from the app, at
+3. **The deck** — 16 slides, separate from the app, at
    **https://claude.ai/artifact/QPVwjPpr6zT7wPdWWSFVXa**
    Speaker notes on every slide say what to land and what not to over-claim.
+   One slide is built from real screenshots of the running app, recapturable
+   with `npm run shots` so it can never drift from the product.
 4. **README.md** and **BRIEF.md** — how the thing works, and what I set out to do.
 
 ---
