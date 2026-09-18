@@ -46,6 +46,7 @@ function PlanScreen() {
 
   const km = corridor.metres / 1000
   const fare = corridor.fares[slot.band]
+  const offPeakSaving = corridor.fares.peak - corridor.fares.offPeak
   const drivingCost = Math.round(km * DRIVING_COST_C_PER_KM)
   const earn = Math.round(km * statement.centsPerVerifiedKm)
   const net = drivingCost - fare + earn
@@ -181,6 +182,13 @@ function PlanScreen() {
             </span>
             <span className="tnum text-[15px] text-ink">{formatRand(fare, { decimals: true })}</span>
           </div>
+          {slot.band === 'offPeak' && (
+            <p className="mt-1.5 text-[12px] leading-[1.5] text-accent">
+              {formatRand(offPeakSaving, { decimals: true })} cheaper than the same trip at peak.
+              The operator prices it lower because the bus or train is running either way and
+              those seats are empty.
+            </p>
+          )}
           <div className="mt-3 flex items-center justify-between">
             <span className="text-[14px] text-ink-muted">You earn back</span>
             <span className="tnum text-[15px] text-accent">
