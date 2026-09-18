@@ -133,8 +133,16 @@ classifier, and always saves as probable, never verified.
 
 ## Numbers
 
-22 tests pass. TypeScript clean. Initial bundle 401 kB (126 kB gzipped), routes
-code-split. Installable to the home screen and runs offline.
+44 tests pass. TypeScript clean, with unused-symbol checking on. Initial bundle
+403 kB (127 kB gzipped), routes code-split. Eleven unused dependencies removed.
+Every text and accent pairing passes WCAG AA in both themes, and every control
+has a 44px hit area.
+
+**One thing I could not verify myself.** The service worker registers in a real
+browser but not in the preview pane I was working in, which sandboxes it. The
+file is served correctly (`/sw.js`, 200, `text/javascript`), so "Add to Home
+Screen" should work when you open it in Chrome or Safari. Worth a ten-second
+check before you demo it installed.
 
 ## What I would do next
 

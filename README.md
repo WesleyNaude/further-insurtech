@@ -88,8 +88,12 @@ reducer and is always saved as probable, never verified.
 
 ## Stack
 
-React 19, TanStack Router, Tailwind v4, Zustand (persisted), Motion, Recharts,
-Vaul, Sonner, vite-plugin-pwa. Installable to the home screen; runs offline.
+React 19, TanStack Router (file-based, code-split), Tailwind v4, Zustand
+(persisted), Motion, Vaul, Sonner, NumberFlow, vite-plugin-pwa. Installable to
+the home screen; runs offline. 44 tests under Vitest.
+
+No charting library and no map library: both were replaced by drawings sized to
+the one job they do here, which removed about 1.6 MB from the bundle.
 
 Routes are computed and drawn as SVG rather than rendered on a tiled basemap. A
 street map answers "where is this", which the member already knows. The figure
