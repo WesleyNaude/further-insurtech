@@ -10,11 +10,15 @@ Then open **http://localhost:5173**. No keys, no backend, no sign-in. Dark by
 default, as you asked. Settings has a light/dark/system switch and a "Reset demo
 data" button.
 
-Three documents, in the order worth reading:
+Four things, in the order worth going through:
 
 1. **PITCH.md** — the case, the competitors, and the honest risks. Read this first.
-2. **BRIEF.md** — what I set out to build overnight and why.
-3. **README.md** — how the thing works, and what it does not claim.
+2. **EVIDENCE.md** — every external figure, its source, and where it is soft.
+   Organised by the question an investor is likely to ask.
+3. **The deck** — 15 slides, separate from the app, at
+   **https://claude.ai/artifact/QPVwjPpr6zT7wPdWWSFVXa**
+   Speaker notes on every slide say what to land and what not to over-claim.
+4. **README.md** and **BRIEF.md** — how the thing works, and what I set out to do.
 
 ---
 
