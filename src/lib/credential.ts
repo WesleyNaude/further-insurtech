@@ -1,6 +1,7 @@
 import type { Statement } from './domain/engine'
 import type { Trip, Policy } from './domain/types'
 import { DISPLACING_MODES } from './domain/engine'
+import { localDateKey as localDate } from './date'
 
 /**
  * A portable mileage record.
@@ -34,12 +35,6 @@ export interface Credential {
     corridorsUsed: string[]
   }
   issuedAt: string
-}
-
-/** Local calendar date. toISOString() would shift SAST back into the previous day. */
-function localDate(d: Date): string {
-  const pad = (n: number) => String(n).padStart(2, '0')
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`
 }
 
 export function buildCredential(

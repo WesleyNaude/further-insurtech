@@ -3,6 +3,7 @@ import { motion } from 'motion/react'
 import type { Trip } from '@/lib/domain/types'
 import { DISPLACING_MODES } from '@/lib/domain/engine'
 import { cx } from '@/lib/cx'
+import { localDateKey } from '@/lib/date'
 
 type DayState = 'displaced' | 'drove' | 'none' | 'future'
 
@@ -18,8 +19,10 @@ export function WeekStrip({ trips }: { trips: Trip[] }) {
     for (let i = 6; i >= 0; i--) {
       const d = new Date(now)
       d.setDate(d.getDate() - i)
-      const key = d.toISOString().slice(0, 10)
-      const onDay = trips.filter((t) => t.startedAt.slice(0, 10) === key && t.verification !== 'unverified')
+      const key = localDateKey(d)
+      const onDay = trips.filter(
+        (t) => localDateKey(new Date(t.startedAt)) === key && t.verification !== 'unverified',
+      )
 
       const displaced = onDay.some((t) => DISPLACING_MODES.includes(t.mode) || t.mode === 'walk' || t.mode === 'cycle')
       const drove = onDay.some((t) => t.mode === 'car')

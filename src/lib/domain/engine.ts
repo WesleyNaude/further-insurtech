@@ -1,4 +1,5 @@
 import type { Trip, Policy, Mode } from './types'
+import { localDateKey } from '../date'
 import type { Cents } from './money'
 
 /**
@@ -169,13 +170,13 @@ export function currentStreak(trips: Trip[], now = new Date()): number {
   const days = new Set(
     trips
       .filter((t) => DISPLACING_MODES.includes(t.mode) && t.verification !== 'unverified')
-      .map((t) => t.startedAt.slice(0, 10)),
+      .map((t) => localDateKey(new Date(t.startedAt))),
   )
   let streak = 0
   const cursor = new Date(now)
   // Today only counts if it has a trip; otherwise start from yesterday.
-  if (!days.has(cursor.toISOString().slice(0, 10))) cursor.setDate(cursor.getDate() - 1)
-  while (days.has(cursor.toISOString().slice(0, 10))) {
+  if (!days.has(localDateKey(cursor))) cursor.setDate(cursor.getDate() - 1)
+  while (days.has(localDateKey(cursor))) {
     streak += 1
     cursor.setDate(cursor.getDate() - 1)
   }

@@ -1,6 +1,8 @@
 import * as React from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import { BarChart } from '@/components/app/BarChart'
+import { TravelRecord } from '@/components/app/TravelRecord'
+import { weekKey } from '@/lib/date'
 import { TopBar, Screen } from '@/components/app/AppShell'
 import { Card, Section } from '@/components/ui/primitives'
 import { useStatement } from '@/lib/useStatement'
@@ -32,7 +34,7 @@ function ImpactScreen() {
     }
     return [...buckets.entries()]
       .map(([key, v]) => ({
-        week: new Date(key).toLocaleDateString('en-ZA', { day: 'numeric', month: 'short' }),
+        week: new Date(`${key}T00:00:00`).toLocaleDateString('en-ZA', { day: 'numeric', month: 'short' }),
         driven: Math.round(v.driven),
         displaced: Math.round(v.displaced),
       }))
@@ -62,6 +64,12 @@ function ImpactScreen() {
           consequence of driving less, reported for interest.
         </p>
       </div>
+
+      <Section title="Your record">
+        <div className="gutter">
+          <TravelRecord trips={allTrips} />
+        </div>
+      </Section>
 
       <Section title="Kilometres a week">
         <div className="gutter">
@@ -127,8 +135,4 @@ function ImpactScreen() {
   )
 }
 
-function weekKey(d: Date) {
-  const c = new Date(d)
-  c.setDate(c.getDate() - ((c.getDay() + 6) % 7)) // Monday
-  return c.toISOString().slice(0, 10)
-}
+

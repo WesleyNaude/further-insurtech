@@ -181,3 +181,21 @@ describe('reductionFor', () => {
     expect(reductionFor(100, 0)).toBe(0)
   })
 })
+
+describe('local date keys', () => {
+  it('does not shift a post-midnight local time into the previous day', async () => {
+    const { localDateKey, weekKey } = await import('../date')
+    // 00:30 on 18 September local. toISOString() would report the 17th in SAST.
+    const justAfterMidnight = new Date(2026, 8, 18, 0, 30)
+    expect(localDateKey(justAfterMidnight)).toBe('2026-09-18')
+    // Friday 18 September 2026 belongs to the week beginning Monday the 14th.
+    expect(weekKey(justAfterMidnight)).toBe('2026-09-14')
+  })
+
+  it('buckets a trip and a bucket seed created at different times together', async () => {
+    const { weekKey } = await import('../date')
+    const tripAtMidday = new Date(2026, 8, 16, 12, 0)
+    const seedAfterMidnight = new Date(2026, 8, 18, 0, 5)
+    expect(weekKey(tripAtMidday)).toBe(weekKey(seedAfterMidnight))
+  })
+})
