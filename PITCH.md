@@ -2,6 +2,9 @@
 
 *Written overnight, 18–19 September 2026. Read this before the app.*
 
+*Sources, figures and their caveats are in **EVIDENCE.md**, organised by the
+question an investor is likely to ask.*
+
 ---
 
 ## The short version

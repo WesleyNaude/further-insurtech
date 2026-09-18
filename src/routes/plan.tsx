@@ -196,8 +196,10 @@ function PlanScreen() {
           </div>
           <p className="mt-3 text-[12px] leading-[1.5] text-ink-faint">
             Driving cost uses {(DRIVING_COST_C_PER_KM / 100).toFixed(2)} R/km for fuel, tyres and
-            servicing on your {useStore.getState().policy.vehicle}. Fares are the operator&rsquo;s
-            published prices.
+            servicing on your {useStore.getState().policy.vehicle}. That deliberately excludes
+            depreciation, licensing and insurance: the AA and SARS all-in rates are R4.95 to R6 a
+            kilometre, so the comparison here understates the case for not driving. Fares are the
+            operator&rsquo;s published prices.
           </p>
         </Card>
 
