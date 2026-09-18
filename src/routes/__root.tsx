@@ -10,7 +10,7 @@ import { useStore } from '@/lib/store'
 export const Route = createRootRoute({ component: Shell })
 
 /** Routes that own the whole frame and carry their own way back. */
-const CHROMELESS = ['/welcome', '/insurer', '/plan', '/track']
+const CHROMELESS = ['/welcome', '/insurer', '/plan', '/track', '/record']
 
 function Shell() {
   const pathname = useRouterState({ select: (s) => s.location.pathname })

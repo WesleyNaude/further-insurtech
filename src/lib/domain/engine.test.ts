@@ -129,3 +129,30 @@ describe('currentStreak', () => {
     expect(currentStreak(trips, now)).toBe(2)
   })
 })
+
+describe('credential', () => {
+  it('uses local calendar dates, not UTC-shifted ones', async () => {
+    const { buildCredential } = await import('../credential')
+    // 1 September, just after midnight in SAST, is still 31 August in UTC.
+    const now = new Date(2026, 8, 18, 1, 30)
+    const c = buildCredential([], buildStatement([], policy), policy, now)
+    expect(c.period.from).toBe('2026-09-01')
+    expect(c.period.to).toBe('2026-09-18')
+  })
+
+  it('produces a stable digest for identical records', async () => {
+    const { buildCredential, digest } = await import('../credential')
+    const now = new Date(2026, 8, 18, 12, 0)
+    const a = buildCredential([], buildStatement([], policy), policy, now)
+    const b = buildCredential([], buildStatement([], policy), policy, now)
+    expect(await digest(a)).toBe(await digest(b))
+  })
+
+  it('changes the digest when a figure changes', async () => {
+    const { buildCredential, digest } = await import('../credential')
+    const now = new Date(2026, 8, 18, 12, 0)
+    const a = buildCredential([], buildStatement([], policy), policy, now)
+    const b = { ...a, exposure: { ...a.exposure, drivenKm: a.exposure.drivenKm + 1 } }
+    expect(await digest(a)).not.toBe(await digest(b))
+  })
+})

@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ImpactRouteImport } from './routes/impact'
 import { Route as InsurerRouteImport } from './routes/insurer'
 import { Route as PlanRouteImport } from './routes/plan'
+import { Route as RecordRouteImport } from './routes/record'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as TrackRouteImport } from './routes/track'
 import { Route as TripsRouteImport } from './routes/trips'
@@ -38,6 +39,11 @@ const InsurerRoute = InsurerRouteImport.update({
 const PlanRoute = PlanRouteImport.update({
   id: '/plan',
   path: '/plan',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RecordRoute = RecordRouteImport.update({
+  id: '/record',
+  path: '/record',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SettingsRoute = SettingsRouteImport.update({
@@ -76,6 +82,7 @@ export interface FileRoutesByFullPath {
   '/impact': typeof ImpactRoute
   '/insurer': typeof InsurerRoute
   '/plan': typeof PlanRoute
+  '/record': typeof RecordRoute
   '/settings': typeof SettingsRoute
   '/track': typeof TrackRoute
   '/trips': typeof TripsRouteWithChildren
@@ -88,6 +95,7 @@ export interface FileRoutesByTo {
   '/impact': typeof ImpactRoute
   '/insurer': typeof InsurerRoute
   '/plan': typeof PlanRoute
+  '/record': typeof RecordRoute
   '/settings': typeof SettingsRoute
   '/track': typeof TrackRoute
   '/trips': typeof TripsRouteWithChildren
@@ -101,6 +109,7 @@ export interface FileRoutesById {
   '/impact': typeof ImpactRoute
   '/insurer': typeof InsurerRoute
   '/plan': typeof PlanRoute
+  '/record': typeof RecordRoute
   '/settings': typeof SettingsRoute
   '/track': typeof TrackRoute
   '/trips': typeof TripsRouteWithChildren
@@ -115,6 +124,7 @@ export interface FileRouteTypes {
     | '/impact'
     | '/insurer'
     | '/plan'
+    | '/record'
     | '/settings'
     | '/track'
     | '/trips'
@@ -127,6 +137,7 @@ export interface FileRouteTypes {
     | '/impact'
     | '/insurer'
     | '/plan'
+    | '/record'
     | '/settings'
     | '/track'
     | '/trips'
@@ -139,6 +150,7 @@ export interface FileRouteTypes {
     | '/impact'
     | '/insurer'
     | '/plan'
+    | '/record'
     | '/settings'
     | '/track'
     | '/trips'
@@ -152,6 +164,7 @@ export interface RootRouteChildren {
   ImpactRoute: typeof ImpactRoute
   InsurerRoute: typeof InsurerRoute
   PlanRoute: typeof PlanRoute
+  RecordRoute: typeof RecordRoute
   SettingsRoute: typeof SettingsRoute
   TrackRoute: typeof TrackRoute
   TripsRoute: typeof TripsRouteWithChildren
@@ -187,6 +200,13 @@ declare module '@tanstack/react-router' {
       path: '/plan'
       fullPath: '/plan'
       preLoaderRoute: typeof PlanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/record': {
+      id: '/record'
+      path: '/record'
+      fullPath: '/record'
+      preLoaderRoute: typeof RecordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/settings': {
@@ -249,6 +269,7 @@ const rootRouteChildren: RootRouteChildren = {
   ImpactRoute: ImpactRoute,
   InsurerRoute: InsurerRoute,
   PlanRoute: PlanRoute,
+  RecordRoute: RecordRoute,
   SettingsRoute: SettingsRoute,
   TrackRoute: TrackRoute,
   TripsRoute: TripsRouteWithChildren,

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { ChevronRight, ShieldCheck, Car, RotateCcw, MapPin, Eye, Sun, Moon, SunMoon } from 'lucide-react'
+import { ChevronRight, ShieldCheck, Car, RotateCcw, MapPin, Eye, Sun, Moon, SunMoon, FileBadge } from 'lucide-react'
 import { useTheme, type Theme } from '@/lib/theme'
 import { cx } from '@/lib/cx'
 import { toast } from 'sonner'
@@ -77,6 +77,18 @@ function SettingsScreen() {
 
       <Section title="Privacy">
         <div className="gutter space-y-3">
+          <Link to="/record">
+            <Card className="flex items-center gap-3">
+              <span className="grid h-10 w-10 place-items-center rounded-full bg-sunken text-ink-muted">
+                <FileBadge size={18} strokeWidth={1.75} />
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="text-[15px] font-medium">Your mileage record</p>
+                <p className="text-[13px] text-ink-muted">Portable proof, take it to any insurer</p>
+              </div>
+              <ChevronRight size={18} strokeWidth={2} className="text-ink-faint" />
+            </Card>
+          </Link>
           <Link to="/insurer">
             <Card className="flex items-center gap-3">
               <span className="grid h-10 w-10 place-items-center rounded-full bg-sunken text-ink-muted">
