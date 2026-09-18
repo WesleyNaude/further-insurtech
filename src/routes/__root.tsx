@@ -84,6 +84,8 @@ function Shell() {
   }, [pathname])
 
   const isTripDetail = pathname.startsWith('/trips/')
+  /** A screen pushed on top of a tab, rather than another tab beside it. */
+  const deep = isTripDetail || CHROMELESS.includes(pathname)
   const chromeless = CHROMELESS.includes(pathname) || isTripDetail
   const showFab = pathname === '/' || pathname === '/trips'
 
@@ -91,15 +93,22 @@ function Shell() {
     <DeviceFrame>
       <OfflineBar />
       <div ref={scroller} className="no-scrollbar relative flex-1 overflow-y-auto overscroll-contain">
-        {/* A short cross-fade only. Anything more slides the blurred bars and
-            reads as lag rather than polish. */}
+        {/*
+          Two different movements, because two different things are happening.
+          Switching tabs is lateral: a short cross-fade, because anything more
+          reads as lag. Opening a detail is a push into depth, so it rises.
+        */}
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={pathname}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.14, ease: 'linear' }}
+            initial={deep ? { opacity: 0, y: 14 } : { opacity: 0 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={deep ? { opacity: 0, y: 8 } : { opacity: 0 }}
+            transition={
+              deep
+                ? { duration: 0.26, ease: [0.32, 0.72, 0, 1] }
+                : { duration: 0.14, ease: 'linear' }
+            }
             className="flex min-h-full flex-col"
           >
             <HeroScopeProvider>
