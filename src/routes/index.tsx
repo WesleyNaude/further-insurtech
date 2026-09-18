@@ -9,6 +9,7 @@ import { DerivationSheet } from '@/components/app/DerivationSheet'
 import { TripRow } from '@/components/app/TripRow'
 import { WeekStrip } from '@/components/app/WeekStrip'
 import { LiveTrip } from '@/components/app/LiveTrip'
+import { InstallHint } from '@/components/app/DeviceFrame'
 import { useStatement } from '@/lib/useStatement'
 import { useStore } from '@/lib/store'
 import { formatRand } from '@/lib/domain/money'
@@ -173,6 +174,10 @@ function Today() {
           ))}
         </div>
       </Section>
+
+      <div className="mt-8 lg:hidden">
+        <InstallHint inline />
+      </div>
 
       <p className="gutter mt-6 text-[12px] leading-[1.5] text-ink-faint">
         Figures update as trips are verified. Nothing here offsets emissions or constitutes a

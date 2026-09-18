@@ -170,8 +170,10 @@ export function RouteFigure({
           transition={{ duration: 1.4, ease: [0.32, 0.72, 0, 1] }}
         />
 
-        {/* intermediate stops */}
+        {/* Intermediate stops. Only drawn when the points are sparse enough to
+            mean something; a dense GPS trace would read as a string of beads. */}
         {!compact &&
+          tripPts.length <= 14 &&
           tripPts.slice(1, -1).map(([x, y], i) => (
             <motion.circle
               key={i}

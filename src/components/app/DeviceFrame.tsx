@@ -42,13 +42,17 @@ export function DeviceFrame({ children }: { children: React.ReactNode }) {
         {children}
       </div>
 
-      {!standalone && <InstallHint />}
+      {!standalone && (
+        <div className="hidden lg:block">
+          <InstallHint />
+        </div>
+      )}
     </div>
   )
 }
 
 /** Quiet, dismissible, and never in the way of the app itself. */
-function InstallHint() {
+export function InstallHint({ inline = false }: { inline?: boolean } = {}) {
   const [dismissed, setDismissed] = React.useState(
     () => localStorage.getItem('further.installHint') === 'dismissed',
   )
@@ -73,8 +77,8 @@ function InstallHint() {
   }
 
   return (
-    <div className="gutter fixed inset-x-0 bottom-0 z-[60] pb-4 lg:static lg:mt-6 lg:pb-0">
-      <div className="mx-auto flex max-w-md items-center gap-3 rounded-[--radius-card] bg-ink px-4 py-3 text-paper shadow-[--shadow-lift] lg:max-w-[400px]">
+    <div className={cx(inline ? 'gutter' : 'gutter mt-6')}>
+      <div className="mx-auto flex max-w-[400px] items-center gap-3 rounded-[--radius-card] bg-ink px-4 py-3 text-paper shadow-[--shadow-card]">
         <span className="min-w-0 flex-1 text-[13px] leading-[1.4]">
           {prompt ? (
             'Install Further for a full-screen app with no browser bars.'

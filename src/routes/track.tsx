@@ -26,7 +26,7 @@ export const Route = createFileRoute('/track')({ component: Track })
  */
 function Track() {
   const navigate = useNavigate()
-  const { state, reading, classification, start, stop } = useTracker()
+  const { state, source, reading, classification, start, startSimulated, stop } = useTracker()
   const { statement } = useStatement()
   const addTrip = useStore((s) => s.addTrip)
 
@@ -55,11 +55,8 @@ function Track() {
       return
     }
 
-    const verification = reading.corridor
-      ? counts
-        ? 'verified'
-        : 'probable'
-      : 'probable'
+    const verification =
+      source === 'simulated' ? 'probable' : reading.corridor && counts ? 'verified' : 'probable'
 
     const trip: Trip = {
       id: `t_track_${Date.now()}`,
@@ -88,9 +85,12 @@ function Track() {
         },
         {
           kind: 'self',
-          label: 'Recorded on this device',
-          detail: `${reading.points.length} fixes, best accuracy ${Math.round(reading.accuracy ?? 0)} m. Nothing left the phone.`,
-          passed: true,
+          label: source === 'simulated' ? 'Simulated journey' : 'Recorded on this device',
+          detail:
+            source === 'simulated'
+              ? `${reading.points.length} synthetic fixes, matched and classified by the live pipeline. Clearly marked, never counted as evidence of a real trip.`
+              : `${reading.points.length} fixes, best accuracy ${Math.round(reading.accuracy ?? 0)} m. Nothing left the phone.`,
+          passed: source !== 'simulated',
         },
       ],
       creditedCents: 0,
@@ -123,6 +123,7 @@ function Track() {
           ) : (
             'Live trip'
           )}
+          {source === 'simulated' && <Pill className="ml-1">simulated</Pill>}
         </span>
         <button
           onClick={() => {
@@ -148,7 +149,14 @@ function Track() {
             Further measures trips on the device itself, so without location there is nothing to
             measure. You can still log trips by hand, which count at probable rather than verified.
           </p>
-          <Button className="mt-6" onClick={() => navigate({ to: '/' })}>
+          <Button variant="accent" size="lg" className="mt-6 w-full max-w-[280px]" onClick={() => startSimulated()}>
+            Run a simulated trip
+          </Button>
+          <p className="mt-2 max-w-[34ch] text-[12px] leading-[1.5] text-ink-faint">
+            A synthetic journey fed through exactly the same corridor matching and
+            classification as a real one. Nothing is faked downstream.
+          </p>
+          <Button variant="ghost" className="mt-4" onClick={() => navigate({ to: '/' })}>
             Back to today
           </Button>
         </div>
@@ -239,7 +247,9 @@ function Track() {
               End trip
             </Button>
             <p className="mt-2 text-center text-[12px] text-ink-faint">
-              Recorded on this device. No location is sent anywhere.
+              {source === 'simulated'
+                ? 'Simulated journey. It will be saved as probable, never verified.'
+                : 'Recorded on this device. No location is sent anywhere.'}
             </p>
           </div>
         </>
