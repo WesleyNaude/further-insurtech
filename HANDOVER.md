@@ -187,7 +187,7 @@ state, so the first-run experience is demonstrable rather than theoretical.
 
 ## Numbers
 
-49 tests pass. TypeScript clean, with unused-symbol checking on. Initial bundle
+56 tests pass. TypeScript clean, with unused-symbol checking on. Initial bundle
 403 kB (127 kB gzipped), routes code-split. Eleven unused dependencies removed.
 Every text and accent pairing passes WCAG AA in both themes, every control has a
 44px hit area, and the trips list renders progressively: 932 DOM nodes instead of
