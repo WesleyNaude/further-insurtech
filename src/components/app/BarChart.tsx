@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { motion } from 'motion/react'
+import { motion, useReducedMotion } from 'motion/react'
 import { cx } from '@/lib/cx'
 
 export interface Series {
@@ -35,6 +35,7 @@ export function BarChart({
   className?: string
 }) {
   const [active, setActive] = React.useState<number | null>(null)
+  const reduced = useReducedMotion()
 
   const max = Math.max(
     1,
@@ -94,9 +95,13 @@ export function BarChart({
                   return (
                     <motion.span
                       key={s.key}
-                      initial={{ height: 0 }}
+                      initial={reduced ? false : { height: 0 }}
                       animate={{ height: `${(v / top) * 100}%` }}
-                      transition={{ type: 'spring', stiffness: 260, damping: 30, delay: i * 0.035 }}
+                      transition={
+                        reduced
+                          ? { duration: 0 }
+                          : { type: 'spring', stiffness: 260, damping: 30, delay: i * 0.035 }
+                      }
                       className="w-full max-w-[14px] rounded-t-[3px]"
                       style={{
                         background: s.colour,

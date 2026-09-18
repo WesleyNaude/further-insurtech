@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { motion } from 'motion/react'
+import { motion, useReducedMotion } from 'motion/react'
 import { cx } from '@/lib/cx'
 
 /**
@@ -78,6 +78,9 @@ export function RouteFigure({
   showBand?: boolean
   compact?: boolean
 }) {
+  const reduced = useReducedMotion()
+  const animated = animate && !reduced
+
   const W = 400
   const H = compact ? 120 : 300
   const pad = compact ? 16 : 34
@@ -165,9 +168,9 @@ export function RouteFigure({
           strokeWidth={compact ? 2.5 : 3.6}
           strokeLinecap="round"
           strokeLinejoin="round"
-          initial={animate ? { pathLength: 0 } : false}
+          initial={animated ? { pathLength: 0 } : false}
           animate={{ pathLength: 1 }}
-          transition={{ duration: 1.4, ease: [0.32, 0.72, 0, 1] }}
+          transition={{ duration: animated ? 1.4 : 0, ease: [0.32, 0.72, 0, 1] }}
         />
 
         {/* Intermediate stops. Only drawn when the points are sparse enough to
@@ -183,9 +186,9 @@ export function RouteFigure({
               fill="var(--color-surface)"
               stroke={stroke}
               strokeWidth={1.6}
-              initial={animate ? { scale: 0, opacity: 0 } : false}
+              initial={animated ? { scale: 0, opacity: 0 } : false}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.5 + i * 0.07, type: 'spring', stiffness: 400, damping: 22 }}
+              transition={animated ? { delay: 0.5 + i * 0.07, type: 'spring', stiffness: 400, damping: 22 } : { duration: 0 }}
               style={{ transformOrigin: `${x}px ${y}px` }}
             />
           ))}
@@ -200,9 +203,9 @@ export function RouteFigure({
               fill="var(--color-surface)"
               stroke={stroke}
               strokeWidth={compact ? 2 : 2.6}
-              initial={animate ? { scale: 0 } : false}
+              initial={animated ? { scale: 0 } : false}
               animate={{ scale: 1 }}
-              transition={{ delay: i === 0 ? 0.1 : 1.2, type: 'spring', stiffness: 380, damping: 20 }}
+              transition={animated ? { delay: i === 0 ? 0.1 : 1.2, type: 'spring', stiffness: 380, damping: 20 } : { duration: 0 }}
               style={{ transformOrigin: `${x}px ${y}px` }}
             />
             {i === 1 && (
@@ -211,9 +214,9 @@ export function RouteFigure({
                 cy={y}
                 r={compact ? 2 : 2.8}
                 fill={stroke}
-                initial={animate ? { scale: 0 } : false}
+                initial={animated ? { scale: 0 } : false}
                 animate={{ scale: 1 }}
-                transition={{ delay: 1.3, type: 'spring', stiffness: 380, damping: 20 }}
+                transition={animated ? { delay: 1.3, type: 'spring', stiffness: 380, damping: 20 } : { duration: 0 }}
                 style={{ transformOrigin: `${x}px ${y}px` }}
               />
             )}

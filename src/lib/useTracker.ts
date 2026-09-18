@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { haversine, pathLength, distanceToPath, classifyFromSpeeds } from './geo'
 import { CORRIDORS } from './domain/corridors'
+import { tap as tapBuzz, confirm as confirmBuzz } from './haptics'
 import type { Corridor } from './domain/types'
 
 export type TrackerState = 'idle' | 'locating' | 'tracking' | 'denied' | 'unsupported'
@@ -46,11 +47,8 @@ export function useTracker() {
   const wakeLock = React.useRef<WakeLockSentinel | null>(null)
 
   const buzz = React.useCallback((pattern: number | number[]) => {
-    try {
-      navigator.vibrate?.(pattern)
-    } catch {
-      /* not supported, and not important */
-    }
+    if (Array.isArray(pattern)) confirmBuzz()
+    else tapBuzz()
   }, [])
 
   const stop = React.useCallback(() => {

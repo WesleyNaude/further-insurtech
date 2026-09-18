@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { motion } from 'motion/react'
+import { motion, useReducedMotion } from 'motion/react'
 import { buildStatement } from '@/lib/domain/engine'
 import type { Trip, Policy } from '@/lib/domain/types'
 import { formatRand } from '@/lib/domain/money'
@@ -63,6 +63,7 @@ export function MonthHistory({
   policy: Policy
   months?: number
 }) {
+  const reduced = useReducedMotion()
   const rows = React.useMemo(
     () => monthlyStatements(trips, policy, months),
     [trips, policy, months],
@@ -78,9 +79,11 @@ export function MonthHistory({
           className={cx('relative px-4 py-3', i > 0 && 'border-t border-line')}
         >
           <motion.span
-            initial={{ width: 0 }}
+            initial={reduced ? false : { width: 0 }}
             animate={{ width: `${(r.cents / peak) * 100}%` }}
-            transition={{ delay: i * 0.05, duration: 0.7, ease: [0.32, 0.72, 0, 1] }}
+            transition={
+              reduced ? { duration: 0 } : { delay: i * 0.05, duration: 0.7, ease: [0.32, 0.72, 0, 1] }
+            }
             className="absolute inset-y-0 left-0 bg-accent/10"
             aria-hidden
           />

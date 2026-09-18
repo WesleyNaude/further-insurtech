@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { motion } from 'motion/react'
+import { motion, useReducedMotion } from 'motion/react'
 import type { Trip } from '@/lib/domain/types'
 import { DISPLACING_MODES } from '@/lib/domain/engine'
 import { cx } from '@/lib/cx'
@@ -12,6 +12,7 @@ type DayState = 'displaced' | 'drove' | 'none' | 'future'
  * Deliberately not a calendar. It is a habit surface.
  */
 export function WeekStrip({ trips }: { trips: Trip[] }) {
+  const reduced = useReducedMotion()
   const days = React.useMemo(() => {
     const now = new Date()
     const out: { date: Date; state: DayState; label: string }[] = []
@@ -43,9 +44,11 @@ export function WeekStrip({ trips }: { trips: Trip[] }) {
         return (
           <div key={i} className="flex flex-1 flex-col items-center gap-2">
             <motion.div
-              initial={{ scaleY: 0.2, opacity: 0 }}
+              initial={reduced ? false : { scaleY: 0.2, opacity: 0 }}
               animate={{ scaleY: 1, opacity: 1 }}
-              transition={{ delay: i * 0.04, type: 'spring', stiffness: 380, damping: 26 }}
+              transition={
+                reduced ? { duration: 0 } : { delay: i * 0.04, type: 'spring', stiffness: 380, damping: 26 }
+              }
               style={{ transformOrigin: 'bottom' }}
               className={cx(
                 'h-9 w-full rounded-[6px]',
