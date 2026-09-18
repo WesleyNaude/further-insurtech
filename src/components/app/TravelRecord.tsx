@@ -21,6 +21,35 @@ import { cx } from '@/lib/cx'
  * bytes instead of the ~150 kB three.js would add to a 126 kB app. If this ever
  * needs depth or real shading, it is a contained swap.
  */
+/**
+ * Progression, expressed as distance on record.
+ *
+ * Named for the corridor lengths they represent rather than invented ranks:
+ * "Line" is roughly one Cape Town commute corridor's worth, and so on. A number
+ * that means something beats a badge that does not.
+ */
+const STAGES = [
+  { at: 0, name: 'Starting out' },
+  { at: 250, name: 'A line' },
+  { at: 1_000, name: 'A network' },
+  { at: 2_500, name: 'A habit' },
+  { at: 6_000, name: 'A year of it' },
+  { at: 15_000, name: 'Car-light' },
+] as const
+
+function stageFor(km: number) {
+  let i = 0
+  while (i + 1 < STAGES.length && km >= STAGES[i + 1].at) i++
+  const current = STAGES[i]
+  const next = i + 1 < STAGES.length ? STAGES[i + 1] : null
+  const span = next ? next.at - current.at : 1
+  return {
+    name: current.name,
+    next,
+    progress: next ? Math.min(1, (km - current.at) / span) : 1,
+  }
+}
+
 export function TravelRecord({
   trips,
   className,
@@ -128,6 +157,7 @@ export function TravelRecord({
   }, [journeys, reduced])
 
   const km = Math.round(journeys.reduce((a, j) => a + j.metres, 0) / 1000)
+  const stage = stageFor(km)
 
   return (
     <div
@@ -135,6 +165,16 @@ export function TravelRecord({
       style={{ height }}
     >
       <canvas ref={ref} className="h-full w-full" aria-hidden />
+
+      {/* Scrim, so the figure can run behind the copy without fighting it. */}
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2"
+        style={{
+          background:
+            'linear-gradient(to top, var(--color-sunken) 22%, color-mix(in srgb, var(--color-sunken) 80%, transparent) 55%, transparent 100%)',
+        }}
+        aria-hidden
+      />
 
       <div className="pointer-events-none absolute inset-x-0 bottom-0 p-4">
         <p className="tnum text-[26px] font-semibold leading-none tracking-[-0.02em] text-ink">
@@ -145,6 +185,23 @@ export function TravelRecord({
           {journeys.length.toLocaleString('en-ZA')} journeys, each drawn where it actually
           happened. Routes you repeat burn brighter.
         </p>
+
+        {stage.next && (
+          <div className="mt-3">
+            <div className="flex items-baseline justify-between text-[11px]">
+              <span className="font-medium text-ink">{stage.name}</span>
+              <span className="tnum text-ink-faint">
+                {(stage.next.at - km).toLocaleString('en-ZA')} km to {stage.next.name}
+              </span>
+            </div>
+            <div className="mt-1.5 h-1 w-full overflow-hidden rounded-full bg-ink/10">
+              <div
+                className="h-full rounded-full bg-accent"
+                style={{ width: `${stage.progress * 100}%` }}
+              />
+            </div>
+          </div>
+        )}
       </div>
 
       {journeys.length === 0 && (
