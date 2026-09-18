@@ -10,7 +10,7 @@ const dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
   plugins: [
-    tanstackRouter({ target: 'react', autoCodeSplitting: false }),
+    tanstackRouter({ target: 'react', autoCodeSplitting: true }),
     react(),
     tailwindcss(),
     VitePWA({

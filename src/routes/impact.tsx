@@ -1,8 +1,6 @@
 import * as React from 'react'
 import { createFileRoute } from '@tanstack/react-router'
-import {
-  ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Cell, CartesianGrid,
-} from 'recharts'
+import { BarChart } from '@/components/app/BarChart'
 import { TopBar, Screen } from '@/components/app/AppShell'
 import { Card, Section } from '@/components/ui/primitives'
 import { useStatement } from '@/lib/useStatement'
@@ -67,42 +65,18 @@ function ImpactScreen() {
 
       <Section title="Kilometres a week">
         <div className="gutter">
-          <Card className="pb-2 pl-0 pr-2">
-            <div className="h-[200px] w-full">
-              <ResponsiveContainer>
-                <BarChart data={weekly} barGap={2} margin={{ top: 8, right: 8, left: 8, bottom: 0 }}>
-                  <CartesianGrid vertical={false} stroke="var(--color-line)" />
-                  <XAxis
-                    dataKey="week"
-                    tickLine={false}
-                    axisLine={false}
-                    tick={{ fontSize: 11, fill: 'var(--color-ink-faint)' }}
-                  />
-                  <YAxis
-                    tickLine={false}
-                    axisLine={false}
-                    width={32}
-                    tick={{ fontSize: 11, fill: 'var(--color-ink-faint)' }}
-                  />
-                  <Tooltip
-                    cursor={{ fill: 'var(--color-sunken)' }}
-                    contentStyle={{
-                      borderRadius: 12,
-                      border: '1px solid var(--color-line)',
-                      fontSize: 13,
-                      boxShadow: 'var(--shadow-lift)',
-                    }}
-                    formatter={((v: unknown, n: unknown) => [`${v} km`, n === 'driven' ? 'Drove' : 'Not driven']) as never}
-                  />
-                  <Bar dataKey="displaced" radius={[3, 3, 0, 0]} fill="var(--color-accent)" />
-                  <Bar dataKey="driven" radius={[3, 3, 0, 0]} fill="var(--color-line-strong)" />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-            <div className="mt-2 flex items-center gap-4 pl-4 text-[12px] text-ink-muted">
-              <Legend colour="var(--color-accent)" label="Not driven" />
-              <Legend colour="var(--color-line-strong)" label="Drove" />
-            </div>
+          <Card>
+            <BarChart
+              data={weekly.map((w) => ({
+                label: w.week,
+                values: { displaced: w.displaced, driven: w.driven },
+              }))}
+              series={[
+                { key: 'displaced', label: 'Not driven', colour: 'var(--color-accent)' },
+                { key: 'driven', label: 'Drove', colour: 'var(--color-line-strong)' },
+              ]}
+              unit="km"
+            />
           </Card>
         </div>
       </Section>
@@ -152,13 +126,6 @@ function ImpactScreen() {
     </Screen>
   )
 }
-
-const Legend = ({ colour, label }: { colour: string; label: string }) => (
-  <span className="inline-flex items-center gap-1.5">
-    <span className="h-2 w-2 rounded-[2px]" style={{ background: colour }} />
-    {label}
-  </span>
-)
 
 function weekKey(d: Date) {
   const c = new Date(d)

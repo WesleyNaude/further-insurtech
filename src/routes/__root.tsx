@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { Outlet, createRootRoute, useRouterState, useNavigate } from '@tanstack/react-router'
 import { Toaster } from 'sonner'
+import { motion, AnimatePresence } from 'motion/react'
 import { BottomNav, Fab } from '@/components/app/AppShell'
 import { DeviceFrame } from '@/components/app/DeviceFrame'
 import { LogTripSheet } from '@/components/app/LogTripSheet'
@@ -36,7 +37,19 @@ function Shell() {
   return (
     <DeviceFrame>
       <div ref={scroller} className="no-scrollbar relative flex-1 overflow-y-auto overscroll-contain">
-        <Outlet />
+        {/* A short cross-fade only. Anything more slides the blurred bars and
+            reads as lag rather than polish. */}
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={pathname}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.14, ease: 'linear' }}
+          >
+            <Outlet />
+          </motion.div>
+        </AnimatePresence>
       </div>
 
       {!chromeless && <BottomNav />}
