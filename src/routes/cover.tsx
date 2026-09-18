@@ -4,7 +4,7 @@ import NumberFlow from '@number-flow/react'
 import { ChevronLeft, ShieldCheck, TriangleAlert } from 'lucide-react'
 import { TopBar } from '@/components/app/AppShell'
 import { Card, Button, Divider, Pill } from '@/components/ui/primitives'
-import { useStatement } from '@/lib/useStatement'
+import { useStatement, monthFraction } from '@/lib/useStatement'
 import { formatRand } from '@/lib/domain/money'
 import { cx } from '@/lib/cx'
 
@@ -35,7 +35,10 @@ function CoverScreen() {
   const navigate = useNavigate()
   const { statement, monthTrips } = useStatement()
 
-  const measuredAnnualKm = Math.round(statement.drivenKm * 12)
+  // Driven kilometres are month-to-date. Annualising them as though the month
+  // were complete would halve the estimate mid-month and flatter the member.
+  const elapsed = Math.max(0.15, monthFraction())
+  const measuredAnnualKm = Math.round((statement.drivenKm / elapsed) * 12)
   const marketMid = (MARKET_LOW + MARKET_HIGH) / 2
 
   // A national-average driver does roughly 20,000 km a year. Price the gap.
@@ -44,7 +47,7 @@ function CoverScreen() {
   const indicative = Math.round(marketMid * (1 - EXPOSURE_SENSITIVE * (1 - ratio)))
 
   const verified = monthTrips.filter((t) => t.verification === 'verified').length
-  const enough = verified >= 8
+  const enough = verified >= 8 && statement.hasEnoughEvidence
 
   return (
     <main className="mx-auto w-full max-w-md pb-10">
