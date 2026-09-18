@@ -19,9 +19,20 @@ function TripsLayout() {
 
 type Filter = 'all' | 'counted' | 'drove'
 
+/**
+ * Trips are rendered a page at a time.
+ *
+ * Five months is over 200 rows and about 5,000 DOM nodes, which is a visible
+ * cost on the mid-range Android this product is actually for. Nobody scrolls a
+ * whole history, so we render a page and append as the end comes into view.
+ */
+const PAGE = 40
+
 function TripsList() {
   const { allTrips, monthTrips } = useStatement()
   const [filter, setFilter] = React.useState<Filter>('all')
+  const [shown, setShown] = React.useState(PAGE)
+  const sentinel = React.useRef<HTMLDivElement>(null)
 
   // Credit figures only exist for the current month; older trips show plainly.
   const creditById = React.useMemo(
@@ -37,14 +48,31 @@ function TripsList() {
     return withCredit
   }, [allTrips, filter, creditById])
 
+  // A change of filter starts the list again from the top.
+  React.useEffect(() => setShown(PAGE), [filter])
+
+  const visible = React.useMemo(() => filtered.slice(0, shown), [filtered, shown])
+  const more = filtered.length - visible.length
+
+  React.useEffect(() => {
+    const el = sentinel.current
+    if (!el || more <= 0) return
+    const io = new IntersectionObserver(
+      ([e]) => e.isIntersecting && setShown((n) => n + PAGE),
+      { rootMargin: '600px' },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [more])
+
   const groups = React.useMemo(() => {
-    const map = new Map<string, typeof filtered>()
-    for (const t of filtered) {
+    const map = new Map<string, typeof visible>()
+    for (const t of visible) {
       const key = t.startedAt.slice(0, 10)
       map.set(key, [...(map.get(key) ?? []), t])
     }
     return [...map.entries()]
-  }, [filtered])
+  }, [visible])
 
   return (
     <Screen>
@@ -91,6 +119,14 @@ function TripsList() {
             </div>
           </section>
         ))}
+        <div ref={sentinel} aria-hidden />
+
+        {more > 0 && (
+          <p className="gutter py-6 text-center text-[13px] text-ink-faint">
+            {more.toLocaleString('en-ZA')} earlier {more === 1 ? 'trip' : 'trips'}&hellip;
+          </p>
+        )}
+
         {groups.length === 0 && (
           <Empty
             icon={RouteIcon}
