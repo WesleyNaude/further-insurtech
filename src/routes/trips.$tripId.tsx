@@ -58,7 +58,7 @@ function TripDetail() {
         <button
           onClick={() => navigate({ to: '/trips' })}
           aria-label="Back"
-          className="safe-top absolute left-5 top-3 grid h-9 w-9 place-items-center rounded-full bg-paper/80 text-ink shadow-[--shadow-card] backdrop-blur-xl"
+          className="safe-top absolute left-4 top-3 grid h-11 w-11 place-items-center rounded-full bg-paper/80 text-ink shadow-[--shadow-card] backdrop-blur-xl"
         >
           <ChevronLeft size={20} strokeWidth={2} />
         </button>

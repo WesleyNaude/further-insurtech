@@ -117,7 +117,7 @@ function Welcome() {
                 setOnboarded(true)
                 navigate({ to: '/' })
               }}
-              className="mt-3 w-full py-2 text-center text-[14px] text-ink-faint"
+              className="tap mt-3 w-full py-2 text-center text-[14px] text-ink-faint"
             >
               Skip
             </button>

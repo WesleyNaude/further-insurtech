@@ -65,7 +65,7 @@ function RecordScreen() {
           <button
             onClick={() => navigate({ to: '/settings' })}
             aria-label="Back"
-            className="-ml-1 grid h-8 w-8 place-items-center rounded-full text-ink"
+            className="-ml-2 grid h-11 w-11 place-items-center rounded-full text-ink"
           >
             <ChevronLeft size={22} strokeWidth={2} />
           </button>

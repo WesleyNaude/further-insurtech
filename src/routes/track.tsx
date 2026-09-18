@@ -131,7 +131,7 @@ function Track() {
             navigate({ to: '/' })
           }}
           aria-label="Cancel"
-          className="grid h-9 w-9 place-items-center rounded-full bg-sunken text-ink-muted"
+          className="grid h-11 w-11 place-items-center rounded-full bg-sunken text-ink-muted"
         >
           <X size={17} strokeWidth={2} />
         </button>

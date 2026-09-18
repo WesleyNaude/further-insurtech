@@ -100,12 +100,12 @@ export function InstallHint({ inline = false }: { inline?: boolean } = {}) {
               await prompt.prompt()
               close()
             }}
-            className="shrink-0 rounded-[--radius-pill] bg-paper px-3 py-1.5 text-[13px] font-medium text-ink"
+            className="tap tap-wide shrink-0 rounded-[--radius-pill] bg-paper px-3 py-1.5 text-[13px] font-medium text-ink"
           >
             Install
           </button>
         ) : (
-          <button onClick={close} className="shrink-0 text-[13px] font-medium text-paper/70">
+          <button onClick={close} className="tap tap-wide shrink-0 text-[13px] font-medium text-paper/70">
             Got it
           </button>
         )}

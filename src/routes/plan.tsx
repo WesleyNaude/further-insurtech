@@ -67,7 +67,7 @@ function PlanScreen() {
           <button
             onClick={() => navigate({ to: '/' })}
             aria-label="Back"
-            className="-ml-1 grid h-8 w-8 place-items-center rounded-full text-ink"
+            className="-ml-2 grid h-11 w-11 place-items-center rounded-full text-ink"
           >
             <ChevronLeft size={22} strokeWidth={2} />
           </button>
@@ -92,7 +92,7 @@ function PlanScreen() {
               key={c.id}
               onClick={() => setCorridorId(c.id)}
               className={cx(
-                'shrink-0 rounded-[--radius-pill] px-3.5 py-2 text-[13px] font-medium ring-1 transition-colors',
+                'tap tap-wide shrink-0 rounded-[--radius-pill] px-3.5 py-2 text-[13px] font-medium ring-1 transition-colors',
                 corridorId === c.id
                   ? 'bg-ink text-paper ring-ink'
                   : 'bg-surface text-ink-muted ring-line',
@@ -115,7 +115,7 @@ function PlanScreen() {
               key={m}
               onClick={() => setMode(m)}
               className={cx(
-                'inline-flex items-center gap-2 rounded-[--radius-pill] px-3.5 py-2 text-[13px] font-medium ring-1 transition-colors',
+                'tap tap-wide inline-flex items-center gap-2 rounded-[--radius-pill] px-3.5 py-2 text-[13px] font-medium ring-1 transition-colors',
                 mode === m ? 'bg-ink text-paper ring-ink' : 'bg-surface text-ink ring-line',
               )}
             >
@@ -239,7 +239,7 @@ function PlanScreen() {
                       cancelCommitment(c.id)
                       toast('Commitment cancelled')
                     }}
-                    className="text-[13px] text-ink-muted"
+                    className="tap tap-wide text-[13px] text-ink-muted"
                   >
                     Cancel
                   </button>

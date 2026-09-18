@@ -42,7 +42,7 @@ function WalletScreen() {
         </p>
         <button
           onClick={() => setSheet(true)}
-          className="mt-2 inline-flex items-center gap-1 text-[13px] text-ink-muted"
+          className="tap tap-wide mt-2 inline-flex items-center gap-1 text-[13px] text-ink-muted"
         >
           <Info size={13} strokeWidth={2} />
           How this is worked out

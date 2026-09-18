@@ -62,7 +62,7 @@ function TripsList() {
             key={key}
             onClick={() => setFilter(key)}
             className={cx(
-              'shrink-0 rounded-[--radius-pill] px-3.5 py-1.5 text-[13px] font-medium transition-colors',
+              'tap tap-wide shrink-0 rounded-[--radius-pill] px-3.5 py-1.5 text-[13px] font-medium transition-colors',
               filter === key ? 'bg-ink text-paper' : 'bg-sunken text-ink-muted',
             )}
           >

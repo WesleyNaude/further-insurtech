@@ -32,7 +32,7 @@ export function DerivationSheet({
             <button
               onClick={() => onOpenChange(false)}
               aria-label="Close"
-              className="grid h-8 w-8 place-items-center rounded-full bg-sunken text-ink-muted"
+              className="grid h-11 w-11 place-items-center rounded-full bg-sunken text-ink-muted"
             >
               <X size={16} strokeWidth={2} />
             </button>

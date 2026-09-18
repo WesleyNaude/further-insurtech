@@ -66,7 +66,7 @@ export function Button({
         'inline-flex items-center justify-center gap-2 rounded-[--radius-pill] font-medium',
         'transition-[transform,background-color,opacity] duration-150 ease-[--ease-out-soft]',
         'active:scale-[0.97] disabled:pointer-events-none disabled:opacity-40',
-        size === 'md' ? 'h-10 px-4 text-[15px]' : 'h-12 px-6 text-[16px]',
+        size === 'md' ? 'h-11 px-4 text-[15px]' : 'h-12 px-6 text-[16px]',
         variant === 'primary' && 'bg-ink text-paper hover:bg-ink/90',
         variant === 'accent' && 'bg-accent text-white hover:bg-accent-ink',
         variant === 'secondary' && 'bg-sunken text-ink hover:bg-line',

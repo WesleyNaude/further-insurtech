@@ -13,8 +13,8 @@
   --color-surface: #FFFFFF;
   --color-sunken: #F2F2EF;
   --color-ink: #16181C;
-  --color-ink-muted: #63666E;
-  --color-ink-faint: #9A9CA3;
+  --color-ink-muted: #4E5158;
+  --color-ink-faint: #6C6E74;
   --color-line: #E5E5E1;
   --color-line-strong: #D6D6D1;
 
@@ -51,8 +51,8 @@
     --color-surface: #16191C;
     --color-sunken: #1D2125;
     --color-ink: #ECEDEE;
-    --color-ink-muted: #9BA1A8;
-    --color-ink-faint: #6B7178;
+    --color-ink-muted: #B3B8BE;
+    --color-ink-faint: #878C92;
     --color-line: #252A2F;
     --color-line-strong: #343A41;
 
@@ -75,8 +75,8 @@
     --color-surface: #16191C;
     --color-sunken: #1D2125;
     --color-ink: #ECEDEE;
-    --color-ink-muted: #9BA1A8;
-    --color-ink-faint: #6B7178;
+    --color-ink-muted: #B3B8BE;
+    --color-ink-faint: #878C92;
     --color-line: #252A2F;
     --color-line-strong: #343A41;
 
@@ -137,6 +137,22 @@
 
   .hairline { box-shadow: inset 0 -1px 0 var(--color-line); }
   .hairline-t { box-shadow: inset 0 1px 0 var(--color-line); }
+
+  /* Expands a control's hit area to the 44px accessibility floor without
+     changing how it looks. Pills and text links stay visually light. */
+  .tap {
+    position: relative;
+  }
+  .tap::before {
+    content: "";
+    position: absolute;
+    inset: 50% 0 0 0;
+    min-height: 44px;
+    transform: translateY(-50%);
+  }
+  .tap-wide::before {
+    inset: 50% -8px 0 -8px;
+  }
 
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { scrollbar-width: none; }

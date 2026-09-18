@@ -142,7 +142,7 @@ function Today() {
                   })}
                 </p>
               </div>
-              <Link to="/plan" className="shrink-0 text-ink-faint">
+              <Link to="/plan" aria-label="Open trip planning" className="tap shrink-0 text-ink-faint">
                 <ChevronRight size={18} strokeWidth={2} />
               </Link>
             </Card>
@@ -154,7 +154,7 @@ function Today() {
       <Section
         title="Recent"
         action={
-          <Link to="/trips" className="text-[13px] font-medium text-ink-muted">
+          <Link to="/trips" className="tap tap-wide text-[13px] font-medium text-ink-muted">
             All trips
           </Link>
         }
