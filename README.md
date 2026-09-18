@@ -77,6 +77,17 @@ along the route. A point-by-point band underneath shows the deviation against th
 It is the one place where the interaction is the argument. A fabricated trip
 cannot survive being looked at this closely.
 
+## Your record
+
+The Impact tab draws every verified journey as its actual corridor, layered at
+low opacity, so routes you repeat burn brighter. After a few months it is a
+dense figure nobody else could have, because nobody else made those journeys.
+Tap Replay and it rebuilds itself oldest-first.
+
+It is drawn on a canvas rather than in WebGL on purpose: the same additive
+result for a few hundred bytes instead of the ~150 kB three.js would add to a
+127 kB app.
+
 ## The evidence threshold
 
 Nothing is paid until **seven distinct days** have been measured. Without that

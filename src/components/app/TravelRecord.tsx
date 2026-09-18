@@ -1,5 +1,7 @@
 import * as React from 'react'
 import { useReducedMotion } from 'motion/react'
+import { Play } from 'lucide-react'
+import { tap } from '@/lib/haptics'
 import type { Trip } from '@/lib/domain/types'
 import { DISPLACING_MODES } from '@/lib/domain/engine'
 import { cx } from '@/lib/cx'
@@ -72,14 +74,20 @@ export function TravelRecord({
   const ref = React.useRef<HTMLCanvasElement>(null)
   const reduced = useReducedMotion()
   const [themeTick, setThemeTick] = React.useState(0)
+  /** Set to a timestamp to replay the record accumulating, oldest first. */
+  const [replayFrom, setReplayFrom] = React.useState<number | null>(null)
 
   const journeys = React.useMemo(
     () =>
-      trips.filter(
-        (t) =>
-          t.verification !== 'unverified' &&
-          (DISPLACING_MODES.includes(t.mode) || t.mode === 'walk' || t.mode === 'cycle'),
-      ),
+      trips
+        .filter(
+          (t) =>
+            t.verification !== 'unverified' &&
+            (DISPLACING_MODES.includes(t.mode) || t.mode === 'walk' || t.mode === 'cycle'),
+        )
+        // Oldest first, so a replay reads as the record being built.
+        .slice()
+        .sort((a, b) => a.startedAt.localeCompare(b.startedAt)),
     [trips],
   )
 
@@ -140,7 +148,16 @@ export function TravelRecord({
       ctx!.lineCap = 'round'
       ctx!.lineJoin = 'round'
 
-      for (const j of journeys) {
+      // During a replay only the journeys laid down so far are drawn.
+      const REPLAY_MS = 2600
+      const shown =
+        replayFrom === null
+          ? journeys.length
+          : Math.ceil(
+              Math.min(1, (performance.now() - replayFrom) / REPLAY_MS) * journeys.length,
+            )
+
+      for (const j of journeys.slice(0, shown)) {
         const strong = j.verification === 'verified'
         ctx!.globalAlpha = dark ? (strong ? 0.13 : 0.06) : strong ? 0.16 : 0.08
         ctx!.lineWidth = strong ? 1.5 : 1
@@ -162,7 +179,9 @@ export function TravelRecord({
     function frame(ts: number) {
       if (t0 === null) t0 = ts
       draw(ts - t0)
-      if (!reduced) raf = requestAnimationFrame(frame)
+      // A replay needs frames even when motion is otherwise stilled, but it only
+      // runs because someone asked for it, so it is not unsolicited movement.
+      if (!reduced || replayFrom !== null) raf = requestAnimationFrame(frame)
     }
 
     raf = requestAnimationFrame(frame)
@@ -190,12 +209,27 @@ export function TravelRecord({
     >
       <canvas ref={ref} className="h-full w-full" aria-hidden />
 
+      {journeys.length > 0 && (
+        <button
+          onClick={() => {
+            tap()
+            setReplayFrom(performance.now())
+            window.setTimeout(() => setReplayFrom(null), 2900)
+          }}
+          aria-label="Replay how your record built up"
+          className="absolute right-3 top-3 z-10 inline-flex h-9 items-center gap-1.5 rounded-[--radius-pill] bg-paper/80 px-3 text-[12px] font-medium text-ink backdrop-blur-md transition-opacity active:opacity-70"
+        >
+          <Play size={12} strokeWidth={2.2} />
+          {replayFrom === null ? 'Replay' : 'Building\u2026'}
+        </button>
+      )}
+
       {/* Scrim, so the figure can run behind the copy without fighting it. */}
       <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-[58%]"
         style={{
           background:
-            'linear-gradient(to top, var(--color-sunken) 22%, color-mix(in srgb, var(--color-sunken) 80%, transparent) 55%, transparent 100%)',
+            'linear-gradient(to top, var(--color-sunken) 34%, color-mix(in srgb, var(--color-sunken) 88%, transparent) 62%, transparent 100%)',
         }}
         aria-hidden
       />
