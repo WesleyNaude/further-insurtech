@@ -7,6 +7,8 @@ import { TopBar, Screen } from '@/components/app/AppShell'
 import { Card, Section, Pill, Divider } from '@/components/ui/primitives'
 import { DerivationSheet } from '@/components/app/DerivationSheet'
 import { TripRow } from '@/components/app/TripRow'
+import { WeekStrip } from '@/components/app/WeekStrip'
+import { LiveTrip } from '@/components/app/LiveTrip'
 import { useStatement } from '@/lib/useStatement'
 import { useStore } from '@/lib/store'
 import { formatRand } from '@/lib/domain/money'
@@ -17,7 +19,7 @@ import { MODE_LABEL } from '@/components/app/icons'
 export const Route = createFileRoute('/')({ component: Today })
 
 function Today() {
-  const { statement, policy, monthTrips, streak } = useStatement()
+  const { statement, policy, monthTrips, streak, allTrips } = useStatement()
   const commitments = useStore((s) => s.commitments)
   const [sheet, setSheet] = React.useState(false)
 
@@ -88,6 +90,11 @@ function Today() {
         </div>
       </div>
 
+      {/* ------------------------------------------------------- week strip */}
+      <div className="gutter mt-7">
+        <WeekStrip trips={allTrips} />
+      </div>
+
       {/* ----------------------------------------------------------- stats */}
       <div className="gutter mt-6 grid grid-cols-3 gap-3">
         <Stat
@@ -109,6 +116,11 @@ function Today() {
           unit="R/km"
           label="Worth to you"
         />
+      </div>
+
+      {/* ------------------------------------------------------- live trip */}
+      <div className="gutter mt-6">
+        <LiveTrip ratePerKmCents={statement.centsPerVerifiedKm} />
       </div>
 
       {/* ------------------------------------------------------ commitment */}

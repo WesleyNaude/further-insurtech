@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { ChevronRight, ShieldCheck, Car, RotateCcw, MapPin } from 'lucide-react'
+import { ChevronRight, ShieldCheck, Car, RotateCcw, MapPin, Eye } from 'lucide-react'
 import { toast } from 'sonner'
 import { TopBar, Screen } from '@/components/app/AppShell'
 import { Card, Section, Divider, Button } from '@/components/ui/primitives'
@@ -67,8 +67,20 @@ function SettingsScreen() {
         </div>
       </Section>
 
-      <Section title="What we store">
-        <div className="gutter">
+      <Section title="Privacy">
+        <div className="gutter space-y-3">
+          <Link to="/insurer">
+            <Card className="flex items-center gap-3">
+              <span className="grid h-10 w-10 place-items-center rounded-full bg-sunken text-ink-muted">
+                <Eye size={18} strokeWidth={1.75} />
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="text-[15px] font-medium">What your insurer sees</p>
+                <p className="text-[13px] text-ink-muted">Six numbers, once a month</p>
+              </div>
+              <ChevronRight size={18} strokeWidth={2} className="text-ink-faint" />
+            </Card>
+          </Link>
           <Card>
             <div className="flex items-start gap-3">
               <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-accent-soft text-accent-ink">

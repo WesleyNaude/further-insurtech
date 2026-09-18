@@ -11,7 +11,9 @@ export function formatRand(c: Cents, opts: { decimals?: boolean } = {}): string 
   const abs = Math.abs(c)
   const whole = Math.floor(abs / 100)
   const part = abs % 100
-  const grouped = whole.toLocaleString('en-ZA')
+  // en-ZA groups with a non-breaking space. Normalise it so rendering and
+  // assertions agree, and so the figure never wraps mid-number.
+  const grouped = whole.toLocaleString('en-ZA').replace(/\u00A0|\u202F/g, '\u2009')
   const body = opts.decimals ? `${grouped}.${String(part).padStart(2, '0')}` : grouped
   return `${negative ? '-' : ''}R${body}`
 }

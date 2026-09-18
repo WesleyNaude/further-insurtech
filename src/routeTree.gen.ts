@@ -11,10 +11,12 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ImpactRouteImport } from './routes/impact'
+import { Route as InsurerRouteImport } from './routes/insurer'
 import { Route as PlanRouteImport } from './routes/plan'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as TripsRouteImport } from './routes/trips'
 import { Route as WalletRouteImport } from './routes/wallet'
+import { Route as WelcomeRouteImport } from './routes/welcome'
 import { Route as TripsTripIdRouteImport } from './routes/trips.$tripId'
 
 const IndexRoute = IndexRouteImport.update({
@@ -25,6 +27,11 @@ const IndexRoute = IndexRouteImport.update({
 const ImpactRoute = ImpactRouteImport.update({
   id: '/impact',
   path: '/impact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InsurerRoute = InsurerRouteImport.update({
+  id: '/insurer',
+  path: '/insurer',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PlanRoute = PlanRouteImport.update({
@@ -47,6 +54,11 @@ const WalletRoute = WalletRouteImport.update({
   path: '/wallet',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WelcomeRoute = WelcomeRouteImport.update({
+  id: '/welcome',
+  path: '/welcome',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TripsTripIdRoute = TripsTripIdRouteImport.update({
   id: '/$tripId',
   path: '/$tripId',
@@ -56,29 +68,35 @@ const TripsTripIdRoute = TripsTripIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/impact': typeof ImpactRoute
+  '/insurer': typeof InsurerRoute
   '/plan': typeof PlanRoute
   '/settings': typeof SettingsRoute
   '/trips': typeof TripsRouteWithChildren
   '/wallet': typeof WalletRoute
+  '/welcome': typeof WelcomeRoute
   '/trips/$tripId': typeof TripsTripIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/impact': typeof ImpactRoute
+  '/insurer': typeof InsurerRoute
   '/plan': typeof PlanRoute
   '/settings': typeof SettingsRoute
   '/trips': typeof TripsRouteWithChildren
   '/wallet': typeof WalletRoute
+  '/welcome': typeof WelcomeRoute
   '/trips/$tripId': typeof TripsTripIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/impact': typeof ImpactRoute
+  '/insurer': typeof InsurerRoute
   '/plan': typeof PlanRoute
   '/settings': typeof SettingsRoute
   '/trips': typeof TripsRouteWithChildren
   '/wallet': typeof WalletRoute
+  '/welcome': typeof WelcomeRoute
   '/trips/$tripId': typeof TripsTripIdRoute
 }
 export interface FileRouteTypes {
@@ -86,38 +104,46 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/impact'
+    | '/insurer'
     | '/plan'
     | '/settings'
     | '/trips'
     | '/wallet'
+    | '/welcome'
     | '/trips/$tripId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/impact'
+    | '/insurer'
     | '/plan'
     | '/settings'
     | '/trips'
     | '/wallet'
+    | '/welcome'
     | '/trips/$tripId'
   id:
     | '__root__'
     | '/'
     | '/impact'
+    | '/insurer'
     | '/plan'
     | '/settings'
     | '/trips'
     | '/wallet'
+    | '/welcome'
     | '/trips/$tripId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ImpactRoute: typeof ImpactRoute
+  InsurerRoute: typeof InsurerRoute
   PlanRoute: typeof PlanRoute
   SettingsRoute: typeof SettingsRoute
   TripsRoute: typeof TripsRouteWithChildren
   WalletRoute: typeof WalletRoute
+  WelcomeRoute: typeof WelcomeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -134,6 +160,13 @@ declare module '@tanstack/react-router' {
       path: '/impact'
       fullPath: '/impact'
       preLoaderRoute: typeof ImpactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/insurer': {
+      id: '/insurer'
+      path: '/insurer'
+      fullPath: '/insurer'
+      preLoaderRoute: typeof InsurerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/plan': {
@@ -164,6 +197,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WalletRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/welcome': {
+      id: '/welcome'
+      path: '/welcome'
+      fullPath: '/welcome'
+      preLoaderRoute: typeof WelcomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/trips/$tripId': {
       id: '/trips/$tripId'
       path: '/$tripId'
@@ -187,10 +227,12 @@ const TripsRouteWithChildren = TripsRoute._addFileChildren(TripsRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ImpactRoute: ImpactRoute,
+  InsurerRoute: InsurerRoute,
   PlanRoute: PlanRoute,
   SettingsRoute: SettingsRoute,
   TripsRoute: TripsRouteWithChildren,
   WalletRoute: WalletRoute,
+  WelcomeRoute: WelcomeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,0 +1,13 @@
+{
+  "name": "Further",
+  "short_name": "Further",
+  "description": "Turn the kilometres you do not drive into money off your car insurance.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAFAF8",
+  "theme_color": "#FAFAF8",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
