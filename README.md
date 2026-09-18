@@ -66,6 +66,13 @@ constant in it is surfaced in the UI (Settings → The constants we apply).
 Money is integer cents throughout. Any figure in the app that represents money
 opens the full derivation chain.
 
+## The evidence threshold
+
+Nothing is paid until **seven distinct days** have been measured. Without that
+rule, a brand-new account looks identical to a member who drove nowhere, and
+would be credited the full ceiling immediately. Settings has a "Start empty"
+button that puts the app into that genuine day-one state so you can see it.
+
 ## Verification
 
 A trip is `verified`, `probable` or `unverified`, and the app never hides which.

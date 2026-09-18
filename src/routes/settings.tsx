@@ -16,6 +16,7 @@ export const Route = createFileRoute('/settings')({ component: SettingsScreen })
 function SettingsScreen() {
   const policy = useStore((s) => s.policy)
   const reset = useStore((s) => s.reset)
+  const resetEmpty = useStore((s) => s.resetEmpty)
   const [editing, setEditing] = React.useState(false)
 
   return (
@@ -154,15 +155,31 @@ function SettingsScreen() {
 
       <Section title="Demo">
         <div className="gutter">
-          <Button
-            onClick={() => {
-              reset()
-              toast.success('Demo data reset')
-            }}
-          >
-            <RotateCcw size={15} strokeWidth={2} />
-            Reset demo data
-          </Button>
+          <div className="flex flex-wrap gap-2">
+            <Button
+              onClick={() => {
+                reset()
+                toast.success('Demo data reset')
+              }}
+            >
+              <RotateCcw size={15} strokeWidth={2} />
+              Reset demo data
+            </Button>
+            <Button
+              onClick={() => {
+                resetEmpty()
+                toast('Starting from nothing', {
+                  description: 'No history, no reduction, onboarding from the top.',
+                })
+              }}
+            >
+              Start empty
+            </Button>
+          </div>
+          <p className="mt-2 text-[12px] leading-[1.5] text-ink-faint">
+            &ldquo;Start empty&rdquo; is the genuine day-one experience: no trips, nothing paid,
+            and the evidence threshold visible.
+          </p>
         </div>
       </Section>
 

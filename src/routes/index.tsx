@@ -66,12 +66,22 @@ function Today() {
           </div>
 
           <p className="mt-2 text-[14px] leading-[1.5] text-ink-muted">
-            You pay {formatRand(policy.basePremiumCents)} a month. So far in {monthName} you
-            have taken{' '}
-            <span className="font-medium text-ink">
-              {formatRand(statement.reductionCents)}
-            </span>{' '}
-            of it back.
+            {statement.hasEnoughEvidence ? (
+              <>
+                You pay {formatRand(policy.basePremiumCents)} a month. So far in {monthName} you
+                have taken{' '}
+                <span className="font-medium text-ink">
+                  {formatRand(statement.reductionCents)}
+                </span>{' '}
+                of it back.
+              </>
+            ) : (
+              <>
+                Measured on {statement.measuredDays}{' '}
+                {statement.measuredDays === 1 ? 'day' : 'days'} so far. Nothing is paid until
+                there is enough to stand behind.
+              </>
+            )}
           </p>
         </button>
 
@@ -88,8 +98,12 @@ function Today() {
       {/* ----------------------------------------------------------- stats */}
       <div className="gutter mt-6 grid auto-rows-fr grid-cols-3 gap-3">
         <Stat
-          value={Math.round(statement.avoidedKm).toLocaleString('en-ZA')}
-          unit="km"
+          value={
+            statement.hasEnoughEvidence
+              ? Math.round(statement.avoidedKm).toLocaleString('en-ZA')
+              : '\u2014'
+          }
+          unit={statement.hasEnoughEvidence ? 'km' : ''}
           label="Under rating"
         />
         <Stat
@@ -101,9 +115,9 @@ function Today() {
           value={
             statement.centsPerVerifiedKm > 0
               ? `${(statement.centsPerVerifiedKm / 100).toFixed(2)}`
-              : '0.00'
+              : '\u2014'
           }
-          unit="R/km"
+          unit={statement.centsPerVerifiedKm > 0 ? 'R/km' : ''}
           label="Back per km"
         />
       </div>

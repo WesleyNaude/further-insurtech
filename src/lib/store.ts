@@ -24,6 +24,7 @@ interface State {
   cancelCommitment: (id: string) => void
   setOnboarded: (v: boolean) => void
   reset: () => void
+  resetEmpty: () => void
 }
 
 const fresh = () => ({
@@ -79,6 +80,10 @@ export const useStore = create<State>()(
       setOnboarded: (v) => set({ onboarded: v }),
 
       reset: () => set(fresh()),
+
+      // A real day one: no history, no commitments, onboarding from the top.
+      resetEmpty: () =>
+        set({ ...fresh(), trips: [], commitments: [], paidOutCents: 0, onboarded: false }),
     }),
     {
       name: 'further.v1',

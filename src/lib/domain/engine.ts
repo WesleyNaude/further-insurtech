@@ -27,6 +27,16 @@ export const MEMBER_SHARE = 0.60
 /** Nobody's premium goes to zero. Hard ceiling on the monthly reduction. */
 export const MAX_REDUCTION = 0.30
 
+/**
+ * Days of measurement required before any reduction is paid.
+ *
+ * Without this, a member who has simply not been measured looks identical to one
+ * who did not drive, and a brand-new account would be credited the full ceiling
+ * on its first day. Absence of evidence is not evidence of absence, and a
+ * verification product that gets this wrong has no business selling verification.
+ */
+export const MIN_EVIDENCE_DAYS = 7
+
 /** Only trips on a corridor you could plausibly have driven count as displaced. */
 export const DISPLACING_MODES: Mode[] = ['train', 'bus', 'taxi']
 
@@ -67,6 +77,10 @@ export interface Statement {
   /** The full chain, for the transparency sheet. */
   derivation: DerivationStep[]
   cappedByCeiling: boolean
+  /** Distinct days with any measured trip this period. */
+  measuredDays: number
+  /** False until there is enough measurement to pay anything. */
+  hasEnoughEvidence: boolean
 }
 
 const km = (metres: number) => metres / 1000
@@ -87,12 +101,15 @@ export function buildStatement(trips: Trip[], policy: Policy, monthFraction = 1)
       .reduce((a, t) => a + t.metres, 0),
   )
 
+  const measuredDays = new Set(counted.map((t) => localDateKey(new Date(t.startedAt)))).size
+  const hasEnoughEvidence = measuredDays >= MIN_EVIDENCE_DAYS
+
   const avoidedKm = Math.max(0, ratedKm - drivenKm)
   const exposureReduction = ratedKm > 0 ? Math.min(1, avoidedKm / ratedKm) : 0
 
   const rawReduction = exposureReduction * MILEAGE_VARIABLE_SHARE * MEMBER_SHARE
-  const premiumReduction = Math.min(MAX_REDUCTION, rawReduction)
-  const cappedByCeiling = rawReduction > MAX_REDUCTION
+  const premiumReduction = hasEnoughEvidence ? Math.min(MAX_REDUCTION, rawReduction) : 0
+  const cappedByCeiling = hasEnoughEvidence && rawReduction > MAX_REDUCTION
 
   const reductionCents = Math.round(policy.basePremiumCents * premiumReduction)
 
@@ -105,6 +122,13 @@ export function buildStatement(trips: Trip[], policy: Policy, monthFraction = 1)
   const pct = (n: number) => `${Math.round(n * 100)}%`
 
   const derivation: DerivationStep[] = [
+    {
+      label: 'Days measured',
+      value: `${measuredDays} of ${MIN_EVIDENCE_DAYS}`,
+      note: hasEnoughEvidence
+        ? 'Enough measurement to stand behind a figure.'
+        : `Nothing is paid until there are ${MIN_EVIDENCE_DAYS} measured days. A phone that has not been measuring looks exactly like a car that has not moved, and we will not pay for the difference.`,
+    },
     {
       label: 'Your policy was rated on',
       value: `${policy.ratedAnnualKm.toLocaleString('en-ZA')} km a year`,
@@ -133,7 +157,9 @@ export function buildStatement(trips: Trip[], policy: Policy, monthFraction = 1)
     {
       label: 'Premium reduction',
       value: pct(premiumReduction),
-      note: cappedByCeiling
+      note: !hasEnoughEvidence
+        ? 'Held at zero until there is enough measurement.'
+        : cappedByCeiling
         ? `Capped at ${pct(MAX_REDUCTION)}. You earned more than the ceiling allows this month.`
         : 'Applied to your next debit order.',
     },
@@ -151,6 +177,8 @@ export function buildStatement(trips: Trip[], policy: Policy, monthFraction = 1)
     co2KgAvoided: round2(co2KgAvoided),
     derivation,
     cappedByCeiling,
+    measuredDays,
+    hasEnoughEvidence,
   }
 }
 

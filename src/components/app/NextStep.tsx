@@ -1,7 +1,7 @@
 import { Link } from '@tanstack/react-router'
 import { ArrowUpRight, Target } from 'lucide-react'
 import type { Statement } from '@/lib/domain/engine'
-import { MAX_REDUCTION, reductionFor } from '@/lib/domain/engine'
+import { MAX_REDUCTION, MIN_EVIDENCE_DAYS, reductionFor } from '@/lib/domain/engine'
 import type { Policy } from '@/lib/domain/types'
 import { formatRand } from '@/lib/domain/money'
 
@@ -21,6 +21,15 @@ export function NextStep({
   policy: Policy
   daysLeft: number
 }) {
+  if (!statement.hasEnoughEvidence) {
+    return (
+      <Card
+        title={`${MIN_EVIDENCE_DAYS - statement.measuredDays} more days of measurement`}
+        body={`Nothing is paid until ${MIN_EVIDENCE_DAYS} days have been measured. A phone that has not been measuring looks exactly like a car that has not moved, and we will not pay for the difference.`}
+      />
+    )
+  }
+
   const atCeiling = statement.premiumReduction >= MAX_REDUCTION - 0.001
 
   if (atCeiling) {

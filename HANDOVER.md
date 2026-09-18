@@ -121,6 +121,20 @@ classifier, and always saves as probable, never verified.
   motion that carries meaning instead: the ring, the route drawing itself in, the
   evidence checks, the once-a-month ceiling moment.
 
+## The best thing I found overnight
+
+While building the first-run state I noticed the model paid a **brand-new account
+the maximum reduction on its first day**. Driving nothing and not being measured
+produce identical numbers, so the engine could not tell them apart.
+
+Nothing is now paid until seven distinct days have been measured, the member sees
+that countdown rather than a mysterious zero, and it is covered by tests. It is
+worth saying out loud in a pitch: it is exactly the rule an insurer would demand,
+and it shows the verification claim is not decorative.
+
+Settings has a **"Start empty"** button that puts the app into the real day-one
+state, so the first-run experience is demonstrable rather than theoretical.
+
 ## Where I was sloppy, and fixed it
 
 - The marginal-gain card first showed **minus R188** because I recomputed rated

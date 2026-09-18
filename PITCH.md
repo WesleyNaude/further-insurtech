@@ -232,6 +232,14 @@ portability: a credential that works across insurers is worth more to consumers
 than one that locks them in, and no incumbent will build the thing that lets
 customers shop. We have to get to multi-insurer quickly or we become a feature.
 
+**Absence of evidence is not evidence of absence.** A phone that has not been
+measuring looks exactly like a car that has not moved. Without a rule, a
+brand-new account would be credited the maximum reduction on day one, which is
+both wrong and trivially exploitable. Nothing is paid until seven days have been
+measured, and that threshold is shown to the member rather than buried. Any
+verification product that gets this backwards has no business selling
+verification.
+
 **Verification is adversarial.** If the credential is worth money, people will try
 to forge it. Everything in the app is designed around that: corridor matching,
 speed profile, stop dwell, fare tap, and an explicit three-level verification

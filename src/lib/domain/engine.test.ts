@@ -12,6 +12,14 @@ const policy: Policy = {
   linkedAt: '2026-01-01T00:00:00Z',
 }
 
+/** Spreads trips across distinct days, so a statement clears the evidence bar. */
+const overDays = (count: number, over: Partial<Trip> = {}): Trip[] =>
+  Array.from({ length: count }, (_, i) => {
+    const d = new Date(2026, 8, 18, 8, 0)
+    d.setDate(d.getDate() - i)
+    return trip({ ...over, startedAt: d.toISOString() })
+  })
+
 const trip = (over: Partial<Trip>): Trip => ({
   id: Math.random().toString(36),
   startedAt: new Date().toISOString(),
@@ -48,14 +56,16 @@ describe('buildStatement', () => {
   })
 
   it('reduces the premium in proportion to exposure avoided', () => {
-    // Drove 500 of 1,000 rated km: half the exposure avoided.
-    const s = buildStatement([trip({ mode: 'car', metres: 500_000 })], policy)
+    // Drove 500 of 1,000 rated km, spread over enough days to be payable.
+    const s = buildStatement(overDays(10, { mode: 'car', metres: 50_000 }), policy)
+    expect(s.drivenKm).toBe(500)
     expect(s.exposureReduction).toBeCloseTo(0.5, 5)
     expect(s.premiumReduction).toBeCloseTo(0.5 * MILEAGE_VARIABLE_SHARE * MEMBER_SHARE, 5)
   })
 
   it('never exceeds the ceiling', () => {
-    const s = buildStatement([], policy) // drove nothing at all
+    // Measured for weeks, and barely drove at all.
+    const s = buildStatement(overDays(20, { mode: 'train', metres: 1_000 }), policy)
     expect(s.premiumReduction).toBe(MAX_REDUCTION)
     expect(s.cappedByCeiling).toBe(true)
     expect(s.reductionCents).toBe(policy.basePremiumCents * MAX_REDUCTION)
@@ -71,7 +81,10 @@ describe('buildStatement', () => {
 
   it('only credits displacing modes', () => {
     const s = buildStatement(
-      [trip({ mode: 'car', metres: 500_000 }), trip({ mode: 'train', metres: 100_000 })],
+      [
+        ...overDays(10, { mode: 'car', metres: 50_000 }),
+        ...overDays(10, { mode: 'train', metres: 10_000 }),
+      ],
       policy,
     )
     expect(s.displacedKm).toBe(100)
@@ -79,13 +92,13 @@ describe('buildStatement', () => {
   })
 
   it('does not divide by zero when nothing was displaced', () => {
-    const s = buildStatement([trip({ mode: 'car', metres: 500_000 })], policy)
+    const s = buildStatement(overDays(10, { mode: 'car', metres: 50_000 }), policy)
     expect(s.centsPerVerifiedKm).toBe(0)
     expect(Number.isFinite(s.centsPerVerifiedKm)).toBe(true)
   })
 
   it('reports carbon as a consequence, never as the basis', () => {
-    const s = buildStatement([trip({ mode: 'train', metres: 100_000 })], policy)
+    const s = buildStatement(overDays(10, { mode: 'train', metres: 10_000 }), policy)
     // 100 km at (192 - 41) g/km
     expect(s.co2KgAvoided).toBeCloseTo(15.1, 1)
   })
@@ -96,8 +109,8 @@ describe('buildStatement', () => {
   })
 
   it('publishes a complete derivation for every figure shown', () => {
-    const s = buildStatement([trip({ mode: 'car', metres: 400_000 })], policy)
-    expect(s.derivation).toHaveLength(6)
+    const s = buildStatement(overDays(10, { mode: 'car', metres: 40_000 }), policy)
+    expect(s.derivation).toHaveLength(7)
     expect(s.derivation.every((d) => d.label && d.value && d.note)).toBe(true)
   })
 })
@@ -160,7 +173,7 @@ describe('credential', () => {
 describe('reductionFor', () => {
   it('matches what buildStatement produces for the same inputs', async () => {
     const { reductionFor } = await import('./engine')
-    const s = buildStatement([trip({ mode: 'car', metres: 400_000 })], policy)
+    const s = buildStatement(overDays(10, { mode: 'car', metres: 40_000 }), policy)
     expect(reductionFor(s.avoidedKm, s.ratedKm)).toBeCloseTo(s.premiumReduction, 6)
   })
 
@@ -197,5 +210,61 @@ describe('local date keys', () => {
     const tripAtMidday = new Date(2026, 8, 16, 12, 0)
     const seedAfterMidnight = new Date(2026, 8, 18, 0, 5)
     expect(weekKey(tripAtMidday)).toBe(weekKey(seedAfterMidnight))
+  })
+})
+
+describe('evidence threshold', () => {
+  const day = (offset: number) => {
+    const d = new Date(2026, 8, 18, 8, 0)
+    d.setDate(d.getDate() - offset)
+    return d.toISOString()
+  }
+
+  it('pays nothing at all with no trips, rather than the full ceiling', async () => {
+    const { MIN_EVIDENCE_DAYS } = await import('./engine')
+    const s = buildStatement([], policy)
+    // Exposure looks maximal, because nothing was measured.
+    expect(s.exposureReduction).toBe(1)
+    // But nothing is paid.
+    expect(s.premiumReduction).toBe(0)
+    expect(s.reductionCents).toBe(0)
+    expect(s.hasEnoughEvidence).toBe(false)
+    expect(s.measuredDays).toBe(0)
+    expect(MIN_EVIDENCE_DAYS).toBeGreaterThan(0)
+  })
+
+  it('still pays nothing one day short of the threshold', async () => {
+    const { MIN_EVIDENCE_DAYS } = await import('./engine')
+    const trips = Array.from({ length: MIN_EVIDENCE_DAYS - 1 }, (_, i) =>
+      trip({ startedAt: day(i), mode: 'train', metres: 10_000 }),
+    )
+    const s = buildStatement(trips, policy)
+    expect(s.hasEnoughEvidence).toBe(false)
+    expect(s.reductionCents).toBe(0)
+  })
+
+  it('pays once the threshold is reached', async () => {
+    const { MIN_EVIDENCE_DAYS } = await import('./engine')
+    const trips = Array.from({ length: MIN_EVIDENCE_DAYS }, (_, i) =>
+      trip({ startedAt: day(i), mode: 'train', metres: 10_000 }),
+    )
+    const s = buildStatement(trips, policy)
+    expect(s.hasEnoughEvidence).toBe(true)
+    expect(s.reductionCents).toBeGreaterThan(0)
+  })
+
+  it('counts days, not trips: ten trips in one day is still one day', async () => {
+    const trips = Array.from({ length: 10 }, () =>
+      trip({ startedAt: day(0), mode: 'train', metres: 10_000 }),
+    )
+    expect(buildStatement(trips, policy).measuredDays).toBe(1)
+  })
+
+  it('does not count unverified trips towards the threshold', async () => {
+    const { MIN_EVIDENCE_DAYS } = await import('./engine')
+    const trips = Array.from({ length: MIN_EVIDENCE_DAYS }, (_, i) =>
+      trip({ startedAt: day(i), verification: 'unverified' }),
+    )
+    expect(buildStatement(trips, policy).measuredDays).toBe(0)
   })
 })
