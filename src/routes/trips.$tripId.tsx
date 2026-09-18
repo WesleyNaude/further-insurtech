@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { ChevronLeft, Check, X, PencilLine } from 'lucide-react'
+import { motion } from 'motion/react'
 import { toast } from 'sonner'
 import { RouteFigure } from '@/components/app/RouteFigure'
 import { VerificationMark } from '@/components/app/TripRow'
@@ -124,7 +125,12 @@ function TripDetail() {
 
           <ul className="mt-3 overflow-hidden rounded-[--radius-card] bg-surface ring-1 ring-line">
             {trip.evidence.map((e, i) => (
-              <li key={e.kind + i}>
+              <motion.li
+                key={e.kind + i}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.12 + i * 0.07, duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
+              >
                 {i > 0 && <Divider />}
                 <div className="flex items-start gap-3 px-4 py-3.5">
                   <span
@@ -140,7 +146,7 @@ function TripDetail() {
                     <p className="mt-0.5 text-[13px] leading-[1.5] text-ink-muted">{e.detail}</p>
                   </div>
                 </div>
-              </li>
+              </motion.li>
             ))}
           </ul>
 
