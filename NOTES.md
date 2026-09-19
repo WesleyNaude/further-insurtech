@@ -1,12 +1,15 @@
-# Branch: fuel-handback
+# Notes: the fuel tax hand-back
 
 Idea 1 from the team brief, built to Marta's user journey.
 
 Drivers pay a carbon charge at the pump. Some of it comes back to low-income
 households, on every tram, bus and train journey they make. Kraków, 2028.
 
-`main` holds the insurer build and `flight-reward` holds idea 2. This branch
-replaces the app; the shell, tokens, primitives and charts carried over.
+This is what `main` now holds. The two earlier ideas are archived as tags:
+`archive/insurer` (verified low-mileage sold to motor insurers) and
+`archive/flight-reward` (earn a flight by preventing warming for two seats).
+Their PITCH.md and EVIDENCE.md are still in this repo, banner-marked as archived,
+because most of the research in them still applies.
 
 ```bash
 npm install && npm run dev

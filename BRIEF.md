@@ -1,4 +1,11 @@
 # Further — build brief
+
+> **This document describes the insurer idea, which is archived.**
+> `main` now holds the fuel tax hand-back. See `README.md` and `NOTES.md`.
+> The insurer build is preserved in full at the tag `archive/insurer`.
+> Most of the research below still stands; the framing around motor insurance
+> does not.
+
 Owner: Claude. Written 18 September 2026, overnight build.
 
 ## The premise (changed)
