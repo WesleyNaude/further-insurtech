@@ -66,12 +66,13 @@ function JourneysScreen() {
                 +{formatZl(dayTotal)}
               </span>
             </div>
-            <div className="bg-surface ring-1 ring-line">
+            <div className="gutter">
+              <div className="overflow-hidden rounded-[--radius-card] bg-surface ring-1 ring-line">
               {items.map((t, i) => {
                 const Icon = MODE_ICON[t.mode]
                 return (
                   <React.Fragment key={t.id}>
-                    {i > 0 && <Divider className="ml-[68px]" />}
+                    {i > 0 && <Divider className="ml-[64px]" />}
                     <div className="flex items-center gap-3 px-5 py-3.5">
                       <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-money-soft text-money-ink">
                         <Icon size={18} strokeWidth={1.75} />
@@ -97,6 +98,7 @@ function JourneysScreen() {
                   </React.Fragment>
                 )
               })}
+              </div>
             </div>
           </section>
         )

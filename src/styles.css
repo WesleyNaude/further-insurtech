@@ -86,11 +86,13 @@
   --radius-400: 12px;
   --radius-500: 16px;
 
-  /* Base buttons and inputs are 8px, not pills. That squared-off feel is
-     most of what makes the language recognisable. */
-  --radius-card: 12px;
-  --radius-control: 8px;
-  --radius-sheet: 16px;
+  /* Containers take Base's largest step; sheets go a little rounder still,
+     which is the convention for something dragged up from the bottom edge.
+     Controls stay at Base's 8px: buttons and inputs are squared off, and
+     that contrast between soft container and crisp control is the point. */
+  --radius-card: 16px;   /* radius500 */
+  --radius-control: 8px; /* buttonBorderRadius, inputBorderRadius */
+  --radius-sheet: 24px;
   --radius-pill: 999px;
 
   /* Base borders are opacity-based, so they sit correctly on any surface. */

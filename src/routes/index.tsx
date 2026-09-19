@@ -123,12 +123,13 @@ function WalletScreen() {
           </Link>
         }
       >
-        <div className="bg-surface ring-1 ring-line">
+        <div className="gutter">
+          <div className="overflow-hidden rounded-[--radius-card] bg-surface ring-1 ring-line">
           {recent.map((t, i) => {
             const Icon = MODE_ICON[t.mode]
             return (
               <React.Fragment key={t.id}>
-                {i > 0 && <Divider className="ml-[68px]" />}
+                {i > 0 && <Divider className="ml-[64px]" />}
                 <motion.div
                   initial={reduced ? false : { opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -163,6 +164,7 @@ function WalletScreen() {
               Nothing yet. Tap your card as you always do and it will appear here.
             </p>
           )}
+          </div>
         </div>
       </Section>
 
