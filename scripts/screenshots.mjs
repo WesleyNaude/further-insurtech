@@ -56,39 +56,9 @@ const shot = async (path, name, prep) => {
   console.log(name, '->', await heading())
 }
 
-await shot('/', 'today')
-await shot('/insurer', 'insurer')
-await shot('/impact', 'impact')
-
-// A verified public-transport trip, with the scrubber held mid-journey.
-await page.goto('http://localhost:5173/trips', { waitUntil: 'networkidle0' })
-await wait(2200)
-const href = await page.evaluate(() => {
-  const a = [...document.querySelectorAll('a[href^="/trips/"]')].find((x) =>
-    /Train|Bus|Taxi/.test(x.textContent),
-  )
-  return a?.getAttribute('href') ?? null
-})
-console.log('trip href', href)
-if (href) {
-  await shot(href, 'trip', async () => {
-    await page.evaluate(() => {
-      const s = document.querySelector('[role="slider"]')
-      if (!s) return
-      s.setPointerCapture = () => {}
-      const b = s.getBoundingClientRect()
-      s.dispatchEvent(
-        new PointerEvent('pointerdown', {
-          bubbles: true,
-          clientX: b.left + b.width * 0.42,
-          clientY: b.top + b.height / 2,
-          pointerId: 1,
-          pointerType: 'mouse',
-          buttons: 1,
-        }),
-      )
-    })
-  })
-}
+await shot('/', 'wallet')
+await shot('/journeys', 'journeys')
+await shot('/goal', 'saving')
+await shot('/source', 'source')
 
 await browser.close()
