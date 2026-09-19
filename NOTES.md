@@ -141,9 +141,10 @@ here carries their name, logo or any claim of affiliation.
 Blue is the one action colour and green only ever means money, which is Base's
 own semantic split rather than a decorative choice.
 
-Containers sit at Base's largest radius, 16px, with bottom sheets rounder at
-24px. Controls stay at Base's 8px: the contrast between a soft container and a
-crisp button is deliberate, and flattening it loses the language.
+One radius, 8px, across buttons, cards and sheets. That is Base's own number in
+all three places: `buttonBorderRadius`, `inputBorderRadius` and
+`popoverBorderRadius` are each 8px, so the surface reads as a single system
+rather than as controls sitting inside softer containers.
 
 ## Numbers
 

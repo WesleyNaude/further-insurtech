@@ -86,13 +86,13 @@
   --radius-400: 12px;
   --radius-500: 16px;
 
-  /* Containers take Base's largest step; sheets go a little rounder still,
-     which is the convention for something dragged up from the bottom edge.
-     Controls stay at Base's 8px: buttons and inputs are squared off, and
-     that contrast between soft container and crisp control is the point. */
-  --radius-card: 16px;   /* radius500 */
+  /* One radius across buttons, cards and sheets. This is Base's own number
+     in all three places: buttonBorderRadius, inputBorderRadius and
+     popoverBorderRadius are each 8px, so the whole surface reads as one
+     system rather than as controls sitting inside softer containers. */
+  --radius-card: 8px;    /* radius300 */
   --radius-control: 8px; /* buttonBorderRadius, inputBorderRadius */
-  --radius-sheet: 24px;
+  --radius-sheet: 8px;   /* popoverBorderRadius */
   --radius-pill: 999px;
 
   /* Base borders are opacity-based, so they sit correctly on any surface. */
