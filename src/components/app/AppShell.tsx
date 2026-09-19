@@ -141,49 +141,56 @@ export function BottomNav() {
   const pathname = useRouterState({ select: (s) => s.location.pathname })
 
   return (
-    <nav
-      // Overlays the scroll area rather than sitting under it. A backdrop
-      // filter has nothing to filter unless content passes behind it, so the
-      // blur was previously declared and invisible.
-      className="safe-bottom absolute inset-x-0 bottom-0 z-40 bg-paper/78 backdrop-blur-xl backdrop-saturate-150 hairline-t"
-      style={{ WebkitBackdropFilter: 'blur(24px) saturate(150%)' }}
-    >
-      <ul className="mx-auto flex h-[56px] max-w-md items-stretch">
+    // A floating bar rather than one pinned to the edge: it sits above the
+    // content with air around it, so the page reads as continuing underneath
+    // rather than stopping at a chrome boundary.
+    <div className="safe-bottom pointer-events-none absolute inset-x-0 bottom-0 z-40 px-4 pb-3">
+      <nav
+        className="pointer-events-auto mx-auto flex max-w-[380px] items-stretch rounded-full bg-sunken/80 p-1.5 shadow-(--shadow-lift) ring-1 ring-line backdrop-blur-xl backdrop-saturate-150"
+        style={{ WebkitBackdropFilter: 'blur(24px) saturate(150%)' }}
+      >
         {TABS.map(({ to, label, icon: Icon }) => {
           const active = to === '/' ? pathname === '/' : pathname.startsWith(to)
           return (
-            <li key={to} className="flex-1">
-              <Link
-                to={to}
-                aria-label={label}
-                aria-current={active ? 'page' : undefined}
-                onClick={() => !active && tap()}
-                className="group relative flex h-full flex-col items-center justify-center gap-1"
-              >
-                <span className={cx('transition-colors duration-150', active ? 'text-ink' : 'text-ink-faint')}>
-                  <Icon size={22} strokeWidth={active ? 2.1 : 1.7} />
-                </span>
-                <span
-                  className={cx(
-                    'text-[12px] leading-none transition-colors duration-150',
-                    active ? 'font-medium text-ink' : 'text-ink-faint',
-                  )}
-                >
-                  {label}
-                </span>
-                {active && (
-                  <motion.span
-                    layoutId="tab-dot"
-                    transition={{ type: 'spring', stiffness: 520, damping: 38 }}
-                    className="absolute top-1 h-[3px] w-[3px] rounded-full bg-ink"
-                  />
+            <Link
+              key={to}
+              to={to}
+              aria-label={label}
+              aria-current={active ? 'page' : undefined}
+              onClick={() => !active && tap()}
+              className="relative flex flex-1 flex-col items-center justify-center gap-1 rounded-full py-2"
+            >
+              {/* The filled highlight travels between tabs rather than
+                  appearing and disappearing, which is what makes the bar feel
+                  like one object instead of five buttons. */}
+              {active && (
+                <motion.span
+                  layoutId="nav-pill"
+                  transition={{ type: 'spring', stiffness: 480, damping: 40 }}
+                  className="absolute inset-0 rounded-full bg-surface"
+                />
+              )}
+              <span
+                className={cx(
+                  'relative transition-colors duration-150',
+                  active ? 'text-ink' : 'text-ink-faint',
                 )}
-              </Link>
-            </li>
+              >
+                <Icon size={20} strokeWidth={active ? 2.1 : 1.8} />
+              </span>
+              <span
+                className={cx(
+                  'relative text-[12px] leading-none transition-colors duration-150',
+                  active ? 'font-medium text-ink' : 'text-ink-faint',
+                )}
+              >
+                {label}
+              </span>
+            </Link>
           )
         })}
-      </ul>
-    </nav>
+      </nav>
+    </div>
   )
 }
 
@@ -206,14 +213,14 @@ export function OfflineBar() {
   if (!offline) return null
 
   return (
-    <div className="shrink-0 bg-ink px-5 py-2 text-center text-[12px] font-medium text-paper">
-      Offline. Trips are still recorded on this device.
+    <div className="shrink-0 bg-ink px-4 py-2 text-center text-[12px] font-medium text-paper">
+      Offline. Journeys are still recorded and will appear when you reconnect.
     </div>
   )
 }
 
 /** Height of the bottom bar, so content can clear what now floats over it. */
-export const NAV_CLEARANCE = 'pb-[calc(56px+env(safe-area-inset-bottom)+24px)]'
+export const NAV_CLEARANCE = 'pb-[calc(72px+env(safe-area-inset-bottom)+24px)]'
 
 /** Page scaffold used by every screen inside the shell's scroll container. */
 export function Screen({ children }: { children: React.ReactNode }) {

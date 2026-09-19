@@ -163,6 +163,18 @@ city paying you back.
 through a tunnel on a real handset without the certificate warning a
 self-signed cert produces.
 
+### The bottom bar
+
+A floating pill rather than a bar pinned to the edge, following Uber's own app:
+inset from the sides, air underneath, and a filled highlight behind the active
+tab. The page reads as continuing under it instead of stopping at a chrome
+boundary.
+
+The highlight travels between tabs on a spring rather than appearing and
+disappearing, which is what makes the bar feel like one object rather than four
+buttons. It is the one place a pill radius is used: everything else is 8px, but
+a floating bar that is not fully round reads as a mistake.
+
 ### The translucent bars
 
 Both bars carry `backdrop-blur-xl backdrop-saturate-150` over a 72–78% ground,
