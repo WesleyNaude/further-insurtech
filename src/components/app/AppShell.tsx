@@ -144,7 +144,12 @@ export function BottomNav() {
     // A floating bar rather than one pinned to the edge: it sits above the
     // content with air around it, so the page reads as continuing underneath
     // rather than stopping at a chrome boundary.
-    <div className="safe-bottom pointer-events-none absolute inset-x-0 bottom-0 z-40 px-4 pb-3">
+    // 16px clear of the safe area, not of the viewport edge: on a handset with
+    // a home indicator those are different places, and the second one puts the
+    // bar under the indicator. Combined into one padding-bottom because
+    // `safe-bottom` and a `pb-*` utility both set that property and the loser
+    // is silently dropped.
+    <div className="pointer-events-none absolute inset-x-0 bottom-0 z-40 px-4 pb-[calc(16px+env(safe-area-inset-bottom))]">
       <nav
         className="pointer-events-auto mx-auto flex max-w-[380px] items-stretch rounded-full bg-sunken/80 p-1.5 shadow-(--shadow-lift) ring-1 ring-line backdrop-blur-xl backdrop-saturate-150"
         style={{ WebkitBackdropFilter: 'blur(24px) saturate(150%)' }}
@@ -220,7 +225,7 @@ export function OfflineBar() {
 }
 
 /** Height of the bottom bar, so content can clear what now floats over it. */
-export const NAV_CLEARANCE = 'pb-[calc(72px+env(safe-area-inset-bottom)+24px)]'
+export const NAV_CLEARANCE = 'pb-[calc(72px+16px+env(safe-area-inset-bottom)+24px)]'
 
 /** Page scaffold used by every screen inside the shell's scroll container. */
 export function Screen({ children }: { children: React.ReactNode }) {
