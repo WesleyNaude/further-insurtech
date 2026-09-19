@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { ChevronLeft, Fuel, ArrowDown, Wallet } from 'lucide-react'
-import { TopBar } from '@/components/app/AppShell'
+import { TopBar, NAV_CLEARANCE } from '@/components/app/AppShell'
+import { cx } from '@/lib/cx'
 import { Card, Divider } from '@/components/ui/primitives'
 import { useWallet } from '@/lib/handback/useWallet'
 import { formatZl, formatEur } from '@/lib/handback/money'
@@ -20,7 +21,7 @@ function SourceScreen() {
   const { totals } = useWallet()
 
   return (
-    <main className="mx-auto w-full max-w-md pb-10">
+    <main className={cx('mx-auto w-full max-w-md', NAV_CLEARANCE)}>
       <TopBar
         title="Where this comes from"
         leading={

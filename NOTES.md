@@ -163,6 +163,18 @@ city paying you back.
 through a tunnel on a real handset without the certificate warning a
 self-signed cert produces.
 
+### The translucent bars
+
+Both bars carry `backdrop-blur-xl backdrop-saturate-150` over a 72–78% ground,
+the way X does it, so content dissolves rather than stopping at an edge.
+
+That only works if content actually passes behind the bar. The top bar is
+`sticky` inside the scroll container and was fine. The bottom bar sat *outside*
+it, below the scroll area in normal flow, so it was blurring nothing at all:
+the filter was declared, correct, and had no subject. It is now `absolute` over
+the scroll area, and `NAV_CLEARANCE` gives every page enough bottom padding
+that the last line still clears it.
+
 ### A bug worth recording
 
 Every radius and shadow in this app was silently absent for days. The classes

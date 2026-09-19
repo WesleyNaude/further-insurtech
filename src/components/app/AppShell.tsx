@@ -142,7 +142,10 @@ export function BottomNav() {
 
   return (
     <nav
-      className="safe-bottom relative z-40 shrink-0 bg-paper/78 backdrop-blur-xl backdrop-saturate-150 hairline-t"
+      // Overlays the scroll area rather than sitting under it. A backdrop
+      // filter has nothing to filter unless content passes behind it, so the
+      // blur was previously declared and invisible.
+      className="safe-bottom absolute inset-x-0 bottom-0 z-40 bg-paper/78 backdrop-blur-xl backdrop-saturate-150 hairline-t"
       style={{ WebkitBackdropFilter: 'blur(24px) saturate(150%)' }}
     >
       <ul className="mx-auto flex h-[56px] max-w-md items-stretch">
@@ -209,7 +212,12 @@ export function OfflineBar() {
   )
 }
 
+/** Height of the bottom bar, so content can clear what now floats over it. */
+export const NAV_CLEARANCE = 'pb-[calc(56px+env(safe-area-inset-bottom)+24px)]'
+
 /** Page scaffold used by every screen inside the shell's scroll container. */
 export function Screen({ children }: { children: React.ReactNode }) {
-  return <main className="mx-auto w-full max-w-md pb-10">{children}</main>
+  return (
+    <main className={cx('mx-auto w-full max-w-md', NAV_CLEARANCE)}>{children}</main>
+  )
 }
