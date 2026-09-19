@@ -10,46 +10,30 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as CoverRouteImport } from './routes/cover'
-import { Route as ImpactRouteImport } from './routes/impact'
-import { Route as InsurerRouteImport } from './routes/insurer'
-import { Route as PlanRouteImport } from './routes/plan'
-import { Route as RecordRouteImport } from './routes/record'
+import { Route as EvidenceRouteImport } from './routes/evidence'
+import { Route as FlightRouteImport } from './routes/flight'
+import { Route as InstallRouteImport } from './routes/install'
 import { Route as SettingsRouteImport } from './routes/settings'
-import { Route as TrackRouteImport } from './routes/track'
-import { Route as TripsRouteImport } from './routes/trips'
-import { Route as WalletRouteImport } from './routes/wallet'
 import { Route as WelcomeRouteImport } from './routes/welcome'
-import { Route as TripsTripIdRouteImport } from './routes/trips.$tripId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CoverRoute = CoverRouteImport.update({
-  id: '/cover',
-  path: '/cover',
+const EvidenceRoute = EvidenceRouteImport.update({
+  id: '/evidence',
+  path: '/evidence',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ImpactRoute = ImpactRouteImport.update({
-  id: '/impact',
-  path: '/impact',
+const FlightRoute = FlightRouteImport.update({
+  id: '/flight',
+  path: '/flight',
   getParentRoute: () => rootRouteImport,
 } as any)
-const InsurerRoute = InsurerRouteImport.update({
-  id: '/insurer',
-  path: '/insurer',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PlanRoute = PlanRouteImport.update({
-  id: '/plan',
-  path: '/plan',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RecordRoute = RecordRouteImport.update({
-  id: '/record',
-  path: '/record',
+const InstallRoute = InstallRouteImport.update({
+  id: '/install',
+  path: '/install',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SettingsRoute = SettingsRouteImport.update({
@@ -57,131 +41,59 @@ const SettingsRoute = SettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TrackRoute = TrackRouteImport.update({
-  id: '/track',
-  path: '/track',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TripsRoute = TripsRouteImport.update({
-  id: '/trips',
-  path: '/trips',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const WalletRoute = WalletRouteImport.update({
-  id: '/wallet',
-  path: '/wallet',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const WelcomeRoute = WelcomeRouteImport.update({
   id: '/welcome',
   path: '/welcome',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TripsTripIdRoute = TripsTripIdRouteImport.update({
-  id: '/$tripId',
-  path: '/$tripId',
-  getParentRoute: () => TripsRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/cover': typeof CoverRoute
-  '/impact': typeof ImpactRoute
-  '/insurer': typeof InsurerRoute
-  '/plan': typeof PlanRoute
-  '/record': typeof RecordRoute
+  '/evidence': typeof EvidenceRoute
+  '/flight': typeof FlightRoute
+  '/install': typeof InstallRoute
   '/settings': typeof SettingsRoute
-  '/track': typeof TrackRoute
-  '/trips': typeof TripsRouteWithChildren
-  '/wallet': typeof WalletRoute
   '/welcome': typeof WelcomeRoute
-  '/trips/$tripId': typeof TripsTripIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/cover': typeof CoverRoute
-  '/impact': typeof ImpactRoute
-  '/insurer': typeof InsurerRoute
-  '/plan': typeof PlanRoute
-  '/record': typeof RecordRoute
+  '/evidence': typeof EvidenceRoute
+  '/flight': typeof FlightRoute
+  '/install': typeof InstallRoute
   '/settings': typeof SettingsRoute
-  '/track': typeof TrackRoute
-  '/trips': typeof TripsRouteWithChildren
-  '/wallet': typeof WalletRoute
   '/welcome': typeof WelcomeRoute
-  '/trips/$tripId': typeof TripsTripIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/cover': typeof CoverRoute
-  '/impact': typeof ImpactRoute
-  '/insurer': typeof InsurerRoute
-  '/plan': typeof PlanRoute
-  '/record': typeof RecordRoute
+  '/evidence': typeof EvidenceRoute
+  '/flight': typeof FlightRoute
+  '/install': typeof InstallRoute
   '/settings': typeof SettingsRoute
-  '/track': typeof TrackRoute
-  '/trips': typeof TripsRouteWithChildren
-  '/wallet': typeof WalletRoute
   '/welcome': typeof WelcomeRoute
-  '/trips/$tripId': typeof TripsTripIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
-    | '/cover'
-    | '/impact'
-    | '/insurer'
-    | '/plan'
-    | '/record'
-    | '/settings'
-    | '/track'
-    | '/trips'
-    | '/wallet'
-    | '/welcome'
-    | '/trips/$tripId'
+    '/' | '/evidence' | '/flight' | '/install' | '/settings' | '/welcome'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/cover'
-    | '/impact'
-    | '/insurer'
-    | '/plan'
-    | '/record'
-    | '/settings'
-    | '/track'
-    | '/trips'
-    | '/wallet'
-    | '/welcome'
-    | '/trips/$tripId'
+  to: '/' | '/evidence' | '/flight' | '/install' | '/settings' | '/welcome'
   id:
     | '__root__'
     | '/'
-    | '/cover'
-    | '/impact'
-    | '/insurer'
-    | '/plan'
-    | '/record'
+    | '/evidence'
+    | '/flight'
+    | '/install'
     | '/settings'
-    | '/track'
-    | '/trips'
-    | '/wallet'
     | '/welcome'
-    | '/trips/$tripId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  CoverRoute: typeof CoverRoute
-  ImpactRoute: typeof ImpactRoute
-  InsurerRoute: typeof InsurerRoute
-  PlanRoute: typeof PlanRoute
-  RecordRoute: typeof RecordRoute
+  EvidenceRoute: typeof EvidenceRoute
+  FlightRoute: typeof FlightRoute
+  InstallRoute: typeof InstallRoute
   SettingsRoute: typeof SettingsRoute
-  TrackRoute: typeof TrackRoute
-  TripsRoute: typeof TripsRouteWithChildren
-  WalletRoute: typeof WalletRoute
   WelcomeRoute: typeof WelcomeRoute
 }
 
@@ -194,39 +106,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/cover': {
-      id: '/cover'
-      path: '/cover'
-      fullPath: '/cover'
-      preLoaderRoute: typeof CoverRouteImport
+    '/evidence': {
+      id: '/evidence'
+      path: '/evidence'
+      fullPath: '/evidence'
+      preLoaderRoute: typeof EvidenceRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/impact': {
-      id: '/impact'
-      path: '/impact'
-      fullPath: '/impact'
-      preLoaderRoute: typeof ImpactRouteImport
+    '/flight': {
+      id: '/flight'
+      path: '/flight'
+      fullPath: '/flight'
+      preLoaderRoute: typeof FlightRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/insurer': {
-      id: '/insurer'
-      path: '/insurer'
-      fullPath: '/insurer'
-      preLoaderRoute: typeof InsurerRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/plan': {
-      id: '/plan'
-      path: '/plan'
-      fullPath: '/plan'
-      preLoaderRoute: typeof PlanRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/record': {
-      id: '/record'
-      path: '/record'
-      fullPath: '/record'
-      preLoaderRoute: typeof RecordRouteImport
+    '/install': {
+      id: '/install'
+      path: '/install'
+      fullPath: '/install'
+      preLoaderRoute: typeof InstallRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/settings': {
@@ -236,27 +134,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/track': {
-      id: '/track'
-      path: '/track'
-      fullPath: '/track'
-      preLoaderRoute: typeof TrackRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/trips': {
-      id: '/trips'
-      path: '/trips'
-      fullPath: '/trips'
-      preLoaderRoute: typeof TripsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/wallet': {
-      id: '/wallet'
-      path: '/wallet'
-      fullPath: '/wallet'
-      preLoaderRoute: typeof WalletRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/welcome': {
       id: '/welcome'
       path: '/welcome'
@@ -264,37 +141,15 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WelcomeRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/trips/$tripId': {
-      id: '/trips/$tripId'
-      path: '/$tripId'
-      fullPath: '/trips/$tripId'
-      preLoaderRoute: typeof TripsTripIdRouteImport
-      parentRoute: typeof TripsRoute
-    }
   }
 }
 
-interface TripsRouteChildren {
-  TripsTripIdRoute: typeof TripsTripIdRoute
-}
-
-const TripsRouteChildren: TripsRouteChildren = {
-  TripsTripIdRoute: TripsTripIdRoute,
-}
-
-const TripsRouteWithChildren = TripsRoute._addFileChildren(TripsRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  CoverRoute: CoverRoute,
-  ImpactRoute: ImpactRoute,
-  InsurerRoute: InsurerRoute,
-  PlanRoute: PlanRoute,
-  RecordRoute: RecordRoute,
+  EvidenceRoute: EvidenceRoute,
+  FlightRoute: FlightRoute,
+  InstallRoute: InstallRoute,
   SettingsRoute: SettingsRoute,
-  TrackRoute: TrackRoute,
-  TripsRoute: TripsRouteWithChildren,
-  WalletRoute: WalletRoute,
   WelcomeRoute: WelcomeRoute,
 }
 export const routeTree = rootRouteImport

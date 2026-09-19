@@ -1,15 +1,15 @@
 import * as React from 'react'
 import { Link, useRouterState } from '@tanstack/react-router'
-import { Home, Route as RouteIcon, Wallet, BarChart3, Settings, Plus } from 'lucide-react'
+import { Home, Plane, Wrench, FileCheck2, Settings } from 'lucide-react'
 import { motion } from 'motion/react'
 import { cx } from '@/lib/cx'
 import { tap } from '@/lib/haptics'
 
 const TABS = [
-  { to: '/', label: 'Today', icon: Home },
-  { to: '/trips', label: 'Trips', icon: RouteIcon },
-  { to: '/wallet', label: 'Wallet', icon: Wallet },
-  { to: '/impact', label: 'Impact', icon: BarChart3 },
+  { to: '/', label: 'Progress', icon: Home },
+  { to: '/flight', label: 'Flight', icon: Plane },
+  { to: '/install', label: 'Install', icon: Wrench },
+  { to: '/evidence', label: 'Evidence', icon: FileCheck2 },
   { to: '/settings', label: 'Settings', icon: Settings },
 ] as const
 
@@ -182,24 +182,6 @@ export function BottomNav() {
         })}
       </ul>
     </nav>
-  )
-}
-
-/** The one accent-coloured control in the product. */
-export function Fab({ onClick }: { onClick: () => void }) {
-  return (
-    <motion.button
-      onClick={() => {
-        tap()
-        onClick()
-      }}
-      whileTap={{ scale: 0.92 }}
-      transition={{ type: 'spring', stiffness: 600, damping: 30 }}
-      aria-label="Log a trip"
-      className="absolute bottom-[72px] right-5 z-50 grid h-14 w-14 place-items-center rounded-full bg-accent text-on-accent shadow-[--shadow-fab]"
-    >
-      <Plus size={24} strokeWidth={2.2} />
-    </motion.button>
   )
 }
 

@@ -1,21 +1,34 @@
 import { Drawer } from 'vaul'
 import { X } from 'lucide-react'
-import type { Statement } from '@/lib/domain/engine'
 import { Divider } from '@/components/ui/primitives'
 
+export interface Step {
+  label: string
+  value: string
+  note: string
+}
+
 /**
- * The transparency screen. Carried over from the original brief's best idea:
- * "where every number came from, tappable". Every figure in the app that
- * represents money can open this.
+ * The transparency sheet.
+ *
+ * Carried over from the brief's best instruction: every number tappable, back
+ * to where it came from. A reward built on a calculation nobody can inspect is
+ * a reward nobody should believe.
  */
 export function DerivationSheet({
   open,
   onOpenChange,
-  statement,
+  title,
+  intro,
+  steps,
+  footer,
 }: {
   open: boolean
   onOpenChange: (v: boolean) => void
-  statement: Statement
+  title: string
+  intro: string
+  steps: Step[]
+  footer?: React.ReactNode
 }) {
   return (
     <Drawer.Root open={open} onOpenChange={onOpenChange}>
@@ -24,28 +37,24 @@ export function DerivationSheet({
         <Drawer.Content className="fixed inset-x-0 bottom-0 z-50 mx-auto flex max-h-[88dvh] max-w-md flex-col rounded-t-[--radius-sheet] bg-paper outline-none">
           <div className="mx-auto mt-3 h-1 w-9 shrink-0 rounded-full bg-line-strong" />
 
-          <div className="gutter flex items-center justify-between py-4">
+          <div className="gutter flex items-center justify-between gap-3 py-4">
             <Drawer.Title className="text-[17px] font-semibold tracking-[-0.01em]">
-              How this is worked out
+              {title}
             </Drawer.Title>
             <button
               onClick={() => onOpenChange(false)}
               aria-label="Close"
-              className="grid h-11 w-11 place-items-center rounded-full bg-sunken text-ink-muted"
+              className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-sunken text-ink-muted"
             >
               <X size={16} strokeWidth={2} />
             </button>
           </div>
 
           <div className="no-scrollbar gutter overflow-y-auto pb-10">
-            <p className="mb-6 text-[14px] leading-[1.55] text-ink-muted">
-              Your reduction is not a bonus and it is not carbon money. It is a share of the
-              claims cost your insurer no longer expects to carry, because you drove fewer
-              kilometres than your premium assumed.
-            </p>
+            <p className="mb-6 text-[14px] leading-[1.55] text-ink-muted">{intro}</p>
 
-            <ol className="space-y-0">
-              {statement.derivation.map((step, i) => (
+            <ol>
+              {steps.map((step, i) => (
                 <li key={step.label}>
                   {i > 0 && <Divider />}
                   <div className="flex items-start gap-4 py-4">
@@ -66,14 +75,7 @@ export function DerivationSheet({
               ))}
             </ol>
 
-            <div className="mt-4 rounded-[--radius-card] bg-sunken p-4">
-              <p className="text-[13px] leading-[1.55] text-ink-muted">
-                <strong className="font-medium text-ink">What this is not.</strong> This does not
-                offset, neutralise or cancel any emissions, and it is not a carbon credit. The
-                kilograms shown on the Impact tab are a consequence of driving less, reported for
-                interest only. No insurer or regulator has endorsed this calculation.
-              </p>
-            </div>
+            {footer && <div className="mt-4">{footer}</div>}
           </div>
         </Drawer.Content>
       </Drawer.Portal>

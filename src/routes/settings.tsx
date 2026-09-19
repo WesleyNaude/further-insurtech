@@ -1,77 +1,43 @@
-import * as React from 'react'
-import { createFileRoute, Link } from '@tanstack/react-router'
-import { ChevronRight, ShieldCheck, Car, RotateCcw, MapPin, Eye, Sun, Moon, SunMoon, FileBadge, Wallet2 } from 'lucide-react'
-import { useTheme, type Theme } from '@/lib/theme'
-import { PolicyEditor } from '@/components/app/PolicyEditor'
-import { cx } from '@/lib/cx'
+import { createFileRoute } from '@tanstack/react-router'
+import { RotateCcw, Sun, Moon, SunMoon, ShieldQuestion } from 'lucide-react'
 import { toast } from 'sonner'
 import { TopBar, Screen } from '@/components/app/AppShell'
-import { Card, Section, Divider, Button } from '@/components/ui/primitives'
-import { useStore } from '@/lib/store'
-import { formatRand } from '@/lib/domain/money'
-import { MILEAGE_VARIABLE_SHARE, MEMBER_SHARE, MAX_REDUCTION } from '@/lib/domain/engine'
+import { Card, Section, Button } from '@/components/ui/primitives'
+import { useTheme, type Theme } from '@/lib/theme'
+import { useFlightStore } from '@/lib/flight/store'
+import { useProgress } from '@/lib/flight/useProgress'
+import {
+  GRID_KG_PER_KWH,
+  GEYSER_KWH_MONTH,
+  KG_CO2_PER_PAX_KM,
+  NON_CO2_MULTIPLIER,
+  TARIFF_C_PER_KWH,
+} from '@/lib/flight/data'
+import { SEATS_COVERED } from '@/lib/flight/engine'
+import { cx } from '@/lib/cx'
 
 export const Route = createFileRoute('/settings')({ component: SettingsScreen })
 
 function SettingsScreen() {
-  const policy = useStore((s) => s.policy)
-  const reset = useStore((s) => s.reset)
-  const resetEmpty = useStore((s) => s.resetEmpty)
-  const [editing, setEditing] = React.useState(false)
+  const reset = useFlightStore((s) => s.reset)
+  const resetEmpty = useFlightStore((s) => s.resetEmpty)
+  const { intervention, flight, enrolment } = useProgress()
 
   return (
     <Screen>
       <TopBar title="Settings" />
 
-      <Section title="Your policy">
+      <Section title="Your enrolment">
         <div className="gutter">
           <Card>
-            <div className="flex items-center gap-3">
-              <span className="grid h-10 w-10 place-items-center rounded-full bg-sunken text-ink-muted">
-                <Car size={18} strokeWidth={1.75} />
-              </span>
-              <div className="min-w-0 flex-1">
-                <p className="text-[15px] font-medium">{policy.vehicle}</p>
-                <p className="text-[13px] text-ink-muted">
-                  {policy.insurer} · {policy.product}
-                </p>
-              </div>
-            </div>
-            <Divider className="my-4" />
-            <Field label="Monthly premium" value={formatRand(policy.basePremiumCents)} />
+            <Field label="Flight" value={`${flight.from} to ${flight.to}`} />
+            <Field label="Appliance" value={intervention.name} />
+            <Field label="Property" value={enrolment.tenure === 'owner' ? 'Owned' : 'Rented'} />
             <Field
-              label="Rated annual mileage"
-              value={`${policy.ratedAnnualKm.toLocaleString('en-ZA')} km`}
+              label="Status"
+              value={enrolment.claimedOn ? 'Claimed, closed' : 'Counting'}
             />
-            <Field
-              label="Linked"
-              value={new Date(policy.linkedAt).toLocaleDateString('en-ZA', {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric',
-              })}
-            />
-            <Button className="mt-3 w-full" onClick={() => setEditing(true)}>
-              Change these figures
-            </Button>
           </Card>
-        </div>
-      </Section>
-
-      <Section title="Plan">
-        <div className="gutter">
-          <Link to="/plan">
-            <Card className="flex items-center gap-3">
-              <span className="grid h-10 w-10 place-items-center rounded-full bg-sunken text-ink-muted">
-                <MapPin size={18} strokeWidth={1.75} />
-              </span>
-              <div className="min-w-0 flex-1">
-                <p className="text-[15px] font-medium">Plan a trip</p>
-                <p className="text-[13px] text-ink-muted">Compare fares against driving</p>
-              </div>
-              <ChevronRight size={18} strokeWidth={2} className="text-ink-faint" />
-            </Card>
-          </Link>
         </div>
       </Section>
 
@@ -81,74 +47,46 @@ function SettingsScreen() {
         </div>
       </Section>
 
-      <Section title="Privacy">
-        <div className="gutter space-y-3">
-          <Link to="/cover">
-            <Card className="flex items-center gap-3">
-              <span className="grid h-10 w-10 place-items-center rounded-full bg-accent-soft text-accent-ink">
-                <Wallet2 size={18} strokeWidth={1.75} />
-              </span>
-              <div className="min-w-0 flex-1">
-                <p className="text-[15px] font-medium">What cover could cost</p>
-                <p className="text-[13px] text-ink-muted">Priced on your measured travel</p>
-              </div>
-              <ChevronRight size={18} strokeWidth={2} className="text-ink-faint" />
-            </Card>
-          </Link>
-          <Link to="/record">
-            <Card className="flex items-center gap-3">
-              <span className="grid h-10 w-10 place-items-center rounded-full bg-sunken text-ink-muted">
-                <FileBadge size={18} strokeWidth={1.75} />
-              </span>
-              <div className="min-w-0 flex-1">
-                <p className="text-[15px] font-medium">Your mileage record</p>
-                <p className="text-[13px] text-ink-muted">Portable proof, take it to any insurer</p>
-              </div>
-              <ChevronRight size={18} strokeWidth={2} className="text-ink-faint" />
-            </Card>
-          </Link>
-          <Link to="/insurer">
-            <Card className="flex items-center gap-3">
-              <span className="grid h-10 w-10 place-items-center rounded-full bg-sunken text-ink-muted">
-                <Eye size={18} strokeWidth={1.75} />
-              </span>
-              <div className="min-w-0 flex-1">
-                <p className="text-[15px] font-medium">What your insurer sees</p>
-                <p className="text-[13px] text-ink-muted">Six numbers, once a month</p>
-              </div>
-              <ChevronRight size={18} strokeWidth={2} className="text-ink-faint" />
-            </Card>
-          </Link>
+      <Section title="Every constant we apply">
+        <div className="gutter">
           <Card>
-            <div className="flex items-start gap-3">
-              <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-accent-soft text-accent-ink">
-                <ShieldCheck size={16} strokeWidth={2} />
-              </span>
-              <div className="text-[13px] leading-[1.6] text-ink-muted">
-                <p>
-                  We keep the corridor you matched and the time band you travelled in. We do not
-                  keep a continuous location history, and we never share a route with your insurer,
-                  only the monthly kilometre totals your reduction is calculated from.
-                </p>
-                <p className="mt-3">
-                  Your insurer never sees which taxi, train or operator you used.
-                </p>
-              </div>
-            </div>
+            <Field label="Eskom grid" value={`${GRID_KG_PER_KWH} kg CO2e/kWh`} />
+            <Field label="Assumed geyser load" value={`${GEYSER_KWH_MONTH} kWh a month`} />
+            <Field label="Electricity tariff" value={`R${(TARIFF_C_PER_KWH / 100).toFixed(2)}/kWh`} />
+            <Field label="Flight CO2" value={`${KG_CO2_PER_PAX_KM} kg per pax-km`} />
+            <Field label="Non-CO2 multiplier" value={`×${NON_CO2_MULTIPLIER}`} />
+            <Field label="Seats covered" value={String(SEATS_COVERED)} />
+            <p className="mt-3 text-[12px] leading-[1.55] text-ink-faint">
+              Published here rather than buried, because a number you cannot check is a number you
+              cannot trust. Progress is measured from your own bills; the assumed load is only
+              used for estimates before your readings exist.
+            </p>
           </Card>
         </div>
       </Section>
 
-      <Section title="The constants we apply">
+      <Section title="What we are not claiming">
         <div className="gutter">
           <Card>
-            <Field label="Mileage-variable share of premium" value={`${MILEAGE_VARIABLE_SHARE * 100}%`} />
-            <Field label="Your share of the modelled saving" value={`${MEMBER_SHARE * 100}%`} />
-            <Field label="Monthly reduction ceiling" value={`${MAX_REDUCTION * 100}%`} />
-            <p className="mt-3 text-[12px] leading-[1.5] text-ink-faint">
-              Published here rather than buried, because a number you cannot check is a number you
-              cannot trust.
-            </p>
+            <div className="flex items-start gap-3">
+              <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-sunken text-ink-muted">
+                <ShieldQuestion size={16} strokeWidth={1.9} />
+              </span>
+              <div className="text-[13px] leading-[1.6] text-ink-muted">
+                <p>
+                  This offsets a flight&rsquo;s emissions. It is not a certified carbon credit, it
+                  has not been audited, and no airline or regulator has endorsed the calculation.
+                </p>
+                <p className="mt-3">
+                  The non-CO2 multiplier is a simplification of contested science. Every screen
+                  shows the fuel-burn CO2 separately so you can see what the multiplier does.
+                </p>
+                <p className="mt-3">
+                  We do not claim the appliance would not have been fitted without us. Most of
+                  these pay for themselves in electricity within a few years.
+                </p>
+              </div>
+            </div>
           </Card>
         </div>
       </Section>
@@ -158,6 +96,7 @@ function SettingsScreen() {
           <div className="flex flex-wrap gap-2">
             <Button
               onClick={() => {
+                localStorage.removeItem('further.flight.earned')
                 reset()
                 toast.success('Demo data reset')
               }}
@@ -167,9 +106,10 @@ function SettingsScreen() {
             </Button>
             <Button
               onClick={() => {
+                localStorage.removeItem('further.flight.earned')
                 resetEmpty()
                 toast('Starting from nothing', {
-                  description: 'No history, no reduction, onboarding from the top.',
+                  description: 'No install, no bills, nothing counting.',
                 })
               }}
             >
@@ -177,17 +117,14 @@ function SettingsScreen() {
             </Button>
           </div>
           <p className="mt-2 text-[12px] leading-[1.5] text-ink-faint">
-            &ldquo;Start empty&rdquo; is the genuine day-one experience: no trips, nothing paid,
-            and the evidence threshold visible.
+            &ldquo;Start empty&rdquo; is the real day one: nothing is counting until there is an
+            install date, a certificate and a baseline.
           </p>
         </div>
       </Section>
 
-      <PolicyEditor open={editing} onOpenChange={setEditing} />
-
       <p className="gutter mt-8 text-[12px] leading-[1.5] text-ink-faint">
-        Further is a demonstration. Figures are modelled, not quoted, and no insurer has endorsed
-        this calculation.
+        Further is a demonstration. Figures are modelled, not quoted.
       </p>
     </Screen>
   )
@@ -200,7 +137,6 @@ function ThemePicker() {
     { value: 'dark', label: 'Dark', icon: Moon },
     { value: 'system', label: 'System', icon: SunMoon },
   ]
-
   return (
     <div className="grid grid-cols-3 gap-2" role="radiogroup" aria-label="Appearance">
       {options.map(({ value, label, icon: Icon }) => (
@@ -224,7 +160,7 @@ function ThemePicker() {
 
 function Field({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-baseline justify-between py-1.5">
+    <div className="flex items-baseline justify-between gap-4 py-1.5">
       <span className="text-[14px] text-ink-muted">{label}</span>
       <span className="tnum text-[14px] font-medium text-ink">{value}</span>
     </div>
