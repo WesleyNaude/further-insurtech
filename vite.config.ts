@@ -3,20 +3,13 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
 import { VitePWA } from 'vite-plugin-pwa'
-import basicSsl from '@vitejs/plugin-basic-ssl'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 
-// iOS will not hand a page the gyroscope outside a secure context, and will
-// not even show the permission prompt. `npm run dev:https` turns on a
-// self-signed certificate so the tilt lighting can be tested on a phone.
-const https = process.env.HTTPS === '1'
-
 export default defineConfig({
   plugins: [
-    ...(https ? [basicSsl()] : []),
     tanstackRouter({ target: 'react', autoCodeSplitting: true }),
     react(),
     tailwindcss(),
@@ -56,5 +49,12 @@ export default defineConfig({
     }),
   ],
   resolve: { alias: { '@': path.resolve(dirname, './src') } },
-  server: { port: 5173, host: true },
+  server: {
+    port: 5173,
+    host: true,
+    // Vite blocks unknown Host headers, which breaks any tunnel. Testing the
+    // gyroscope on a real handset needs a trusted https origin, and a tunnel
+    // is the only way to get one without installing a certificate on the phone.
+    allowedHosts: ['.exp.direct', '.ngrok.app', '.ngrok-free.app', '.trycloudflare.com', '.lhr.life'],
+  },
 })

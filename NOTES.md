@@ -143,30 +143,25 @@ own semantic split rather than a decorative choice.
 
 ### The balance card
 
-Tilt lighting has two gates on iOS, and both fail silently. Safari 13+ will not
-give a page the gyroscope until the user taps to allow it, and will not even
-show that prompt outside a **secure context**. Over plain http on an iPhone the
-card simply does not respond, which looks like a broken effect rather than a
-blocked one.
+A raised surface carrying the only number that matters, so the rest of the
+screen can stay quiet. The grosz sit back in grey while the złoty stay white,
+which is what makes a figure read as one number rather than four digits.
 
-`useTiltPermission` reports which of the two it is: a one-tap "let the card
-catch the light" on iOS, and a plain sentence when the connection is the
-problem. `npm run dev:https` starts Vite with a self-signed certificate so this
-can be tested on a handset. Safari warns once, then it works.
+The texture behind it is route contours at the angles of the lines Marta
+actually rides, at 7% opacity, rather than the moiré wave these cards usually
+carry. You should notice it a beat after the figure, never before.
 
-One borrowed effect: `react-parallax-tilt` (MIT, 2.9 kB, zero dependencies).
-On a phone it uses the gyroscope, so the card leans as the handset does and a
-sheen crosses it, the way light moves on a physical card. Angles are 6 degrees
-and the glare peaks at 12%, deliberately small. Reduced motion gets the card
-and none of the movement.
+**A gyroscope tilt was built and then removed.** It needs two permission gates
+on iOS and a trusted certificate to even ask, and on a phone there is no
+pointer to fall back on, so the dependency did nothing at all on the device
+that matters. Border beams and cursor spotlights were rejected earlier for a
+different reason: they are built for marketing pages, and shimmer around a
+low-income household's benefits balance reads as crypto rather than as the
+city paying you back.
 
-Everything else in that space was rejected on purpose. Magic UI's border beam,
-Aceternity's spotlight and comet cards are all MIT and all good, but they are
-built for marketing pages. An animated shimmer around a low-income household's
-benefits balance reads as crypto, not as the city paying you back.
-
-The texture behind the figure is route contours at the angles of the lines
-Marta rides, at 7% opacity, rather than the moiré wave these cards usually use.
+`server.allowedHosts` in the Vite config stays, so the app can be opened
+through a tunnel on a real handset without the certificate warning a
+self-signed cert produces.
 
 ### A bug worth recording
 

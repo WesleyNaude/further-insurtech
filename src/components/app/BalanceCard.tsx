@@ -1,11 +1,9 @@
 import { Link } from '@tanstack/react-router'
-import Tilt from 'react-parallax-tilt'
 import NumberFlow from '@number-flow/react'
 import { motion, useReducedMotion } from 'motion/react'
-import { MoreVertical, ChevronRight, Sparkles } from 'lucide-react'
+import { MoreVertical, ChevronRight } from 'lucide-react'
 import { formatZl } from '@/lib/handback/money'
 import { cx } from '@/lib/cx'
-import { useTiltPermission } from '@/lib/useTiltPermission'
 
 /**
  * The balance card.
@@ -15,15 +13,10 @@ import { useTiltPermission } from '@/lib/useTiltPermission'
  * than decoration: overlapping route contours, at an opacity low enough that
  * you notice it only after the figure.
  *
- * It tilts. On a phone that is the gyroscope, so the card leans as the handset
- * does and a sheen crosses it, the way light moves on a physical card. That is
- * the one borrowed effect here, from react-parallax-tilt (MIT, 2.9 kB, no
- * dependencies), and the values are deliberately small: this is money a
- * household is owed, not a game.
- *
- * Everything else on offer in that space, animated border beams and cursor
- * spotlights, is built for marketing pages. On a benefits balance it would
- * read as crypto rather than as the city paying you back.
+ * No tilt, no sheen. A gyroscope card needs two permission gates on iOS and a
+ * trusted certificate to ask for them, and on a phone there is no pointer to
+ * fall back on, so the whole effect was a dependency that did nothing on the
+ * device that matters. The texture carries it instead.
  */
 export function BalanceCard({
   name,
@@ -41,7 +34,6 @@ export function BalanceCard({
   journeys: number
 }) {
   const reduced = useReducedMotion()
-  const tilt = useTiltPermission()
 
   const zl = Math.floor(amountGr / 100)
   const gr = String(amountGr % 100).padStart(2, '0')
@@ -53,8 +45,9 @@ export function BalanceCard({
     .join('')
     .toUpperCase()
 
-  const card = (
-    <div className="relative overflow-hidden rounded-(--radius-card) bg-surface ring-1 ring-line">
+  return (
+    <div className="gutter">
+      <div className="relative overflow-hidden rounded-(--radius-card) bg-surface ring-1 ring-line">
         <RouteField reduced={Boolean(reduced)} />
 
         <div className="relative p-4">
@@ -109,48 +102,7 @@ export function BalanceCard({
             <ChevronRight size={15} strokeWidth={2} className="text-ink-faint" />
           </Link>
         </div>
-    </div>
-  )
-
-  // Reduced motion gets the card and none of the movement.
-  if (reduced) return <div className="gutter">{card}</div>
-
-  return (
-    <div className="gutter">
-      <Tilt
-        // A handset is tilted further than a cursor ever travels, so the
-        // gyroscope gets a wider angle and a stronger sheen than the pointer.
-        tiltMaxAngleX={tilt.enabled ? 12 : 6}
-        tiltMaxAngleY={tilt.enabled ? 12 : 6}
-        perspective={1200}
-        scale={1.01}
-        transitionSpeed={tilt.enabled ? 400 : 900}
-        gyroscope={tilt.enabled}
-        glareEnable
-        glareMaxOpacity={tilt.enabled ? 0.22 : 0.12}
-        glareBorderRadius="8px"
-        glarePosition="all"
-        className="rounded-(--radius-card)"
-      >
-        {card}
-      </Tilt>
-
-      {tilt.state === 'needs-permission' && (
-        <button
-          onClick={tilt.request}
-          className="tap mt-2 inline-flex items-center gap-1.5 text-[13px] text-ink-muted"
-        >
-          <Sparkles size={13} strokeWidth={1.9} />
-          Let the card catch the light as you tilt
-        </button>
-      )}
-
-      {tilt.state === 'insecure' && (
-        <p className="mt-2 text-[12px] leading-[1.5] text-ink-faint">
-          Tilt lighting needs a secure connection. Open this over https and the card will
-          respond to how you hold the phone.
-        </p>
-      )}
+      </div>
     </div>
   )
 }
