@@ -173,7 +173,7 @@ function ThemePicker() {
           aria-checked={theme === value}
           onClick={() => setTheme(value)}
           className={cx(
-            'flex h-[52px] flex-col items-center justify-center gap-1 rounded-[--radius-card] ring-1 transition-colors',
+            'flex h-[52px] flex-col items-center justify-center gap-1 rounded-(--radius-card) ring-1 transition-colors',
             theme === value ? 'bg-ink text-paper ring-ink' : 'bg-surface text-ink-muted ring-line',
           )}
         >

@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "shots": "node scripts/screenshots.mjs",
-    "check": "tsc --noEmit && vitest run && vite build"
+    "check": "node scripts/check-tokens.mjs && tsc --noEmit && vitest run && vite build"
   },
   "keywords": [],
   "author": "",

@@ -115,7 +115,7 @@ export function BarChart({
                   <motion.span
                     initial={{ opacity: 0, y: 4 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="pointer-events-none absolute bottom-full z-10 mb-1 whitespace-nowrap rounded-[8px] bg-ink px-2 py-1 text-[12px] font-medium text-paper shadow-[--shadow-lift]"
+                    className="pointer-events-none absolute bottom-full z-10 mb-1 whitespace-nowrap rounded-[8px] bg-ink px-2 py-1 text-[12px] font-medium text-paper shadow-(--shadow-lift)"
                   >
                     {series.map((s) => (
                       <span key={s.key} className="tnum block">

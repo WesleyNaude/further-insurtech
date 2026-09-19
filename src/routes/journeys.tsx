@@ -67,7 +67,7 @@ function JourneysScreen() {
               </span>
             </div>
             <div className="gutter">
-              <div className="overflow-hidden rounded-[--radius-card] bg-surface ring-1 ring-line">
+              <div className="overflow-hidden rounded-(--radius-card) bg-surface ring-1 ring-line">
               {items.map((t, i) => {
                 const Icon = MODE_ICON[t.mode]
                 return (

@@ -191,7 +191,7 @@ function GoalScreen() {
                   tap()
                 }}
                 className={cx(
-                  'h-[52px] rounded-[--radius-card] text-[14px] font-medium ring-1 transition-colors',
+                  'h-[52px] rounded-(--radius-card) text-[14px] font-medium ring-1 transition-colors',
                   payout === v
                     ? 'bg-ink text-paper ring-ink'
                     : 'bg-surface text-ink-muted ring-line',

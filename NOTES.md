@@ -141,6 +141,17 @@ here carries their name, logo or any claim of affiliation.
 Blue is the one action colour and green only ever means money, which is Base's
 own semantic split rather than a decorative choice.
 
+### A bug worth recording
+
+Every radius and shadow in this app was silently absent for days. The classes
+were written `rounded-[--radius-card]`, which is Tailwind v3 syntax; v4 needs
+`rounded-(--radius-card)`. Written the old way Tailwind emits an invalid
+declaration, the browser discards it, and you get nothing. Nothing errors, so
+it reads as a design choice rather than a fault, and two rounds of tuning the
+radius made no visible difference at all.
+
+`npm run check` now greps for the old form and fails the build on it.
+
 One radius, 8px, across buttons, cards and sheets. That is Base's own number in
 all three places: `buttonBorderRadius`, `inputBorderRadius` and
 `popoverBorderRadius` are each 8px, so the surface reads as a single system

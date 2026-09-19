@@ -124,7 +124,7 @@ function WalletScreen() {
         }
       >
         <div className="gutter">
-          <div className="overflow-hidden rounded-[--radius-card] bg-surface ring-1 ring-line">
+          <div className="overflow-hidden rounded-(--radius-card) bg-surface ring-1 ring-line">
           {recent.map((t, i) => {
             const Icon = MODE_ICON[t.mode]
             return (
@@ -172,7 +172,7 @@ function WalletScreen() {
         <div className="gutter">
           <button
             onClick={simulateTap}
-            className="w-full rounded-[--radius-card] bg-sunken px-4 py-3.5 text-left"
+            className="w-full rounded-(--radius-card) bg-sunken px-4 py-3.5 text-left"
           >
             <span className="block text-[14px] font-medium text-ink">
               Pretend she just tapped her card
@@ -197,7 +197,7 @@ function WalletScreen() {
 
 function Figure({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-[--radius-card] bg-surface px-3 py-3 ring-1 ring-line">
+    <div className="rounded-(--radius-card) bg-surface px-3 py-3 ring-1 ring-line">
       <p className="tnum text-[16px] font-medium leading-none tracking-[-0.02em] text-ink">
         {value}
       </p>

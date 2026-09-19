@@ -91,7 +91,7 @@ function Welcome() {
                     }}
                     aria-pressed={people === n}
                     className={cx(
-                      'h-14 flex-1 rounded-[--radius-card] text-[16px] font-medium ring-1 transition-colors',
+                      'h-14 flex-1 rounded-(--radius-card) text-[16px] font-medium ring-1 transition-colors',
                       people === n
                         ? 'bg-ink text-paper ring-ink'
                         : 'bg-surface text-ink ring-line',
@@ -155,7 +155,7 @@ function Welcome() {
                   every journey. You do not have to do anything to claim it.
                 </p>
 
-                <div className="mt-7 rounded-[--radius-card] bg-sunken p-4">
+                <div className="mt-7 rounded-(--radius-card) bg-sunken p-4">
                   <p className="text-[14px] leading-[1.6] text-ink-muted">
                     Just tap your card the way you always have. The money appears here a few
                     minutes later. There is nothing to open, nothing to scan, and nothing to

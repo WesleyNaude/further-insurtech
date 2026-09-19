@@ -33,12 +33,12 @@ function AppError({ error }: ErrorComponentProps) {
         <p className="mt-2 text-[14px] leading-[1.55] text-ink-muted">
           Your trips are safe: everything is stored on this device. Reloading usually fixes it.
         </p>
-        <p className="mt-4 break-words rounded-[--radius-card] bg-sunken p-3 text-left font-mono text-[12px] leading-[1.5] text-ink-faint">
+        <p className="mt-4 break-words rounded-(--radius-card) bg-sunken p-3 text-left font-mono text-[12px] leading-[1.5] text-ink-faint">
           {error instanceof Error ? error.message : 'Unknown error'}
         </p>
         <button
           onClick={() => window.location.reload()}
-          className="mt-5 inline-flex h-11 items-center rounded-[--radius-pill] bg-ink px-5 text-[16px] font-medium text-paper"
+          className="mt-5 inline-flex h-11 items-center rounded-(--radius-pill) bg-ink px-5 text-[16px] font-medium text-paper"
         >
           Reload
         </button>
@@ -55,7 +55,7 @@ function NotFound() {
         <p className="text-[16px] text-ink-muted">That screen does not exist.</p>
         <button
           onClick={() => navigate({ to: '/' })}
-          className="mt-4 inline-flex h-11 items-center rounded-[--radius-pill] bg-sunken px-4 text-[16px] font-medium text-ink"
+          className="mt-4 inline-flex h-11 items-center rounded-(--radius-pill) bg-sunken px-4 text-[16px] font-medium text-ink"
         >
           Back to today
         </button>

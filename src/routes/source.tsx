@@ -112,7 +112,7 @@ function SourceScreen() {
       </div>
 
       <div className="gutter mt-6">
-        <div className="rounded-[--radius-card] bg-sunken p-4">
+        <div className="rounded-(--radius-card) bg-sunken p-4">
           <p className="text-[14px] leading-[1.6] text-ink-muted">
             <strong className="font-medium text-ink">Nothing is taken out of this.</strong> The
             money passes straight through to you. Whoever runs the scheme is paid separately, by

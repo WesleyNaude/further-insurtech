@@ -10,7 +10,7 @@ export function Card({
   return (
     <div
       className={cx(
-        'rounded-[--radius-card] bg-surface shadow-[--shadow-card] ring-1 ring-line',
+        'rounded-(--radius-card) bg-surface shadow-(--shadow-card) ring-1 ring-line',
         inset && 'p-4',
         className,
       )}
@@ -63,8 +63,8 @@ export function Button({
   return (
     <button
       className={cx(
-        'inline-flex items-center justify-center gap-2 rounded-[--radius-control] font-medium',
-        'transition-[transform,background-color,opacity] duration-150 ease-[--ease-out-soft]',
+        'inline-flex items-center justify-center gap-2 rounded-(--radius-control) font-medium',
+        'transition-[transform,background-color,opacity] duration-150 ease-(--ease-out-soft)',
         'active:scale-[0.97] disabled:pointer-events-none disabled:opacity-40',
         size === 'md' ? 'h-12 px-4 text-[14px]' : 'h-14 px-6 text-[16px]',
         variant === 'primary' && 'bg-ink text-paper hover:opacity-90',
@@ -91,7 +91,7 @@ export function Pill({
   return (
     <span
       className={cx(
-        'inline-flex items-center gap-1 rounded-[--radius-pill] px-2 py-0.5 text-[12px] font-medium',
+        'inline-flex items-center gap-1 rounded-(--radius-pill) px-2 py-0.5 text-[12px] font-medium',
         tone === 'neutral' && 'bg-sunken text-ink-muted',
         tone === 'accent' && 'bg-money-soft text-money-ink',
         tone === 'warn' && 'bg-warn-soft text-warn',
