@@ -12,11 +12,7 @@ import { useHandbackStore } from '@/lib/handback/store'
 import { formatZl } from '@/lib/handback/money'
 import { confirm as buzz, tap } from '@/lib/haptics'
 import { cx } from '@/lib/cx'
-import { stageLabel } from '@/lib/handback/goalStage'
 
-// lottie-web is heavy relative to the rest of this screen, and the plant is
-// decoration on top of a number that renders instantly. Load it after.
-const GoalPlant = lazy(() => import('@/components/app/GoalPlant'))
 const GoalEditor = lazy(() => import('@/components/app/GoalEditor').then((m) => ({ default: m.GoalEditor })))
 
 export const Route = createFileRoute('/goal')({ component: GoalScreen })
@@ -112,17 +108,6 @@ function GoalScreen() {
                   <Pencil size={14} strokeWidth={1.9} />
                   <span className="sr-only">Change what you are saving for</span>
                 </button>
-              </div>
-
-              <div className="mt-2 flex flex-col items-center">
-                <div className="h-[132px] w-[132px]">
-                  <Suspense fallback={null}>
-                    <GoalPlant fraction={goal.fraction} className="h-full w-full" />
-                  </Suspense>
-                </div>
-                <p className="-mt-1 text-[13px] font-medium text-ink-muted">
-                  {stageLabel(goal.fraction)}
-                </p>
               </div>
 
               <div className="mt-4 h-2.5 w-full overflow-hidden rounded-full bg-sunken">
