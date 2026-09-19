@@ -143,6 +143,17 @@ own semantic split rather than a decorative choice.
 
 ### The balance card
 
+Tilt lighting has two gates on iOS, and both fail silently. Safari 13+ will not
+give a page the gyroscope until the user taps to allow it, and will not even
+show that prompt outside a **secure context**. Over plain http on an iPhone the
+card simply does not respond, which looks like a broken effect rather than a
+blocked one.
+
+`useTiltPermission` reports which of the two it is: a one-tap "let the card
+catch the light" on iOS, and a plain sentence when the connection is the
+problem. `npm run dev:https` starts Vite with a self-signed certificate so this
+can be tested on a handset. Safari warns once, then it works.
+
 One borrowed effect: `react-parallax-tilt` (MIT, 2.9 kB, zero dependencies).
 On a phone it uses the gyroscope, so the card leans as the handset does and a
 sheen crosses it, the way light moves on a physical card. Angles are 6 degrees

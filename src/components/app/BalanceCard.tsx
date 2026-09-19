@@ -2,9 +2,10 @@ import { Link } from '@tanstack/react-router'
 import Tilt from 'react-parallax-tilt'
 import NumberFlow from '@number-flow/react'
 import { motion, useReducedMotion } from 'motion/react'
-import { MoreVertical, ChevronRight } from 'lucide-react'
+import { MoreVertical, ChevronRight, Sparkles } from 'lucide-react'
 import { formatZl } from '@/lib/handback/money'
 import { cx } from '@/lib/cx'
+import { useTiltPermission } from '@/lib/useTiltPermission'
 
 /**
  * The balance card.
@@ -40,6 +41,7 @@ export function BalanceCard({
   journeys: number
 }) {
   const reduced = useReducedMotion()
+  const tilt = useTiltPermission()
 
   const zl = Math.floor(amountGr / 100)
   const gr = String(amountGr % 100).padStart(2, '0')
@@ -116,20 +118,39 @@ export function BalanceCard({
   return (
     <div className="gutter">
       <Tilt
-        tiltMaxAngleX={6}
-        tiltMaxAngleY={6}
+        // A handset is tilted further than a cursor ever travels, so the
+        // gyroscope gets a wider angle and a stronger sheen than the pointer.
+        tiltMaxAngleX={tilt.enabled ? 12 : 6}
+        tiltMaxAngleY={tilt.enabled ? 12 : 6}
         perspective={1200}
         scale={1.01}
-        transitionSpeed={900}
-        gyroscope
+        transitionSpeed={tilt.enabled ? 400 : 900}
+        gyroscope={tilt.enabled}
         glareEnable
-        glareMaxOpacity={0.12}
+        glareMaxOpacity={tilt.enabled ? 0.22 : 0.12}
         glareBorderRadius="8px"
         glarePosition="all"
         className="rounded-(--radius-card)"
       >
         {card}
       </Tilt>
+
+      {tilt.state === 'needs-permission' && (
+        <button
+          onClick={tilt.request}
+          className="tap mt-2 inline-flex items-center gap-1.5 text-[13px] text-ink-muted"
+        >
+          <Sparkles size={13} strokeWidth={1.9} />
+          Let the card catch the light as you tilt
+        </button>
+      )}
+
+      {tilt.state === 'insecure' && (
+        <p className="mt-2 text-[12px] leading-[1.5] text-ink-faint">
+          Tilt lighting needs a secure connection. Open this over https and the card will
+          respond to how you hold the phone.
+        </p>
+      )}
     </div>
   )
 }
