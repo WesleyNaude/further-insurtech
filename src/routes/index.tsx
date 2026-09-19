@@ -1,10 +1,10 @@
 import * as React from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
-import NumberFlow from '@number-flow/react'
 import { motion, useReducedMotion } from 'motion/react'
 import { toast } from 'sonner'
-import { ChevronRight, TramFront, Bus, TrainFront, Sunrise } from 'lucide-react'
+import { TramFront, Bus, TrainFront, Sunrise } from 'lucide-react'
 import { TopBar, Screen, HeroEnd } from '@/components/app/AppShell'
+import { BalanceCard } from '@/components/app/BalanceCard'
 import { Card, Section, Divider } from '@/components/ui/primitives'
 import { useWallet } from '@/lib/handback/useWallet'
 import { useHandbackStore } from '@/lib/handback/store'
@@ -22,7 +22,7 @@ const MODE_ICON: Record<Mode, typeof TramFront> = {
 }
 
 function WalletScreen() {
-  const { totals, taps, pattern, availableGr } = useWallet()
+  const { totals, taps, pattern, availableGr, household } = useWallet()
   const receiveTap = useHandbackStore((s) => s.receiveTap)
   const reduced = useReducedMotion()
 
@@ -56,28 +56,20 @@ function WalletScreen() {
       />
 
       {/* ------------------------------------------------------------ hero */}
-      <div className="gutter pt-4">
-        <p className="text-[14px] font-medium uppercase tracking-[0.08em] text-ink-faint">
-          Back this month
-        </p>
-        <p className="tnum mt-2 flex items-baseline text-[52px] font-bold leading-[0.95] tracking-[-0.035em] text-ink">
-          <NumberFlow value={totals.month / 100} locales="pl-PL" format={{ minimumFractionDigits: 2 }} />
-          <span className="ml-2 text-[24px] font-medium text-ink-faint">zł</span>
-        </p>
+      <div className="pt-3">
+        <BalanceCard
+          name={household.name}
+          city={household.city}
+          label="Back this month"
+          amountGr={totals.month}
+          todayGr={totals.today}
+          journeys={totals.tripsMonth}
+        />
+      </div>
 
-        <Link
-          to="/source"
-          className="mt-3 inline-flex items-center gap-1.5 text-[14px] leading-[1.5] text-ink-muted"
-        >
-          Funded by the EU carbon charge on fuel
-          <ChevronRight size={15} strokeWidth={2} className="text-ink-faint" />
-        </Link>
-
-        <div className="mt-5 grid grid-cols-3 gap-3">
-          <Figure label="Today" value={formatZl(totals.today)} />
-          <Figure label="This week" value={formatZl(totals.week)} />
-          <Figure label="Journeys" value={String(totals.tripsMonth)} />
-        </div>
+      <div className="gutter mt-3 grid grid-cols-2 gap-3">
+        <Figure label="This week" value={formatZl(totals.week)} />
+        <Figure label="Not yet used" value={formatZl(availableGr)} />
       </div>
 
       <HeroEnd />

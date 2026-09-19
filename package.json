@@ -26,6 +26,7 @@
     "motion": "^13.4.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
+    "react-parallax-tilt": "^1.7.343",
     "sonner": "^2.0.8",
     "tailwind-merge": "^3.7.0",
     "vaul": "^1.1.2",

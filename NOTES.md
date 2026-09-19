@@ -141,6 +141,22 @@ here carries their name, logo or any claim of affiliation.
 Blue is the one action colour and green only ever means money, which is Base's
 own semantic split rather than a decorative choice.
 
+### The balance card
+
+One borrowed effect: `react-parallax-tilt` (MIT, 2.9 kB, zero dependencies).
+On a phone it uses the gyroscope, so the card leans as the handset does and a
+sheen crosses it, the way light moves on a physical card. Angles are 6 degrees
+and the glare peaks at 12%, deliberately small. Reduced motion gets the card
+and none of the movement.
+
+Everything else in that space was rejected on purpose. Magic UI's border beam,
+Aceternity's spotlight and comet cards are all MIT and all good, but they are
+built for marketing pages. An animated shimmer around a low-income household's
+benefits balance reads as crypto, not as the city paying you back.
+
+The texture behind the figure is route contours at the angles of the lines
+Marta rides, at 7% opacity, rather than the moiré wave these cards usually use.
+
 ### A bug worth recording
 
 Every radius and shadow in this app was silently absent for days. The classes
