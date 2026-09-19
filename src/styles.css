@@ -67,10 +67,12 @@
 
   /* Base puts one blue behind every primary action. Money uses the
      positive green, so the two never compete for the same meaning. */
-  --color-accent: #276EF1;
-  --color-accent-soft: #EFF4FE;
-  --color-accent-ink: #175BCC;
-  --color-on-accent: #FFFFFF;
+  /* Brand green, taken from the logo mark. Light enough that white text on it
+     is only 2.74:1, so --color-on-accent is near-black rather than white. */
+  --color-accent: #16B364;
+  --color-accent-soft: #E7F8EF;
+  --color-accent-ink: #0A7A42;   /* 5.42:1 on paper; the brand green itself is 2.74:1 */
+  --color-on-accent: #052E1C;    /* 5.42:1 on the accent */
 
   --color-money: #0E8345;
   --color-money-soft: #EAF6ED;
@@ -122,10 +124,12 @@
     --color-line: #292929;         /* borderOpaque */
     --color-line-strong: #383838;  /* gray200Dark */
 
-    --color-accent: #5E8BDB;       /* contentAccent / blue600Dark */
-    --color-accent-soft: #182946;  /* backgroundAccentLight / blue100Dark */
-    --color-accent-ink: #93B4EE;   /* blue700Dark */
-    --color-on-accent: #061431;    /* blue50Dark: the accent lightens, so this flips */
+    /* The brand green already reads on black (7.67:1), so unlike the blue it
+       does not need lightening; it stays exactly the logo's green. */
+    --color-accent: #16B364;
+    --color-accent-soft: #0B2C1C;
+    --color-accent-ink: #3DD68C;   /* 11.20:1 on paper */
+    --color-on-accent: #052E1C;    /* 5.42:1 on the accent */
 
     --color-money: #5C9D70;        /* contentPositive / green600Dark */
     --color-money-soft: #162F1E;   /* backgroundPositiveLight / green100Dark */
@@ -157,10 +161,10 @@
   --color-line: #292929;       /* borderOpaque */
   --color-line-strong: #383838;  /* gray200Dark */
 
-  --color-accent: #5E8BDB;     /* contentAccent / blue600Dark */
-  --color-accent-soft: #182946;  /* backgroundAccentLight / blue100Dark */
-  --color-accent-ink: #93B4EE;   /* blue700Dark */
-  --color-on-accent: #061431;  /* blue50Dark: the accent lightens, so this flips */
+  --color-accent: #16B364;
+  --color-accent-soft: #0B2C1C;
+  --color-accent-ink: #3DD68C;
+  --color-on-accent: #052E1C;
 
   --color-money: #5C9D70;      /* contentPositive / green600Dark */
   --color-money-soft: #162F1E;   /* backgroundPositiveLight / green100Dark */

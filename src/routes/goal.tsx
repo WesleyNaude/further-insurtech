@@ -1,16 +1,23 @@
+import * as React from 'react'
+import { Suspense, lazy } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import NumberFlow from '@number-flow/react'
 import { motion, useReducedMotion } from 'motion/react'
 import { toast } from 'sonner'
-import { PiggyBank, Banknote, Check } from 'lucide-react'
+import { PiggyBank, Banknote, Check, Pencil } from 'lucide-react'
 import { TopBar, Screen } from '@/components/app/AppShell'
 import { Card, Section, Button, Divider } from '@/components/ui/primitives'
 import { useWallet } from '@/lib/handback/useWallet'
 import { useHandbackStore } from '@/lib/handback/store'
 import { formatZl } from '@/lib/handback/money'
-import { defaultGoal } from '@/lib/handback/data'
 import { confirm as buzz, tap } from '@/lib/haptics'
 import { cx } from '@/lib/cx'
+import { stageLabel } from '@/lib/handback/goalStage'
+
+// lottie-web is heavy relative to the rest of this screen, and the plant is
+// decoration on top of a number that renders instantly. Load it after.
+const GoalPlant = lazy(() => import('@/components/app/GoalPlant'))
+const GoalEditor = lazy(() => import('@/components/app/GoalEditor').then((m) => ({ default: m.GoalEditor })))
 
 export const Route = createFileRoute('/goal')({ component: GoalScreen })
 
@@ -22,6 +29,7 @@ function GoalScreen() {
   const payout = useHandbackStore((s) => s.payout)
   const setPayout = useHandbackStore((s) => s.setPayout)
   const reduced = useReducedMotion()
+  const [editing, setEditing] = React.useState(false)
 
   const done = goal?.fraction === 1
 
@@ -87,12 +95,33 @@ function GoalScreen() {
             <Card>
               <div className="flex items-baseline justify-between gap-3">
                 <p className="text-[16px] font-medium tracking-[-0.01em]">{goal.goal.label}</p>
-                <p className="tnum text-[14px] text-ink-muted">
-                  by{' '}
-                  {new Date(`${goal.goal.dueOn}T00:00:00`).toLocaleDateString('en-GB', {
-                    day: 'numeric',
-                    month: 'long',
-                  })}
+                <button
+                  onClick={() => {
+                    setEditing(true)
+                    tap()
+                  }}
+                  className="tap -mr-1 flex shrink-0 items-center gap-1.5 text-[14px] text-ink-muted"
+                >
+                  <span className="tnum">
+                    by{' '}
+                    {new Date(`${goal.goal.dueOn}T00:00:00`).toLocaleDateString('en-GB', {
+                      day: 'numeric',
+                      month: 'long',
+                    })}
+                  </span>
+                  <Pencil size={14} strokeWidth={1.9} />
+                  <span className="sr-only">Change what you are saving for</span>
+                </button>
+              </div>
+
+              <div className="mt-2 flex flex-col items-center">
+                <div className="h-[132px] w-[132px]">
+                  <Suspense fallback={null}>
+                    <GoalPlant fraction={goal.fraction} className="h-full w-full" />
+                  </Suspense>
+                </div>
+                <p className="-mt-1 text-[13px] font-medium text-ink-muted">
+                  {stageLabel(goal.fraction)}
                 </p>
               </div>
 
@@ -161,11 +190,11 @@ function GoalScreen() {
                 variant="accent"
                 className="mt-4 w-full"
                 onClick={() => {
-                  setGoal(defaultGoal())
+                  setEditing(true)
                   tap()
                 }}
               >
-                Save for the school trip
+                Choose something to save for
               </Button>
             </Card>
           </div>
@@ -218,6 +247,23 @@ function GoalScreen() {
           </div>
         </Section>
       )}
+      <Suspense fallback={null}>
+        {editing && (
+          <GoalEditor
+            open={editing}
+            onOpenChange={setEditing}
+            goal={goal?.goal ?? null}
+            onSave={(g) => {
+              setGoal(g)
+              buzz()
+            }}
+            onRemove={() => {
+              setGoal(null)
+              tap()
+            }}
+          />
+        )}
+      </Suspense>
     </Screen>
   )
 }

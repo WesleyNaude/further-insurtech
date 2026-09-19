@@ -20,13 +20,15 @@ export default defineConfig({
         name: 'Further',
         short_name: 'Further',
         description:
-          'Turn the kilometres you do not drive into money off your car insurance.',
+          'Claim back part of the fuel charge on every tram, bus and train journey you take.',
         start_url: '/',
         scope: '/',
         display: 'standalone',
         orientation: 'portrait',
-        background_color: '#FAFAF8',
-        theme_color: '#FAFAF8',
+        // This is the installed app's splash background, so it tracks
+        // --color-paper in the dark theme the app ships in.
+        background_color: '#000000',
+        theme_color: '#000000',
         categories: ['travel', 'finance'],
         icons: [
           { src: '/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },

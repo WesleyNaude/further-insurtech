@@ -9,6 +9,7 @@ import { formatZl } from '@/lib/handback/money'
 import { HANDBACK_GR } from '@/lib/handback/data'
 import { confirm as buzz, tap } from '@/lib/haptics'
 import { cx } from '@/lib/cx'
+import { LogoLockup } from '@/components/app/Logo'
 
 export const Route = createFileRoute('/welcome')({ component: Welcome })
 
@@ -57,6 +58,7 @@ function Welcome() {
         >
           {stage === 'intro' && (
             <Pane
+              brand
               // The city's name at the door, not ours. People trust the city.
               eyebrow="Miasto Kraków"
               title="Money back on public transport"
@@ -188,6 +190,7 @@ function Welcome() {
 
 function Pane({
   icon: Icon,
+  brand,
   eyebrow,
   title,
   body,
@@ -196,6 +199,9 @@ function Pane({
   children,
 }: {
   icon?: typeof Users
+  /** Shows the lockup above the copy. The first screen only: after that the
+   *  city's name does more work than ours does. */
+  brand?: boolean
   eyebrow: string
   title: string
   body: string
@@ -206,6 +212,7 @@ function Pane({
   return (
     <div className="gutter flex flex-1 flex-col pt-10">
       <div className="flex-1">
+        {brand ? <LogoLockup className="mb-8 h-9 w-auto text-ink" /> : null}
         {Icon ? (
           <span className="grid h-11 w-11 place-items-center rounded-full bg-money-soft text-money-ink">
             <Icon size={20} strokeWidth={1.85} />

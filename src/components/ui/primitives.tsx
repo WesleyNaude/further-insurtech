@@ -68,7 +68,10 @@ export function Button({
         'active:scale-[0.97] disabled:pointer-events-none disabled:opacity-40',
         size === 'md' ? 'h-12 px-4 text-[14px]' : 'h-14 px-6 text-[16px]',
         variant === 'primary' && 'bg-ink text-paper hover:opacity-90',
-        variant === 'accent' && 'bg-accent text-on-accent hover:bg-accent-ink',
+        // Fades rather than darkening to --color-accent-ink: the accent is a
+        // light green carrying near-black text, so darkening the fill drops
+        // that pair to 2.74:1.
+        variant === 'accent' && 'bg-accent text-on-accent hover:opacity-90',
         variant === 'secondary' && 'bg-sunken text-ink hover:bg-line',
         variant === 'ghost' && 'text-ink-muted hover:bg-sunken',
         className,
