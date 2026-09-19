@@ -61,7 +61,7 @@ export function BarChart({
           {ticks.map((t) => (
             <span
               key={t}
-              className="tnum absolute right-0 -translate-y-1/2 pr-2 text-[10px] text-ink-faint"
+              className="tnum absolute right-0 -translate-y-1/2 pr-2 text-[12px] text-ink-faint"
               style={{ top: PLOT_H - (t / top) * PLOT_H }}
             >
               {t}
@@ -115,7 +115,7 @@ export function BarChart({
                   <motion.span
                     initial={{ opacity: 0, y: 4 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="pointer-events-none absolute bottom-full z-10 mb-1 whitespace-nowrap rounded-[8px] bg-ink px-2 py-1 text-[11px] font-medium text-paper shadow-[--shadow-lift]"
+                    className="pointer-events-none absolute bottom-full z-10 mb-1 whitespace-nowrap rounded-[8px] bg-ink px-2 py-1 text-[12px] font-medium text-paper shadow-[--shadow-lift]"
                   >
                     {series.map((s) => (
                       <span key={s.key} className="tnum block">
@@ -134,7 +134,7 @@ export function BarChart({
               <span
                 key={d.label}
                 className={cx(
-                  'flex-1 pt-2 text-center text-[10px]',
+                  'flex-1 pt-2 text-center text-[12px]',
                   active === i ? 'font-medium text-ink' : 'text-ink-faint',
                 )}
               >

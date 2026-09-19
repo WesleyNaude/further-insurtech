@@ -79,7 +79,7 @@ export function InstallHint({ inline = false }: { inline?: boolean } = {}) {
   return (
     <div className={cx(inline ? 'gutter' : 'gutter mt-6')}>
       <div className="mx-auto flex max-w-[400px] items-center gap-3 rounded-[--radius-card] bg-ink px-4 py-3 text-paper shadow-[--shadow-card]">
-        <span className="min-w-0 flex-1 text-[13px] leading-[1.4]">
+        <span className="min-w-0 flex-1 text-[14px] leading-[1.4]">
           {prompt ? (
             'Install Further for a full-screen app with no browser bars.'
           ) : isIOS ? (
@@ -100,12 +100,12 @@ export function InstallHint({ inline = false }: { inline?: boolean } = {}) {
               await prompt.prompt()
               close()
             }}
-            className="tap tap-wide shrink-0 rounded-[--radius-pill] bg-paper px-3 py-1.5 text-[13px] font-medium text-ink"
+            className="tap tap-wide shrink-0 rounded-[--radius-pill] bg-paper px-3 py-1.5 text-[14px] font-medium text-ink"
           >
             Install
           </button>
         ) : (
-          <button onClick={close} className="tap tap-wide shrink-0 text-[13px] font-medium text-paper/70">
+          <button onClick={close} className="tap tap-wide shrink-0 text-[14px] font-medium text-paper/70">
             Got it
           </button>
         )}

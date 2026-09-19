@@ -35,7 +35,7 @@ function SourceScreen() {
       />
 
       <div className="gutter pt-2">
-        <p className="text-[15px] leading-[1.55] text-ink-muted">
+        <p className="text-[16px] leading-[1.55] text-ink-muted">
           When anyone fills up, part of what they pay is a charge for the pollution the fuel
           causes. You have been paying it too, every Sunday, since January 2028.
         </p>
@@ -47,8 +47,8 @@ function SourceScreen() {
             <Fuel size={18} strokeWidth={1.8} />
           </span>
           <div>
-            <p className="text-[15px] font-medium">Drivers pay it at the pump</p>
-            <p className="mt-1 text-[13px] leading-[1.55] text-ink-muted">
+            <p className="text-[16px] font-medium">Drivers pay it at the pump</p>
+            <p className="mt-1 text-[14px] leading-[1.55] text-ink-muted">
               It is already in the price. Nobody writes you a bill for it.
             </p>
           </div>
@@ -60,11 +60,11 @@ function SourceScreen() {
 
         <Card className="flex items-start gap-3">
           <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-sunken text-ink-muted">
-            <span className="text-[15px] font-semibold">EU</span>
+            <span className="text-[16px] font-medium">EU</span>
           </span>
           <div>
-            <p className="text-[15px] font-medium">Some of it is set aside</p>
-            <p className="mt-1 text-[13px] leading-[1.55] text-ink-muted">
+            <p className="text-[16px] font-medium">Some of it is set aside</p>
+            <p className="mt-1 text-[14px] leading-[1.55] text-ink-muted">
               Because the charge is hardest on households who cannot simply stop driving, a share
               is kept back to give to those households. Poland has the largest allocation of any
               country.
@@ -81,8 +81,8 @@ function SourceScreen() {
             <Wallet size={18} strokeWidth={1.8} />
           </span>
           <div>
-            <p className="text-[15px] font-medium text-accent-ink">It comes back to you here</p>
-            <p className="mt-1 text-[13px] leading-[1.55] text-accent-ink/85">
+            <p className="text-[16px] font-medium text-accent-ink">It comes back to you here</p>
+            <p className="mt-1 text-[14px] leading-[1.55] text-accent-ink/85">
               {formatZl(HANDBACK_GR)} on every journey you make by tram, bus or train.{' '}
               {formatZl(totals.month)} so far this month.
             </p>
@@ -91,7 +91,7 @@ function SourceScreen() {
       </div>
 
       <div className="gutter mt-8">
-        <p className="mb-2 text-[13px] font-medium uppercase tracking-[0.08em] text-ink-faint">
+        <p className="mb-2 text-[14px] font-medium uppercase tracking-[0.08em] text-ink-faint">
           The arithmetic
         </p>
         <Card inset={false} className="overflow-hidden">
@@ -113,7 +113,7 @@ function SourceScreen() {
 
       <div className="gutter mt-6">
         <div className="rounded-[--radius-card] bg-sunken p-4">
-          <p className="text-[13px] leading-[1.6] text-ink-muted">
+          <p className="text-[14px] leading-[1.6] text-ink-muted">
             <strong className="font-medium text-ink">Nothing is taken out of this.</strong> The
             money passes straight through to you. Whoever runs the scheme is paid separately, by
             the city, for each claim it checks. Taking a cut of a payment meant for households
@@ -147,7 +147,7 @@ function Row({
       <span
         className={
           strong
-            ? 'tnum text-[16px] font-semibold text-accent'
+            ? 'tnum text-[16px] font-medium text-money'
             : muted
               ? 'tnum text-[14px] text-ink-faint'
               : 'tnum text-[14px] font-medium text-ink'

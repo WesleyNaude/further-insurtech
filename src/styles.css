@@ -1,104 +1,179 @@
 @import "tailwindcss";
 
 /* ---------------------------------------------------------------
-   Further design tokens
-   Quiet monochrome, one accent. Strict 8pt spacing grid.
-   Type scale is a restrained 6 steps; nothing between them.
+   Further, on Base
+   ---------------------------------------------------------------
+   Tokens taken from Uber's Base design system (base-web, MIT), read
+   from the source rather than eyeballed:
+
+     - primitives  src/tokens/color-primitive-tokens.ts
+     - radii       src/themes/shared/borders.ts
+     - type scale  src/themes/shared/typography.ts
+
+   Two deliberate departures. Uber Move is proprietary and is not
+   redistributable, so we use the fallback stack Base itself declares.
+   And nothing here carries Uber's name or mark: the design system is
+   open, the brand is not.
    --------------------------------------------------------------- */
+
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* Base declares UberMoveText, then falls back to a stack led by system-ui.
+     Uber Move is proprietary, and system-ui resolves to SF Pro on a Mac, so
+     neither gives us Helvetica. Helvetica goes first deliberately: it is the
+     face the deck already uses, and it is in Base's own fallback anyway. */
+  --font-sans: "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+  --font-mono: "Lucida Console", Monaco, monospace;
 
-  /* Surface: warm white paper, near-black ink. Never pure #000/#fff. */
-  --color-paper: #FAFAF8;
+  /* --- primitives, verbatim from Base ------------------------------- */
+  --color-white: #FFFFFF;
+  --color-gray-50: #F3F3F3;
+  --color-gray-100: #E8E8E8;
+  --color-gray-200: #DDDDDD;
+  --color-gray-300: #C6C6C6;
+  --color-gray-400: #A6A6A6;
+  --color-gray-500: #868686;
+  --color-gray-600: #727272;
+  --color-gray-700: #5E5E5E;
+  --color-gray-800: #4B4B4B;
+  --color-gray-900: #282828;
+  --color-black: #000000;
+
+  --color-blue-600: #276EF1;
+  --color-blue-700: #175BCC;
+  --color-blue-50: #EFF4FE;
+  --color-blue-900: #002661;
+
+  --color-green-400: #06C167;
+  --color-green-600: #0E8345;
+  --color-green-50: #EAF6ED;
+  --color-green-900: #002F14;
+
+  --color-red-600: #DE1135;
+  --color-red-50: #FFF0EE;
+
+  --color-yellow-300: #F6BC2F;
+  --color-yellow-600: #9F6402;
+  --color-yellow-50: #FDF2DC;
+
+  /* --- semantic, light ---------------------------------------------- */
+  --color-paper: #FFFFFF;
   --color-surface: #FFFFFF;
-  --color-sunken: #F2F2EF;
-  --color-ink: #16181C;
-  --color-ink-muted: #4E5158;
-  --color-ink-faint: #6C6E74;
-  --color-line: #E5E5E1;
-  --color-line-strong: #D6D6D1;
+  --color-sunken: #F3F3F3;
+  --color-ink: #000000;
+  --color-ink-muted: #5E5E5E;
+  --color-ink-faint: #727272;
+  --color-line: #E8E8E8;
+  --color-line-strong: #C6C6C6;
 
-  /* One accent. Reserved exclusively for earned value. */
-  --color-accent: #0E6B4A;
-  --color-accent-soft: #E8F2ED;
-  --color-accent-ink: #0A4E36;
-  /* Text and icons that sit ON the accent. The accent lightens in dark mode, so
-     this has to flip with it or every accent button fails contrast. */
+  /* Base puts one blue behind every primary action. Money uses the
+     positive green, so the two never compete for the same meaning. */
+  --color-accent: #276EF1;
+  --color-accent-soft: #EFF4FE;
+  --color-accent-ink: #175BCC;
   --color-on-accent: #FFFFFF;
 
-  /* Semantic, used sparingly */
-  --color-warn: #A8601A;
-  --color-warn-soft: #FBF1E6;
-  --color-car: #B0453C;
-  --color-car-soft: #FBECEA;
+  --color-money: #0E8345;
+  --color-money-soft: #EAF6ED;
+  --color-money-ink: #0E8345;
 
-  /* 8pt grid. Tailwind's default 4px unit x2 where it matters. */
-  --spacing: 4px;
+  --color-warn: #9F6402;
+  --color-warn-soft: #FDF2DC;
 
-  --radius-card: 16px;
-  --radius-sheet: 24px;
+  /* --- radii, verbatim from Base ------------------------------------ */
+  --radius-100: 2px;
+  --radius-200: 4px;
+  --radius-300: 8px;
+  --radius-400: 12px;
+  --radius-500: 16px;
+
+  /* Base buttons and inputs are 8px, not pills. That squared-off feel is
+     most of what makes the language recognisable. */
+  --radius-card: 12px;
+  --radius-control: 8px;
+  --radius-sheet: 16px;
   --radius-pill: 999px;
 
-  --shadow-card: 0 1px 2px rgba(22, 24, 28, 0.04), 0 1px 1px rgba(22, 24, 28, 0.03);
-  --shadow-lift: 0 4px 16px rgba(22, 24, 28, 0.08), 0 1px 2px rgba(22, 24, 28, 0.04);
-  --shadow-fab: 0 6px 20px rgba(22, 24, 28, 0.16);
+  /* Base borders are opacity-based, so they sit correctly on any surface. */
+  --border-subtle: hsla(0, 0%, 0%, 0.08);
+  --border-strong: hsla(0, 0%, 0%, 0.16);
 
+  --shadow-card: 0 1px 2px hsla(0, 0%, 0%, 0.06);
+  --shadow-lift: 0 4px 16px hsla(0, 0%, 0%, 0.12), 0 1px 2px hsla(0, 0%, 0%, 0.06);
+  --shadow-fab: 0 6px 20px hsla(0, 0%, 0%, 0.2);
+
+  --spacing: 4px;
   --ease-out-soft: cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-/* Dark mode: the same design, re-inked. Accent lifts slightly so it holds its
-   weight against a dark surface without turning neon. */
+/* --- dark, following Base's dark theme: the grey ramp inverts ------- */
+/* --- dark, matching Base's own dark theme ------------------------- */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --color-paper: #0F1113;
-    --color-surface: #16191C;
-    --color-sunken: #1D2125;
-    --color-ink: #ECEDEE;
-    --color-ink-muted: #B3B8BE;
-    --color-ink-faint: #878C92;
-    --color-line: #252A2F;
-    --color-line-strong: #343A41;
+    /* Base dark theme, read from src/themes/dark-theme/color-semantic-tokens.ts
+       and resolved through the Dark primitives. Not eyeballed. */
+    --color-paper: #000000;        /* backgroundPrimary  */
+    --color-surface: #141414;      /* mono800, a card just off black */
+    --color-sunken: #292929;       /* backgroundSecondary / gray100Dark */
+    --color-ink: #FFFFFF;          /* contentPrimary */
+    --color-ink-muted: #C4C4C4;    /* contentSecondary / gray800Dark */
+    --color-ink-faint: #ABABAB;    /* contentTertiary / gray700Dark */
+    --color-line: #292929;         /* borderOpaque */
+    --color-line-strong: #383838;  /* gray200Dark */
 
-    --color-accent: #3FB98A;
-    --color-accent-soft: #14312A;
-    --color-accent-ink: #7BD9B2;
-    --color-on-accent: #07231A;
+    --color-accent: #5E8BDB;       /* contentAccent / blue600Dark */
+    --color-accent-soft: #182946;  /* backgroundAccentLight / blue100Dark */
+    --color-accent-ink: #93B4EE;   /* blue700Dark */
+    --color-on-accent: #061431;    /* blue50Dark: the accent lightens, so this flips */
 
-    --color-warn: #D89A5A;
-    --color-warn-soft: #2C2318;
-    --color-car: #DE8279;
-    --color-car-soft: #2B1C1B;
+    --color-money: #5C9D70;        /* contentPositive / green600Dark */
+    --color-money-soft: #162F1E;   /* backgroundPositiveLight / green100Dark */
+    --color-money-ink: #8FC19C;    /* green700Dark */
 
-    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4);
-    --shadow-lift: 0 4px 16px rgba(0, 0, 0, 0.5);
-    --shadow-fab: 0 6px 20px rgba(0, 0, 0, 0.55);
+    --color-warn: #D7AC57;         /* yellow700Dark, one step up Base's own ramp:
+                                    its contentWarning lands at 4.32:1 on
+                                    warn-soft, marginally under AA. 6.94:1 here. */
+    --color-warn-soft: #39240A;    /* backgroundWarningLight / yellow100Dark */
+
+    --border-subtle: hsla(0, 0%, 100%, 0.12);
+    --border-strong: hsla(0, 0%, 100%, 0.24);
+
+    --shadow-card: 0 1px 2px hsla(0, 0%, 0%, 0.6);
+    --shadow-lift: 0 4px 16px hsla(0, 0%, 0%, 0.7);
+    --shadow-fab: 0 6px 20px hsla(0, 0%, 0%, 0.8);
   }
 }
+
 :root[data-theme="dark"] {
-    --color-paper: #0F1113;
-    --color-surface: #16191C;
-    --color-sunken: #1D2125;
-    --color-ink: #ECEDEE;
-    --color-ink-muted: #B3B8BE;
-    --color-ink-faint: #878C92;
-    --color-line: #252A2F;
-    --color-line-strong: #343A41;
+  /* Base dark theme, read from src/themes/dark-theme/color-semantic-tokens.ts
+     and resolved through the Dark primitives. Not eyeballed. */
+  --color-paper: #000000;      /* backgroundPrimary  */
+  --color-surface: #141414;    /* mono800, a card just off black */
+  --color-sunken: #292929;     /* backgroundSecondary / gray100Dark */
+  --color-ink: #FFFFFF;        /* contentPrimary */
+  --color-ink-muted: #C4C4C4;  /* contentSecondary / gray800Dark */
+  --color-ink-faint: #ABABAB;  /* contentTertiary / gray700Dark */
+  --color-line: #292929;       /* borderOpaque */
+  --color-line-strong: #383838;  /* gray200Dark */
 
-    --color-accent: #3FB98A;
-    --color-accent-soft: #14312A;
-    --color-accent-ink: #7BD9B2;
-    --color-on-accent: #07231A;
+  --color-accent: #5E8BDB;     /* contentAccent / blue600Dark */
+  --color-accent-soft: #182946;  /* backgroundAccentLight / blue100Dark */
+  --color-accent-ink: #93B4EE;   /* blue700Dark */
+  --color-on-accent: #061431;  /* blue50Dark: the accent lightens, so this flips */
 
-    --color-warn: #D89A5A;
-    --color-warn-soft: #2C2318;
-    --color-car: #DE8279;
-    --color-car-soft: #2B1C1B;
+  --color-money: #5C9D70;      /* contentPositive / green600Dark */
+  --color-money-soft: #162F1E;   /* backgroundPositiveLight / green100Dark */
+  --color-money-ink: #8FC19C;  /* green700Dark */
 
-    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4);
-    --shadow-lift: 0 4px 16px rgba(0, 0, 0, 0.5);
-    --shadow-fab: 0 6px 20px rgba(0, 0, 0, 0.55);
+  --color-warn: #D7AC57;       /* yellow700Dark; Base's own lands under AA */
+  --color-warn-soft: #39240A;  /* backgroundWarningLight / yellow100Dark */
+
+  --border-subtle: hsla(0, 0%, 100%, 0.12);
+  --border-strong: hsla(0, 0%, 100%, 0.24);
+
+  --shadow-card: 0 1px 2px hsla(0, 0%, 0%, 0.6);
+  --shadow-lift: 0 4px 16px hsla(0, 0%, 0%, 0.7);
+  --shadow-fab: 0 6px 20px hsla(0, 0%, 0%, 0.8);
 }
-
 
 @layer base {
   * { -webkit-tap-highlight-color: transparent; }
@@ -107,7 +182,6 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
-    font-feature-settings: "cv05" 1, "ss03" 1;
   }
 
   body {
@@ -116,13 +190,16 @@
     overscroll-behavior-y: none;
   }
 
-  /* Tabular figures everywhere a number can change. Stops layout jitter. */
+  /* Base sets headings at 700. It is the single biggest thing that makes
+     the language read as itself rather than as generic Helvetica. */
+  h1, h2, h3 { font-weight: 700; }
+
   .tnum { font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; }
 
   :focus-visible {
-    outline: 2px solid var(--color-ink);
+    outline: 2px solid var(--color-accent);
     outline-offset: 2px;
-    border-radius: 6px;
+    border-radius: var(--radius-200);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -134,8 +211,8 @@
 }
 
 @layer utilities {
-  /* The single horizontal gutter. Every screen obeys it. */
-  .gutter { padding-inline: 20px; }
+  /* Base's grid is 4px; the screen gutter is four of them. */
+  .gutter { padding-inline: 16px; }
 
   .safe-top { padding-top: env(safe-area-inset-top); }
   .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
@@ -143,11 +220,11 @@
   .hairline { box-shadow: inset 0 -1px 0 var(--color-line); }
   .hairline-t { box-shadow: inset 0 1px 0 var(--color-line); }
 
-  /* Expands a control's hit area to the 44px accessibility floor without
-     changing how it looks. Pills and text links stay visually light. */
-  .tap {
-    position: relative;
-  }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { scrollbar-width: none; }
+
+  /* Expands a control's hit area to 44px without changing how it looks. */
+  .tap { position: relative; }
   .tap::before {
     content: "";
     position: absolute;
@@ -155,11 +232,5 @@
     min-height: 44px;
     transform: translateY(-50%);
   }
-  .tap-wide::before {
-    inset: 50% -8px 0 -8px;
-  }
-
-  .no-scrollbar::-webkit-scrollbar { display: none; }
-  .no-scrollbar { scrollbar-width: none; }
+  .tap-wide::before { inset: 50% -8px 0 -8px; }
 }
-

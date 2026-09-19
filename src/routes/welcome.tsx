@@ -91,7 +91,7 @@ function Welcome() {
                     }}
                     aria-pressed={people === n}
                     className={cx(
-                      'h-14 flex-1 rounded-[--radius-card] text-[17px] font-semibold ring-1 transition-colors',
+                      'h-14 flex-1 rounded-[--radius-card] text-[16px] font-medium ring-1 transition-colors',
                       people === n
                         ? 'bg-ink text-paper ring-ink'
                         : 'bg-surface text-ink ring-line',
@@ -127,7 +127,7 @@ function Welcome() {
               >
                 <Loader2 size={30} strokeWidth={1.9} />
               </motion.span>
-              <p className="mt-5 text-[17px] font-medium text-ink">Checking with the city</p>
+              <p className="mt-5 text-[16px] font-medium text-ink">Checking with the city</p>
               <p className="mt-1.5 max-w-[28ch] text-[14px] leading-[1.5] text-ink-muted">
                 This takes a few seconds. You will not need to do this again.
               </p>
@@ -146,10 +146,10 @@ function Welcome() {
                   <Check size={38} strokeWidth={2.6} />
                 </motion.span>
 
-                <h1 className="mt-7 text-[38px] font-semibold leading-[1.06] tracking-[-0.03em] text-ink">
+                <h1 className="mt-7 text-[36px] font-bold leading-[1.06] tracking-[-0.03em] text-ink">
                   You qualify.
                 </h1>
-                <p className="mt-3 max-w-[30ch] text-[17px] leading-[1.5] text-ink-muted">
+                <p className="mt-3 max-w-[30ch] text-[16px] leading-[1.5] text-ink-muted">
                   From now on you get{' '}
                   <span className="font-medium text-ink">{formatZl(HANDBACK_GR)} back</span> on
                   every journey. You do not have to do anything to claim it.
@@ -207,19 +207,19 @@ function Pane({
     <div className="gutter flex flex-1 flex-col pt-10">
       <div className="flex-1">
         {Icon ? (
-          <span className="grid h-11 w-11 place-items-center rounded-full bg-accent-soft text-accent-ink">
+          <span className="grid h-11 w-11 place-items-center rounded-full bg-money-soft text-money-ink">
             <Icon size={20} strokeWidth={1.85} />
           </span>
         ) : null}
         <p
           className={cx(
-            'text-[13px] font-medium uppercase tracking-[0.12em] text-ink-faint',
+            'text-[14px] font-medium uppercase tracking-[0.12em] text-ink-faint',
             Icon && 'mt-5',
           )}
         >
           {eyebrow}
         </p>
-        <h1 className="mt-3 text-[32px] font-semibold leading-[1.1] tracking-[-0.027em] text-ink">
+        <h1 className="mt-3 text-[32px] font-bold leading-[1.1] tracking-[-0.027em] text-ink">
           {title}
         </h1>
         <p className="mt-3 max-w-[32ch] text-[16px] leading-[1.5] text-ink-muted">{body}</p>

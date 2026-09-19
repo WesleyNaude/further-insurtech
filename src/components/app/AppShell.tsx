@@ -112,7 +112,7 @@ export function TopBar({
               animate={{ opacity: showCondensed ? 0 : 1, y: showCondensed ? -6 : 0 }}
               transition={{ duration: 0.18, ease: [0.32, 0.72, 0, 1] }}
             >
-              <h1 className="truncate text-[17px] font-semibold tracking-[-0.012em] text-ink">
+              <h1 className="truncate text-[16px] font-medium tracking-[-0.012em] text-ink">
                 {title}
               </h1>
               {subtitle && <p className="truncate text-[12px] text-ink-faint">{subtitle}</p>}
@@ -162,7 +162,7 @@ export function BottomNav() {
                 </span>
                 <span
                   className={cx(
-                    'text-[10px] leading-none transition-colors duration-150',
+                    'text-[12px] leading-none transition-colors duration-150',
                     active ? 'font-medium text-ink' : 'text-ink-faint',
                   )}
                 >

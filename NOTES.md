@@ -111,6 +111,36 @@ this build, and it is the right answer for a user who is awake at 4:20am.
 
 The money is integer grosz end to end and only becomes a string at the edge.
 
+## The visual language
+
+Rebuilt on **Base**, Uber's design system, with the tokens read from the
+`uber/baseweb` source rather than eyeballed from screenshots:
+
+| | Source |
+|---|---|
+| Colour primitives | `src/tokens/color-primitive-tokens.ts` |
+| Radii | `src/themes/shared/borders.ts` |
+| Type scale | `src/themes/shared/typography.ts` |
+| Dark theme | `src/themes/dark-theme/color-semantic-tokens.ts` |
+
+Base Web is MIT licensed, so the system is fair to use. Three deliberate
+departures:
+
+**Uber Move is proprietary** and not redistributable. Base's own fallback stack
+leads with `system-ui`, which resolves to SF Pro on a Mac, so Helvetica is put
+first instead. It is in Base's fallback anyway and it matches the deck.
+
+**Base's dark warning pair fails AA.** `contentWarning` on
+`backgroundWarningLight` is 4.32:1, just under the 4.5 threshold. We use
+`yellow700Dark` instead, one step up their own ramp, at 6.94:1. Every other
+pairing in both themes clears AA unchanged.
+
+**No Uber mark anywhere.** The design system is open; the brand is not. Nothing
+here carries their name, logo or any claim of affiliation.
+
+Blue is the one action colour and green only ever means money, which is Base's
+own semantic split rather than a decorative choice.
+
 ## Numbers
 
 21 tests. TypeScript clean. Every figure on the Settings screen.

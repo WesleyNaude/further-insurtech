@@ -62,7 +62,7 @@ function JourneysScreen() {
                   month: 'long',
                 })}
               </h2>
-              <span className="tnum text-[12px] font-medium text-accent">
+              <span className="tnum text-[12px] font-medium text-money">
                 +{formatZl(dayTotal)}
               </span>
             </div>
@@ -73,14 +73,14 @@ function JourneysScreen() {
                   <React.Fragment key={t.id}>
                     {i > 0 && <Divider className="ml-[68px]" />}
                     <div className="flex items-center gap-3 px-5 py-3.5">
-                      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-accent-soft text-accent-ink">
+                      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-money-soft text-money-ink">
                         <Icon size={18} strokeWidth={1.75} />
                       </span>
                       <span className="min-w-0 flex-1">
-                        <span className="block truncate text-[15px] font-medium text-ink">
+                        <span className="block truncate text-[16px] font-medium text-ink">
                           {t.mode === 'bus' ? 'Bus' : 'Tram'} {t.line}
                         </span>
-                        <span className="mt-0.5 block truncate text-[13px] text-ink-muted">
+                        <span className="mt-0.5 block truncate text-[14px] text-ink-muted">
                           {t.stop} ·{' '}
                           {new Date(t.at).toLocaleTimeString('en-GB', {
                             hour: '2-digit',
@@ -90,7 +90,7 @@ function JourneysScreen() {
                           · fare {formatZl(t.fareGr)}
                         </span>
                       </span>
-                      <span className="tnum shrink-0 text-[15px] font-semibold text-accent">
+                      <span className="tnum shrink-0 text-[16px] font-medium text-money">
                         +{formatZl(t.backGr)}
                       </span>
                     </div>
@@ -105,7 +105,7 @@ function JourneysScreen() {
       <div ref={sentinel} aria-hidden />
 
       {more > 0 && (
-        <p className="gutter py-6 text-center text-[13px] text-ink-faint">
+        <p className="gutter py-6 text-center text-[14px] text-ink-faint">
           {more.toLocaleString('pl-PL')} earlier journeys&hellip;
         </p>
       )}

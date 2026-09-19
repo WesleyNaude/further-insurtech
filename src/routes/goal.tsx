@@ -40,7 +40,7 @@ function GoalScreen() {
       <Section title="Not yet used">
         <div className="gutter">
           <Card>
-            <p className="tnum flex items-baseline text-[40px] font-semibold leading-none tracking-[-0.03em]">
+            <p className="tnum flex items-baseline text-[40px] font-bold leading-none tracking-[-0.03em]">
               <NumberFlow
                 value={availableGr / 100}
                 locales="pl-PL"
@@ -86,8 +86,8 @@ function GoalScreen() {
           <div className="gutter">
             <Card>
               <div className="flex items-baseline justify-between gap-3">
-                <p className="text-[17px] font-semibold tracking-[-0.01em]">{goal.goal.label}</p>
-                <p className="tnum text-[13px] text-ink-muted">
+                <p className="text-[16px] font-medium tracking-[-0.01em]">{goal.goal.label}</p>
+                <p className="tnum text-[14px] text-ink-muted">
                   by{' '}
                   {new Date(`${goal.goal.dueOn}T00:00:00`).toLocaleDateString('en-GB', {
                     day: 'numeric',
@@ -106,10 +106,10 @@ function GoalScreen() {
               </div>
 
               <div className="mt-2.5 flex items-baseline justify-between">
-                <span className="tnum text-[15px] font-semibold text-accent">
+                <span className="tnum text-[16px] font-medium text-money">
                   {formatZl(goal.savedGr)}
                 </span>
-                <span className="tnum text-[13px] text-ink-muted">
+                <span className="tnum text-[14px] text-ink-muted">
                   of {formatZl(goal.goal.targetGr)}
                 </span>
               </div>
@@ -117,7 +117,7 @@ function GoalScreen() {
               <Divider className="my-4" />
 
               {done ? (
-                <div className="flex items-center gap-2 text-[14px] font-medium text-accent">
+                <div className="flex items-center gap-2 text-[14px] font-medium text-money">
                   <Check size={16} strokeWidth={2.4} />
                   Covered. You do not need to think about it again.
                 </div>
@@ -135,8 +135,8 @@ function GoalScreen() {
                   />
                   <p
                     className={cx(
-                      'mt-3 text-[13px] leading-[1.55]',
-                      goal.onTrack ? 'text-accent' : 'text-warn',
+                      'mt-3 text-[14px] leading-[1.55]',
+                      goal.onTrack ? 'text-money' : 'text-warn',
                     )}
                   >
                     {goal.onTrack
@@ -213,7 +213,7 @@ function GoalScreen() {
           <div className="gutter">
             <Card className="flex items-baseline justify-between">
               <span className="text-[14px] text-ink-muted">Paid out to you</span>
-              <span className="tnum text-[17px] font-semibold">{formatZl(cashedGr)}</span>
+              <span className="tnum text-[16px] font-medium">{formatZl(cashedGr)}</span>
             </Card>
           </div>
         </Section>
@@ -237,7 +237,7 @@ function Row({
       <span
         className={cx(
           'tnum text-[14px] font-medium',
-          tone === 'good' ? 'text-accent' : tone === 'warn' ? 'text-warn' : 'text-ink',
+          tone === 'good' ? 'text-money' : tone === 'warn' ? 'text-warn' : 'text-ink',
         )}
       >
         {value}

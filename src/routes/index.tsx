@@ -47,7 +47,7 @@ function WalletScreen() {
         title="Your wallet"
         condensed={
           <p className="tnum flex items-baseline gap-2">
-            <span className="text-[17px] font-semibold tracking-[-0.01em] text-ink">
+            <span className="text-[16px] font-medium tracking-[-0.01em] text-ink">
               {formatZl(availableGr)}
             </span>
             <span className="text-[12px] text-ink-faint">to use</span>
@@ -57,10 +57,10 @@ function WalletScreen() {
 
       {/* ------------------------------------------------------------ hero */}
       <div className="gutter pt-4">
-        <p className="text-[13px] font-medium uppercase tracking-[0.08em] text-ink-faint">
+        <p className="text-[14px] font-medium uppercase tracking-[0.08em] text-ink-faint">
           Back this month
         </p>
-        <p className="tnum mt-2 flex items-baseline text-[60px] font-semibold leading-[0.95] tracking-[-0.035em] text-ink">
+        <p className="tnum mt-2 flex items-baseline text-[52px] font-bold leading-[0.95] tracking-[-0.035em] text-ink">
           <NumberFlow value={totals.month / 100} locales="pl-PL" format={{ minimumFractionDigits: 2 }} />
           <span className="ml-2 text-[24px] font-medium text-ink-faint">zł</span>
         </p>
@@ -92,16 +92,16 @@ function WalletScreen() {
                   <Sunrise size={17} strokeWidth={1.95} />
                 </span>
                 <div className="min-w-0 flex-1">
-                  <p className="text-[15px] font-medium leading-[1.35] text-accent-ink">
+                  <p className="text-[16px] font-medium leading-[1.35] text-accent-ink">
                     You come home by tram, but you drive in.
                   </p>
-                  <p className="mt-1.5 text-[13px] leading-[1.55] text-accent-ink/85">
+                  <p className="mt-1.5 text-[14px] leading-[1.55] text-accent-ink/85">
                     On {pattern.homeOnlyDays} of the last {pattern.homeOnlyDays + pattern.bothWaysDays} working days.
                     Coming in by tram too would add about{' '}
                     <span className="font-medium">{formatZl(pattern.missedGr)}</span> a month here,
                     and save you far more than that in petrol.
                   </p>
-                  <p className="mt-2.5 text-[13px] leading-[1.55] text-accent-ink/85">
+                  <p className="mt-2.5 text-[14px] leading-[1.55] text-accent-ink/85">
                     The first tram is at {FIRST_TRAM}.
                   </p>
                 </div>
@@ -118,7 +118,7 @@ function WalletScreen() {
       <Section
         title="Recent journeys"
         action={
-          <Link to="/journeys" className="tap tap-wide text-[13px] font-medium text-ink-muted">
+          <Link to="/journeys" className="tap tap-wide text-[14px] font-medium text-ink-muted">
             See all
           </Link>
         }
@@ -134,14 +134,14 @@ function WalletScreen() {
                   animate={{ opacity: 1 }}
                   className="flex items-center gap-3 px-5 py-3.5"
                 >
-                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-accent-soft text-accent-ink">
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-money-soft text-money-ink">
                     <Icon size={18} strokeWidth={1.75} />
                   </span>
                   <span className="min-w-0 flex-1">
-                    <span className="block truncate text-[15px] font-medium text-ink">
+                    <span className="block truncate text-[16px] font-medium text-ink">
                       {t.mode === 'bus' ? 'Bus' : 'Tram'} {t.line}
                     </span>
-                    <span className="mt-0.5 block truncate text-[13px] text-ink-muted">
+                    <span className="mt-0.5 block truncate text-[14px] text-ink-muted">
                       {t.stop} ·{' '}
                       {new Date(t.at).toLocaleString('en-GB', {
                         weekday: 'short',
@@ -151,7 +151,7 @@ function WalletScreen() {
                       })}
                     </span>
                   </span>
-                  <span className="tnum shrink-0 text-[15px] font-semibold text-accent">
+                  <span className="tnum shrink-0 text-[16px] font-medium text-money">
                     +{formatZl(t.backGr)}
                   </span>
                 </motion.div>
@@ -175,7 +175,7 @@ function WalletScreen() {
             <span className="block text-[14px] font-medium text-ink">
               Pretend she just tapped her card
             </span>
-            <span className="mt-0.5 block text-[13px] leading-[1.45] text-ink-muted">
+            <span className="mt-0.5 block text-[14px] leading-[1.45] text-ink-muted">
               In the real thing this arrives on its own, about four minutes later. She does
               nothing: no app to open, nothing to scan, nothing to remember at 4:20 in the
               morning.
@@ -196,7 +196,7 @@ function WalletScreen() {
 function Figure({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-[--radius-card] bg-surface px-3 py-3 ring-1 ring-line">
-      <p className="tnum text-[17px] font-semibold leading-none tracking-[-0.02em] text-ink">
+      <p className="tnum text-[16px] font-medium leading-none tracking-[-0.02em] text-ink">
         {value}
       </p>
       <p className="mt-1.5 text-[12px] leading-[1.3] text-ink-faint">{label}</p>

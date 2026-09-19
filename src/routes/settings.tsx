@@ -26,12 +26,12 @@ function SettingsScreen() {
         <div className="gutter">
           <Card>
             <div className="flex items-center gap-3">
-              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-accent-soft text-accent-ink">
+              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-money-soft text-money-ink">
                 <BadgeCheck size={18} strokeWidth={1.9} />
               </span>
               <div className="min-w-0 flex-1">
-                <p className="text-[15px] font-medium">{household.name}</p>
-                <p className="text-[13px] text-ink-muted">
+                <p className="text-[16px] font-medium">{household.name}</p>
+                <p className="text-[14px] text-ink-muted">
                   {household.city} · {household.people} people
                 </p>
               </div>
@@ -68,8 +68,8 @@ function SettingsScreen() {
                 <ShieldCheck size={18} strokeWidth={1.75} />
               </span>
               <div className="min-w-0 flex-1">
-                <p className="text-[15px] font-medium">The carbon charge on fuel</p>
-                <p className="text-[13px] text-ink-muted">In three steps, no jargon</p>
+                <p className="text-[16px] font-medium">The carbon charge on fuel</p>
+                <p className="text-[14px] text-ink-muted">In three steps, no jargon</p>
               </div>
               <ChevronRight size={18} strokeWidth={2} className="text-ink-faint" />
             </Card>
@@ -86,7 +86,7 @@ function SettingsScreen() {
       <Section title="What we know about you">
         <div className="gutter">
           <Card>
-            <div className="text-[13px] leading-[1.6] text-ink-muted">
+            <div className="text-[14px] leading-[1.6] text-ink-muted">
               <p>
                 That your household qualifies, and that a valid ticket was used. The transport
                 operator tells us a journey happened; it does not tell us where you went, and we

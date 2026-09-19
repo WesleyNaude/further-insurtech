@@ -36,7 +36,7 @@ export function Section({
       {(title || action) && (
         <header className="gutter mb-3 flex items-baseline justify-between">
           {title && (
-            <h2 className="text-[13px] font-medium uppercase tracking-[0.08em] text-ink-faint">
+            <h2 className="text-[14px] font-medium uppercase tracking-[0.08em] text-ink-faint">
               {title}
             </h2>
           )}
@@ -63,11 +63,11 @@ export function Button({
   return (
     <button
       className={cx(
-        'inline-flex items-center justify-center gap-2 rounded-[--radius-pill] font-medium',
+        'inline-flex items-center justify-center gap-2 rounded-[--radius-control] font-medium',
         'transition-[transform,background-color,opacity] duration-150 ease-[--ease-out-soft]',
         'active:scale-[0.97] disabled:pointer-events-none disabled:opacity-40',
-        size === 'md' ? 'h-11 px-4 text-[15px]' : 'h-12 px-6 text-[16px]',
-        variant === 'primary' && 'bg-ink text-paper hover:bg-ink/90',
+        size === 'md' ? 'h-12 px-4 text-[14px]' : 'h-14 px-6 text-[16px]',
+        variant === 'primary' && 'bg-ink text-paper hover:opacity-90',
         variant === 'accent' && 'bg-accent text-on-accent hover:bg-accent-ink',
         variant === 'secondary' && 'bg-sunken text-ink hover:bg-line',
         variant === 'ghost' && 'text-ink-muted hover:bg-sunken',
@@ -93,7 +93,7 @@ export function Pill({
       className={cx(
         'inline-flex items-center gap-1 rounded-[--radius-pill] px-2 py-0.5 text-[12px] font-medium',
         tone === 'neutral' && 'bg-sunken text-ink-muted',
-        tone === 'accent' && 'bg-accent-soft text-accent-ink',
+        tone === 'accent' && 'bg-money-soft text-money-ink',
         tone === 'warn' && 'bg-warn-soft text-warn',
         tone === 'car' && 'bg-car-soft text-car',
         className,
@@ -140,9 +140,9 @@ export function Row({
     >
       {leading}
       <span className="min-w-0 flex-1">
-        <span className="block truncate text-[15px] font-medium text-ink">{title}</span>
+        <span className="block truncate text-[16px] font-medium text-ink">{title}</span>
         {subtitle && (
-          <span className="mt-0.5 block truncate text-[13px] text-ink-muted">{subtitle}</span>
+          <span className="mt-0.5 block truncate text-[14px] text-ink-muted">{subtitle}</span>
         )}
       </span>
       {trailing}

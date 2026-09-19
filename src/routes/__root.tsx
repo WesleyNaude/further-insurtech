@@ -27,18 +27,18 @@ function AppError({ error }: ErrorComponentProps) {
   return (
     <div className="grid flex-1 place-items-center px-6 text-center">
       <div className="max-w-[34ch]">
-        <h1 className="text-[20px] font-semibold tracking-[-0.02em] text-ink">
+        <h1 className="text-[20px] font-bold tracking-[-0.02em] text-ink">
           Something broke
         </h1>
         <p className="mt-2 text-[14px] leading-[1.55] text-ink-muted">
           Your trips are safe: everything is stored on this device. Reloading usually fixes it.
         </p>
-        <p className="mt-4 break-words rounded-[12px] bg-sunken p-3 text-left font-mono text-[11px] leading-[1.5] text-ink-faint">
+        <p className="mt-4 break-words rounded-[12px] bg-sunken p-3 text-left font-mono text-[12px] leading-[1.5] text-ink-faint">
           {error instanceof Error ? error.message : 'Unknown error'}
         </p>
         <button
           onClick={() => window.location.reload()}
-          className="mt-5 inline-flex h-11 items-center rounded-[--radius-pill] bg-ink px-5 text-[15px] font-medium text-paper"
+          className="mt-5 inline-flex h-11 items-center rounded-[--radius-pill] bg-ink px-5 text-[16px] font-medium text-paper"
         >
           Reload
         </button>
@@ -52,10 +52,10 @@ function NotFound() {
   return (
     <div className="grid flex-1 place-items-center px-5 text-center">
       <div>
-        <p className="text-[15px] text-ink-muted">That screen does not exist.</p>
+        <p className="text-[16px] text-ink-muted">That screen does not exist.</p>
         <button
           onClick={() => navigate({ to: '/' })}
-          className="mt-4 inline-flex h-11 items-center rounded-[--radius-pill] bg-sunken px-4 text-[15px] font-medium text-ink"
+          className="mt-4 inline-flex h-11 items-center rounded-[--radius-pill] bg-sunken px-4 text-[16px] font-medium text-ink"
         >
           Back to today
         </button>
