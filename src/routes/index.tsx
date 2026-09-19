@@ -1,220 +1,203 @@
 import * as React from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import NumberFlow from '@number-flow/react'
-import { ChevronRight, Info, Flame, CalendarCheck2 } from 'lucide-react'
+import { motion, useReducedMotion } from 'motion/react'
+import { toast } from 'sonner'
+import { ChevronRight, TramFront, Bus, TrainFront, Sunrise } from 'lucide-react'
 import { TopBar, Screen, HeroEnd } from '@/components/app/AppShell'
-import { Card, Section, Pill, Divider } from '@/components/ui/primitives'
-import { DerivationSheet } from '@/components/app/DerivationSheet'
-import { TripRow } from '@/components/app/TripRow'
-import { WeekStrip } from '@/components/app/WeekStrip'
-import { NextStep } from '@/components/app/NextStep'
-import { CeilingRing } from '@/components/app/CeilingRing'
-import { InstallHint } from '@/components/app/DeviceFrame'
-import { useStatement } from '@/lib/useStatement'
-import { useStore } from '@/lib/store'
-import { formatRand } from '@/lib/domain/money'
-import { corridorById } from '@/lib/domain/corridors'
-import { MODE_LABEL } from '@/components/app/icons'
+import { Card, Section, Divider } from '@/components/ui/primitives'
+import { useWallet } from '@/lib/handback/useWallet'
+import { useHandbackStore } from '@/lib/handback/store'
+import { formatZl } from '@/lib/handback/money'
+import { FIRST_TRAM, HANDBACK_GR } from '@/lib/handback/data'
+import { confirm as buzz } from '@/lib/haptics'
+import type { Mode } from '@/lib/handback/types'
 
-export const Route = createFileRoute('/')({ component: Today })
+export const Route = createFileRoute('/')({ component: WalletScreen })
 
-function Today() {
-  const { statement, policy, monthTrips, streak, allTrips } = useStatement()
-  const commitments = useStore((s) => s.commitments)
-  const [sheet, setSheet] = React.useState(false)
+const MODE_ICON: Record<Mode, typeof TramFront> = {
+  tram: TramFront,
+  bus: Bus,
+  train: TrainFront,
+}
 
-  const openCommitment = commitments.find((c) => c.status === 'open')
-  const recent = monthTrips.slice(0, 4)
+function WalletScreen() {
+  const { totals, taps, pattern, availableGr } = useWallet()
+  const receiveTap = useHandbackStore((s) => s.receiveTap)
+  const reduced = useReducedMotion()
 
-  const monthName = new Date().toLocaleDateString('en-ZA', { month: 'long' })
+  const recent = taps.slice(0, 4)
+
+  /**
+   * In the real thing this arrives from the operator four minutes after she
+   * taps, and she does nothing. Here it needs a button, clearly marked, so the
+   * moment can be shown.
+   */
+  function simulateTap() {
+    const tap = receiveTap('pm')
+    buzz()
+    toast.success(`${formatZl(tap.backGr)} back`, {
+      description: `${tap.mode === 'bus' ? 'Bus' : 'Tram'} ${tap.line}, ${tap.stop}. That is ${formatZl(totals.week + tap.backGr)} this week.`,
+    })
+  }
 
   return (
     <Screen>
       <TopBar
-        title="Further"
+        title="Your wallet"
         condensed={
-          statement.hasEnoughEvidence ? (
-            <p className="tnum flex items-baseline gap-2">
-              <span className="text-[17px] font-semibold tracking-[-0.01em] text-ink">
-                {formatRand(statement.reductionCents)}
-              </span>
-              <span className="text-[12px] text-ink-faint">back this month</span>
-            </p>
-          ) : undefined
-        }
-        trailing={
-          streak > 0 ? (
-            <Pill tone="accent">
-              <Flame size={12} strokeWidth={2.2} />
-              {streak} day{streak === 1 ? '' : 's'}
-            </Pill>
-          ) : undefined
+          <p className="tnum flex items-baseline gap-2">
+            <span className="text-[17px] font-semibold tracking-[-0.01em] text-ink">
+              {formatZl(availableGr)}
+            </span>
+            <span className="text-[12px] text-ink-faint">to use</span>
+          </p>
         }
       />
 
       {/* ------------------------------------------------------------ hero */}
-      <div className="gutter pb-2 pt-4">
-        <div className="flex items-start justify-between gap-4">
-        <button onClick={() => setSheet(true)} className="min-w-0 flex-1 text-left">
-          <p className="text-[13px] font-medium uppercase tracking-[0.08em] text-ink-faint">
-            Back in your pocket
-          </p>
+      <div className="gutter pt-4">
+        <p className="text-[13px] font-medium uppercase tracking-[0.08em] text-ink-faint">
+          Back this month
+        </p>
+        <p className="tnum mt-2 flex items-baseline text-[60px] font-semibold leading-[0.95] tracking-[-0.035em] text-ink">
+          <NumberFlow value={totals.month / 100} locales="pl-PL" format={{ minimumFractionDigits: 2 }} />
+          <span className="ml-2 text-[24px] font-medium text-ink-faint">zł</span>
+        </p>
 
-          <div className="mt-2 flex items-end gap-2">
-            <span className="tnum flex items-baseline text-[60px] font-semibold leading-[0.95] tracking-[-0.035em] text-ink">
-              <span className="mr-0.5 text-[34px] font-medium tracking-[-0.02em] text-ink-muted">R</span>
-              <NumberFlow
-                value={Math.round(statement.reductionCents / 100)}
-                format={{ maximumFractionDigits: 0 }}
-                locales="en-ZA"
-              />
-            </span>
-            <span className="mb-2.5 inline-flex items-center gap-1 text-[13px] text-ink-faint">
-              <Info size={13} strokeWidth={2} />
-              How
-            </span>
-          </div>
+        <Link
+          to="/source"
+          className="mt-3 inline-flex items-center gap-1.5 text-[14px] leading-[1.5] text-ink-muted"
+        >
+          Funded by the EU carbon charge on fuel
+          <ChevronRight size={15} strokeWidth={2} className="text-ink-faint" />
+        </Link>
 
-          <p className="mt-2 text-[14px] leading-[1.5] text-ink-muted">
-            {statement.hasEnoughEvidence ? (
-              <>
-                You pay {formatRand(policy.basePremiumCents)} a month. So far in {monthName} you
-                have taken{' '}
-                <span className="font-medium text-ink">
-                  {formatRand(statement.reductionCents)}
-                </span>{' '}
-                of it back.
-              </>
-            ) : (
-              <>
-                Measured on {statement.measuredDays}{' '}
-                {statement.measuredDays === 1 ? 'day' : 'days'} so far. Nothing is paid until
-                there is enough to stand behind.
-              </>
-            )}
-          </p>
-        </button>
-
-          <CeilingRing reduction={statement.premiumReduction} size={116} stroke={8} />
+        <div className="mt-5 grid grid-cols-3 gap-3">
+          <Figure label="Today" value={formatZl(totals.today)} />
+          <Figure label="This week" value={formatZl(totals.week)} />
+          <Figure label="Journeys" value={String(totals.tripsMonth)} />
         </div>
-
       </div>
 
       <HeroEnd />
 
-      {/* ------------------------------------------------------- week strip */}
-      <div className="gutter mt-7">
-        <WeekStrip trips={allTrips} />
-      </div>
-
-      {/* ----------------------------------------------------------- stats */}
-      <div className="gutter mt-6 grid auto-rows-fr grid-cols-3 gap-3">
-        <Stat
-          value={
-            statement.hasEnoughEvidence
-              ? Math.round(statement.avoidedKm).toLocaleString('en-ZA')
-              : '\u2014'
-          }
-          unit={statement.hasEnoughEvidence ? 'km' : ''}
-          label="Under rating"
-        />
-        <Stat
-          value={Math.round(statement.displacedKm).toLocaleString('en-ZA')}
-          unit="km"
-          label="Not driven"
-        />
-        <Stat
-          value={
-            statement.centsPerVerifiedKm > 0
-              ? `${(statement.centsPerVerifiedKm / 100).toFixed(2)}`
-              : '\u2014'
-          }
-          unit={statement.centsPerVerifiedKm > 0 ? 'R/km' : ''}
-          label="Back per km"
-        />
-      </div>
-
-      {/* ------------------------------------------------------- next step */}
-      <div className="gutter mt-6">
-        <NextStep statement={statement} policy={policy} daysLeft={daysLeftInMonth()} />
-      </div>
-
-      {/* ------------------------------------------------------ commitment */}
-      {openCommitment && (
-        <Section title="Planned">
+      {/* --------------------------------------------- the one that matters */}
+      {pattern.clear && (
+        <Section title="Something we noticed">
           <div className="gutter">
-            <Card className="flex items-center gap-3">
-              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-sunken text-ink-muted">
-                <CalendarCheck2 size={18} strokeWidth={1.75} />
-              </span>
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-[15px] font-medium">
-                  {corridorById(openCommitment.corridorId)?.fromName} to{' '}
-                  {corridorById(openCommitment.corridorId)?.toName}
-                </p>
-                <p className="mt-0.5 text-[13px] text-ink-muted">
-                  {MODE_LABEL[openCommitment.mode]} ·{' '}
-                  {new Date(openCommitment.departAt).toLocaleString('en-ZA', {
-                    weekday: 'short',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: false,
-                  })}
-                </p>
+            <Card className="bg-accent-soft ring-0">
+              <div className="flex items-start gap-3">
+                <span className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-full bg-accent text-on-accent">
+                  <Sunrise size={17} strokeWidth={1.95} />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="text-[15px] font-medium leading-[1.35] text-accent-ink">
+                    You come home by tram, but you drive in.
+                  </p>
+                  <p className="mt-1.5 text-[13px] leading-[1.55] text-accent-ink/85">
+                    On {pattern.homeOnlyDays} of the last {pattern.homeOnlyDays + pattern.bothWaysDays} working days.
+                    Coming in by tram too would add about{' '}
+                    <span className="font-medium">{formatZl(pattern.missedGr)}</span> a month here,
+                    and save you far more than that in petrol.
+                  </p>
+                  <p className="mt-2.5 text-[13px] leading-[1.55] text-accent-ink/85">
+                    The first tram is at {FIRST_TRAM}.
+                  </p>
+                </div>
               </div>
-              <Link to="/plan" aria-label="Open trip planning" className="tap shrink-0 text-ink-faint">
-                <ChevronRight size={18} strokeWidth={2} />
-              </Link>
             </Card>
+            <p className="mt-2 text-[12px] leading-[1.5] text-ink-faint">
+              Only you know whether your shift can move. We are only putting a number on it.
+            </p>
           </div>
         </Section>
       )}
 
       {/* ---------------------------------------------------------- recent */}
       <Section
-        title="Recent"
+        title="Recent journeys"
         action={
-          <Link to="/trips" className="tap tap-wide text-[13px] font-medium text-ink-muted">
-            All trips
+          <Link to="/journeys" className="tap tap-wide text-[13px] font-medium text-ink-muted">
+            See all
           </Link>
         }
       >
         <div className="bg-surface ring-1 ring-line">
-          {recent.map((t, i) => (
-            <React.Fragment key={t.id}>
-              {i > 0 && <Divider className="ml-[68px]" />}
-              <TripRow trip={t} />
-            </React.Fragment>
-          ))}
+          {recent.map((t, i) => {
+            const Icon = MODE_ICON[t.mode]
+            return (
+              <React.Fragment key={t.id}>
+                {i > 0 && <Divider className="ml-[68px]" />}
+                <motion.div
+                  initial={reduced ? false : { opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="flex items-center gap-3 px-5 py-3.5"
+                >
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-accent-soft text-accent-ink">
+                    <Icon size={18} strokeWidth={1.75} />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate text-[15px] font-medium text-ink">
+                      {t.mode === 'bus' ? 'Bus' : 'Tram'} {t.line}
+                    </span>
+                    <span className="mt-0.5 block truncate text-[13px] text-ink-muted">
+                      {t.stop} ·{' '}
+                      {new Date(t.at).toLocaleString('en-GB', {
+                        weekday: 'short',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: false,
+                      })}
+                    </span>
+                  </span>
+                  <span className="tnum shrink-0 text-[15px] font-semibold text-accent">
+                    +{formatZl(t.backGr)}
+                  </span>
+                </motion.div>
+              </React.Fragment>
+            )
+          })}
+          {recent.length === 0 && (
+            <p className="px-5 py-10 text-center text-[14px] text-ink-faint">
+              Nothing yet. Tap your card as you always do and it will appear here.
+            </p>
+          )}
         </div>
       </Section>
 
-      <div className="mt-8 lg:hidden">
-        <InstallHint inline />
-      </div>
+      <Section title="Demo">
+        <div className="gutter">
+          <button
+            onClick={simulateTap}
+            className="w-full rounded-[--radius-card] bg-sunken px-4 py-3.5 text-left"
+          >
+            <span className="block text-[14px] font-medium text-ink">
+              Pretend she just tapped her card
+            </span>
+            <span className="mt-0.5 block text-[13px] leading-[1.45] text-ink-muted">
+              In the real thing this arrives on its own, about four minutes later. She does
+              nothing: no app to open, nothing to scan, nothing to remember at 4:20 in the
+              morning.
+            </span>
+          </button>
+        </div>
+      </Section>
 
-      <p className="gutter mt-6 text-[12px] leading-[1.5] text-ink-faint">
-        Figures update as trips are verified. Nothing here offsets emissions or constitutes a
-        carbon credit.
+      <p className="gutter mt-8 text-[12px] leading-[1.55] text-ink-faint">
+        {formatZl(HANDBACK_GR)} back on every journey, paid from the carbon charge already
+        included in the price of fuel. Nothing is deducted from this: the fee for running the
+        scheme is paid separately by the city.
       </p>
-
-      <DerivationSheet open={sheet} onOpenChange={setSheet} statement={statement} />
     </Screen>
   )
 }
 
-/** Days remaining in the current month, today included. */
-function daysLeftInMonth(now = new Date()) {
-  const end = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate()
-  return end - now.getDate() + 1
-}
-
-function Stat({ value, unit, label }: { value: string; unit: string; label: string }) {
+function Figure({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex h-full flex-col justify-between rounded-[--radius-card] bg-surface px-3 py-3 ring-1 ring-line">
-      <p className="tnum text-[22px] font-semibold leading-none tracking-[-0.02em] text-ink">
+    <div className="rounded-[--radius-card] bg-surface px-3 py-3 ring-1 ring-line">
+      <p className="tnum text-[17px] font-semibold leading-none tracking-[-0.02em] text-ink">
         {value}
-        <span className="ml-0.5 text-[12px] font-medium text-ink-faint">{unit}</span>
       </p>
       <p className="mt-1.5 text-[12px] leading-[1.3] text-ink-faint">{label}</p>
     </div>

@@ -1,73 +1,75 @@
-import * as React from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { ChevronRight, ShieldCheck, Car, RotateCcw, MapPin, Eye, Sun, Moon, SunMoon, FileBadge, Wallet2 } from 'lucide-react'
-import { useTheme, type Theme } from '@/lib/theme'
-import { PolicyEditor } from '@/components/app/PolicyEditor'
-import { cx } from '@/lib/cx'
+import { RotateCcw, Sun, Moon, SunMoon, ShieldCheck, BadgeCheck, ChevronRight } from 'lucide-react'
 import { toast } from 'sonner'
 import { TopBar, Screen } from '@/components/app/AppShell'
-import { Card, Section, Divider, Button } from '@/components/ui/primitives'
-import { useStore } from '@/lib/store'
-import { formatRand } from '@/lib/domain/money'
-import { MILEAGE_VARIABLE_SHARE, MEMBER_SHARE, MAX_REDUCTION } from '@/lib/domain/engine'
+import { Card, Section, Button, Divider } from '@/components/ui/primitives'
+import { useTheme, type Theme } from '@/lib/theme'
+import { useHandbackStore } from '@/lib/handback/store'
+import { useWallet } from '@/lib/handback/useWallet'
+import { formatZl } from '@/lib/handback/money'
+import { FARE_GR, HANDBACK_GR, HANDBACK_SHARE, ZL_PER_EUR } from '@/lib/handback/data'
+import { cx } from '@/lib/cx'
 
 export const Route = createFileRoute('/settings')({ component: SettingsScreen })
 
 function SettingsScreen() {
-  const policy = useStore((s) => s.policy)
-  const reset = useStore((s) => s.reset)
-  const resetEmpty = useStore((s) => s.resetEmpty)
-  const [editing, setEditing] = React.useState(false)
+  const { household, totals } = useWallet()
+  const reset = useHandbackStore((s) => s.reset)
+  const resetEmpty = useHandbackStore((s) => s.resetEmpty)
 
   return (
     <Screen>
       <TopBar title="Settings" />
 
-      <Section title="Your policy">
+      {/* The approval, kept visible. She half expected to be rejected. */}
+      <Section title="Your household">
         <div className="gutter">
           <Card>
             <div className="flex items-center gap-3">
-              <span className="grid h-10 w-10 place-items-center rounded-full bg-sunken text-ink-muted">
-                <Car size={18} strokeWidth={1.75} />
+              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-accent-soft text-accent-ink">
+                <BadgeCheck size={18} strokeWidth={1.9} />
               </span>
               <div className="min-w-0 flex-1">
-                <p className="text-[15px] font-medium">{policy.vehicle}</p>
+                <p className="text-[15px] font-medium">{household.name}</p>
                 <p className="text-[13px] text-ink-muted">
-                  {policy.insurer} · {policy.product}
+                  {household.city} · {household.people} people
                 </p>
               </div>
             </div>
             <Divider className="my-4" />
-            <Field label="Monthly premium" value={formatRand(policy.basePremiumCents)} />
             <Field
-              label="Rated annual mileage"
-              value={`${policy.ratedAnnualKm.toLocaleString('en-ZA')} km`}
+              label="Status"
+              value={household.eligibility === 'approved' ? 'Approved' : 'Not checked'}
             />
-            <Field
-              label="Linked"
-              value={new Date(policy.linkedAt).toLocaleDateString('en-ZA', {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric',
-              })}
-            />
-            <Button className="mt-3 w-full" onClick={() => setEditing(true)}>
-              Change these figures
-            </Button>
+            {household.approvedOn && (
+              <Field
+                label="Since"
+                value={new Date(household.approvedOn).toLocaleDateString('en-GB', {
+                  day: 'numeric',
+                  month: 'long',
+                  year: 'numeric',
+                })}
+              />
+            )}
+            {household.reference && <Field label="City reference" value={household.reference} />}
+            <p className="mt-3 text-[12px] leading-[1.55] text-ink-faint">
+              Checked once, when you signed up. You will not be asked again unless your household
+              changes.
+            </p>
           </Card>
         </div>
       </Section>
 
-      <Section title="Plan">
+      <Section title="Where the money comes from">
         <div className="gutter">
-          <Link to="/plan">
+          <Link to="/source">
             <Card className="flex items-center gap-3">
               <span className="grid h-10 w-10 place-items-center rounded-full bg-sunken text-ink-muted">
-                <MapPin size={18} strokeWidth={1.75} />
+                <ShieldCheck size={18} strokeWidth={1.75} />
               </span>
               <div className="min-w-0 flex-1">
-                <p className="text-[15px] font-medium">Plan a trip</p>
-                <p className="text-[13px] text-ink-muted">Compare fares against driving</p>
+                <p className="text-[15px] font-medium">The carbon charge on fuel</p>
+                <p className="text-[13px] text-ink-muted">In three steps, no jargon</p>
               </div>
               <ChevronRight size={18} strokeWidth={2} className="text-ink-faint" />
             </Card>
@@ -81,73 +83,39 @@ function SettingsScreen() {
         </div>
       </Section>
 
-      <Section title="Privacy">
-        <div className="gutter space-y-3">
-          <Link to="/cover">
-            <Card className="flex items-center gap-3">
-              <span className="grid h-10 w-10 place-items-center rounded-full bg-accent-soft text-accent-ink">
-                <Wallet2 size={18} strokeWidth={1.75} />
-              </span>
-              <div className="min-w-0 flex-1">
-                <p className="text-[15px] font-medium">What cover could cost</p>
-                <p className="text-[13px] text-ink-muted">Priced on your measured travel</p>
-              </div>
-              <ChevronRight size={18} strokeWidth={2} className="text-ink-faint" />
-            </Card>
-          </Link>
-          <Link to="/record">
-            <Card className="flex items-center gap-3">
-              <span className="grid h-10 w-10 place-items-center rounded-full bg-sunken text-ink-muted">
-                <FileBadge size={18} strokeWidth={1.75} />
-              </span>
-              <div className="min-w-0 flex-1">
-                <p className="text-[15px] font-medium">Your mileage record</p>
-                <p className="text-[13px] text-ink-muted">Portable proof, take it to any insurer</p>
-              </div>
-              <ChevronRight size={18} strokeWidth={2} className="text-ink-faint" />
-            </Card>
-          </Link>
-          <Link to="/insurer">
-            <Card className="flex items-center gap-3">
-              <span className="grid h-10 w-10 place-items-center rounded-full bg-sunken text-ink-muted">
-                <Eye size={18} strokeWidth={1.75} />
-              </span>
-              <div className="min-w-0 flex-1">
-                <p className="text-[15px] font-medium">What your insurer sees</p>
-                <p className="text-[13px] text-ink-muted">Six numbers, once a month</p>
-              </div>
-              <ChevronRight size={18} strokeWidth={2} className="text-ink-faint" />
-            </Card>
-          </Link>
+      <Section title="What we know about you">
+        <div className="gutter">
           <Card>
-            <div className="flex items-start gap-3">
-              <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-accent-soft text-accent-ink">
-                <ShieldCheck size={16} strokeWidth={2} />
-              </span>
-              <div className="text-[13px] leading-[1.6] text-ink-muted">
-                <p>
-                  We keep the corridor you matched and the time band you travelled in. We do not
-                  keep a continuous location history, and we never share a route with your insurer,
-                  only the monthly kilometre totals your reduction is calculated from.
-                </p>
-                <p className="mt-3">
-                  Your insurer never sees which taxi, train or operator you used.
-                </p>
-              </div>
+            <div className="text-[13px] leading-[1.6] text-ink-muted">
+              <p>
+                That your household qualifies, and that a valid ticket was used. The transport
+                operator tells us a journey happened; it does not tell us where you went, and we
+                do not ask.
+              </p>
+              <p className="mt-3">
+                We never see your bank. The money moves to the account already attached to your
+                travel card.
+              </p>
+              <p className="mt-3">
+                You were checked once. There is no monthly form, no reassessment, and nothing to
+                remember.
+              </p>
             </div>
           </Card>
         </div>
       </Section>
 
-      <Section title="The constants we apply">
+      <Section title="Every figure we apply">
         <div className="gutter">
           <Card>
-            <Field label="Mileage-variable share of premium" value={`${MILEAGE_VARIABLE_SHARE * 100}%`} />
-            <Field label="Your share of the modelled saving" value={`${MEMBER_SHARE * 100}%`} />
-            <Field label="Monthly reduction ceiling" value={`${MAX_REDUCTION * 100}%`} />
-            <p className="mt-3 text-[12px] leading-[1.5] text-ink-faint">
-              Published here rather than buried, because a number you cannot check is a number you
-              cannot trust.
+            <Field label="Single ticket" value={formatZl(FARE_GR)} />
+            <Field label="Share covered" value={`${Math.round(HANDBACK_SHARE * 100)}%`} />
+            <Field label="Back per journey" value={formatZl(HANDBACK_GR)} />
+            <Field label="Złoty per euro" value={String(ZL_PER_EUR)} />
+            <Field label="Journeys this month" value={String(totals.tripsMonth)} />
+            <p className="mt-3 text-[12px] leading-[1.55] text-ink-faint">
+              Published here rather than buried. The rate is set by the city and can change; if it
+              does, you will see it here before it takes effect.
             </p>
           </Card>
         </div>
@@ -168,26 +136,22 @@ function SettingsScreen() {
             <Button
               onClick={() => {
                 resetEmpty()
-                toast('Starting from nothing', {
-                  description: 'No history, no reduction, onboarding from the top.',
-                })
+                toast('Starting from nothing', { description: 'Not yet checked, no journeys.' })
               }}
             >
               Start empty
             </Button>
           </div>
           <p className="mt-2 text-[12px] leading-[1.5] text-ink-faint">
-            &ldquo;Start empty&rdquo; is the genuine day-one experience: no trips, nothing paid,
-            and the evidence threshold visible.
+            &ldquo;Start empty&rdquo; runs the sign-up from the beginning, including the approval
+            screen.
           </p>
         </div>
       </Section>
 
-      <PolicyEditor open={editing} onOpenChange={setEditing} />
-
       <p className="gutter mt-8 text-[12px] leading-[1.5] text-ink-faint">
-        Further is a demonstration. Figures are modelled, not quoted, and no insurer has endorsed
-        this calculation.
+        A demonstration. Figures are modelled, not quoted, and no city or operator has endorsed
+        this.
       </p>
     </Screen>
   )
@@ -200,7 +164,6 @@ function ThemePicker() {
     { value: 'dark', label: 'Dark', icon: Moon },
     { value: 'system', label: 'System', icon: SunMoon },
   ]
-
   return (
     <div className="grid grid-cols-3 gap-2" role="radiogroup" aria-label="Appearance">
       {options.map(({ value, label, icon: Icon }) => (
@@ -224,7 +187,7 @@ function ThemePicker() {
 
 function Field({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-baseline justify-between py-1.5">
+    <div className="flex items-baseline justify-between gap-4 py-1.5">
       <span className="text-[14px] text-ink-muted">{label}</span>
       <span className="tnum text-[14px] font-medium text-ink">{value}</span>
     </div>

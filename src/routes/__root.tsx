@@ -8,11 +8,9 @@ import {
 } from '@tanstack/react-router'
 import { Toaster } from 'sonner'
 import { motion, AnimatePresence } from 'motion/react'
-import { BottomNav, Fab, OfflineBar, HeroScopeProvider } from '@/components/app/AppShell'
+import { BottomNav, OfflineBar, HeroScopeProvider } from '@/components/app/AppShell'
 import { DeviceFrame } from '@/components/app/DeviceFrame'
-import { LogTripSheet } from '@/components/app/LogTripSheet'
-import { StartTripSheet } from '@/components/app/StartTripSheet'
-import { useStore } from '@/lib/store'
+import { useHandbackStore } from '@/lib/handback/store'
 
 export const Route = createRootRoute({
   component: Shell,
@@ -21,7 +19,7 @@ export const Route = createRootRoute({
 })
 
 /** Routes that own the whole frame and carry their own way back. */
-const CHROMELESS = ['/welcome', '/insurer', '/plan', '/track', '/record', '/cover']
+const CHROMELESS = ['/welcome', '/source']
 
 /** A crash should never be a white screen, and should never lose the member's
  *  data. Everything lives in local storage, so recovery is a reload. */
@@ -69,9 +67,7 @@ function NotFound() {
 function Shell() {
   const pathname = useRouterState({ select: (s) => s.location.pathname })
   const navigate = useNavigate()
-  const onboarded = useStore((s) => s.onboarded)
-  const [adding, setAdding] = React.useState(false)
-  const [logging, setLogging] = React.useState(false)
+  const onboarded = useHandbackStore((s) => s.onboarded)
   const scroller = React.useRef<HTMLDivElement>(null)
 
   React.useEffect(() => {
@@ -83,11 +79,7 @@ function Shell() {
     scroller.current?.scrollTo({ top: 0 })
   }, [pathname])
 
-  const isTripDetail = pathname.startsWith('/trips/')
-  /** A screen pushed on top of a tab, rather than another tab beside it. */
-  const deep = isTripDetail || CHROMELESS.includes(pathname)
-  const chromeless = CHROMELESS.includes(pathname) || isTripDetail
-  const showFab = pathname === '/' || pathname === '/trips'
+  const chromeless = CHROMELESS.includes(pathname)
 
   return (
     <DeviceFrame>
@@ -101,14 +93,10 @@ function Shell() {
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={pathname}
-            initial={deep ? { opacity: 0, y: 14 } : { opacity: 0 }}
+            initial={{ opacity: 0 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={deep ? { opacity: 0, y: 8 } : { opacity: 0 }}
-            transition={
-              deep
-                ? { duration: 0.26, ease: [0.32, 0.72, 0, 1] }
-                : { duration: 0.14, ease: 'linear' }
-            }
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.14, ease: 'linear' }}
             className="flex min-h-full flex-col"
           >
             <HeroScopeProvider>
@@ -119,16 +107,6 @@ function Shell() {
       </div>
 
       {!chromeless && <BottomNav />}
-      {showFab && <Fab onClick={() => setAdding(true)} />}
-
-      <StartTripSheet open={adding} onOpenChange={setAdding} onManual={() => setLogging(true)} />
-
-      <LogTripSheet
-        open={logging}
-        onOpenChange={setLogging}
-        onLogged={(id) => navigate({ to: '/trips/$tripId', params: { tripId: id } })}
-      />
-
       <Toaster
         position="top-center"
         offset={72}
